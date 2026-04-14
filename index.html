@@ -708,7 +708,7 @@ function captureGPS() {
   btn.innerHTML = '⏳ Starting GPS capture...';
   
   const ACCURACY_THRESHOLD = 10; // meters - target accuracy
-  const maxWaitTime = 120000; // 2 minutes (120 seconds) max wait
+  const maxWaitTime = 60000; // 1 minute (60 seconds) max wait
   const startTime = Date.now();
   bestGpsAccuracy = null;
   bestGpsData = null;
