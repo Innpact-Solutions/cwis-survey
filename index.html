@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CWIS Household Sanitation Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f4f1ec;--card:#fff;--card-border:#e2ddd5;
+  --accent:#1a6b4e;--accent-light:#e8f5ee;--accent-hover:#145a40;
+  --text:#1a1a1a;--text-dim:#6b6560;--text-label:#4a453f;
+  --danger:#c0392b;--danger-bg:#fdf0ef;
+  --warning:#e67e22;--warning-bg:#fef9f0;
+  --radius:10px;--font:'DM Sans',sans-serif;--font-display:'Instrument Serif',serif;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+html{font-size:15px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;padding:0 0 2rem}
+
+/* Top bar */
+.topbar{background:var(--accent);color:#fff;padding:1rem 1.25rem;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topbar h1{font-family:var(--font-display);font-size:1.35rem;font-weight:400;letter-spacing:0.01em}
+.topbar .sub{font-size:0.7rem;opacity:0.75;margin-top:0.15rem;letter-spacing:0.04em;text-transform:uppercase}
+
+/* Progress */
+.progress-wrap{background:#fff;border-bottom:1px solid var(--card-border);padding:0.6rem 1.25rem;position:sticky;top:60px;z-index:99}
+.progress-bar{height:5px;background:#e8e4de;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 0.4s ease;width:0%}
+.progress-text{font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;text-align:right}
+
+/* Container */
+.container{max-width:520px;margin:0 auto;padding:0 1rem}
+
+/* Section */
+.section{margin-top:1.25rem;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;padding:0 0.25rem}
+.section-badge{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+.section-title{font-size:1rem;font-weight:700;color:var(--text)}
+
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);
+  padding:1.25rem;box-shadow:var(--shadow)}
+
+/* Fields */
+.field{margin-bottom:1.25rem}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:0.82rem;font-weight:600;color:var(--text-label);margin-bottom:0.4rem;line-height:1.4}
+.field-label .req{color:var(--danger);margin-left:2px}
+.field-hint{font-size:0.72rem;color:var(--text-dim);margin-bottom:0.4rem;font-style:italic;line-height:1.4}
+
+.note-box{background:var(--warning-bg);border:1px solid rgba(230,126,34,0.25);border-radius:8px;
+  padding:0.75rem;font-size:0.75rem;color:#7a5a20;line-height:1.5;margin-bottom:1rem}
+
+input[type="text"],input[type="number"],textarea,select{
+  width:100%;padding:0.7rem 0.85rem;background:var(--bg);border:1.5px solid var(--card-border);
+  border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.9rem;transition:border 0.2s,box-shadow 0.2s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+textarea{resize:vertical;min-height:70px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6560' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 0.85rem center;padding-right:2.2rem}
+
+/* Radio/checkbox groups */
+.option-group{display:flex;flex-direction:column;gap:0.4rem}
+.option-item{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.75rem;background:var(--bg);
+  border:1.5px solid var(--card-border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.85rem}
+.option-item:hover{border-color:var(--accent);background:var(--accent-light)}
+.option-item.selected{border-color:var(--accent);background:var(--accent-light)}
+.option-item input{display:none}
+.option-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.option-item.selected .option-dot{border-color:var(--accent);background:var(--accent)}
+.option-item.selected .option-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+/* Checkbox variant */
+.option-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.65rem;color:#fff}
+.option-item.selected .option-check{border-color:var(--accent);background:var(--accent)}
+
+/* GPS */
+.gps-box{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;padding:0.85rem;text-align:center}
+.gps-box.captured{border-style:solid;border-color:var(--accent);background:var(--accent-light)}
+.gps-coords{font-family:'Courier New',monospace;font-size:0.85rem;color:var(--accent);margin-top:0.2rem}
+.gps-accuracy{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
+.btn-gps{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:var(--accent);
+  border:none;border-radius:100px;color:#fff;font-family:var(--font);font-size:0.8rem;font-weight:600;cursor:pointer}
+.btn-gps:disabled{opacity:0.5;cursor:wait}
+.btn-gps:hover:not(:disabled){background:var(--accent-hover)}
+
+/* Photo */
+.photo-area{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;overflow:hidden}
+.photo-area.has-photo{border-style:solid;border-color:var(--accent)}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:1.25rem;cursor:pointer}
+.photo-placeholder:hover{background:rgba(26,107,78,0.03)}
+.photo-placeholder svg{width:28px;height:28px;color:var(--text-dim);opacity:0.5}
+.photo-placeholder span{font-size:0.8rem;color:var(--text-dim)}
+.photo-preview{position:relative;display:none}
+.photo-preview img{width:100%;max-height:200px;object-fit:cover;display:block}
+.photo-preview .remove-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+  background:rgba(0,0,0,0.65);border:none;color:#fff;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Navigation */
+.nav-buttons{display:flex;gap:0.75rem;margin-top:1.25rem;padding:0 0.25rem}
+.btn{flex:1;padding:0.8rem;border-radius:8px;font-family:var(--font);font-size:0.9rem;font-weight:600;
+  cursor:pointer;transition:all 0.15s;text-align:center}
+.btn-prev{background:var(--card);border:1.5px solid var(--card-border);color:var(--text)}
+.btn-prev:hover{background:var(--bg)}
+.btn-next{background:var(--accent);border:1.5px solid var(--accent);color:#fff}
+.btn-next:hover{background:var(--accent-hover)}
+.btn-submit{background:var(--accent);border:1.5px solid var(--accent);color:#fff;flex:2}
+.btn-submit:hover{background:var(--accent-hover)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* Status */
+.status{text-align:center;padding:0.75rem;border-radius:8px;font-size:0.82rem;font-weight:500;margin-top:0.75rem;display:none}
+.status.success{display:block;background:var(--accent-light);border:1px solid rgba(26,107,78,0.3);color:var(--accent)}
+.status.error{display:block;background:var(--danger-bg);border:1px solid rgba(192,57,43,0.25);color:var(--danger)}
+
+/* Hidden sections */
+.hidden{display:none!important}
+
+/* Conditional fields */
+.conditional{display:none}
+.conditional.show{display:block}
+
+input[type="file"]{display:none}
+
+.footer{text-align:center;padding:1.5rem 0;color:var(--text-dim);font-size:0.65rem;opacity:0.6}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>CWIS Household Sanitation Survey</h1>
+  <div class="sub">Bohol — Dauis · Panglao · Tagbilaran City</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">Section 1 of 10</div>
+</div>
+
+<div class="container" id="formContainer">
+
+<!-- ==================== SECTION 0: Survey Identification ==================== -->
+<div class="section" data-section="0">
+  <div class="section-header">
+    <div class="section-badge">ID</div>
+    <div class="section-title">Survey Identification</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">City / Municipality <span class="req">*</span></div>
+      <select id="city_municipality" onchange="updateBarangays()">
+        <option value="">— Select —</option>
+        <option value="dauis">Dauis</option>
+        <option value="panglao">Panglao</option>
+        <option value="tagbilaran_city">Tagbilaran City</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="field-label">Barangay / Ward <span class="req">*</span></div>
+      <select id="barangay_ward">
+        <option value="">— Select City first —</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="field-label">Respondent Name <span class="req">*</span></div>
+      <input type="text" id="respondent_name" required>
+    </div>
+    <div class="field">
+      <div class="field-label">Contact Number (optional)</div>
+      <input type="text" id="contact_number" inputmode="tel">
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 1: A. Location & Geo-Tagging ==================== -->
+<div class="section hidden" data-section="1">
+  <div class="section-header">
+    <div class="section-badge">A</div>
+    <div class="section-title">Location & Geo-Tagging</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">A1. GPS coordinates of the household <span class="req">*</span></div>
+      <div class="field-hint">Ensure GPS is enabled on device. Wait for accuracy &lt; 10m.</div>
+      <div class="gps-box" id="gpsBox">
+        <button class="btn-gps" id="btnGps" onclick="captureGPS()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="9"/></svg>
+          Capture GPS
+        </button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">A2. Photograph of the household / containment system <span class="req">*</span></div>
+      <div class="photo-area" id="photoArea_hh">
+        <div class="photo-placeholder" onclick="document.getElementById('file_hh_photo').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <span>Tap to capture photo</span>
+        </div>
+        <div class="photo-preview" id="preview_hh">
+          <img id="img_hh_photo" src="" alt="">
+          <button class="remove-btn" onclick="removePhoto('hh')">&times;</button>
+        </div>
+      </div>
+      <input type="file" id="file_hh_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'hh')">
+    </div>
+    <div class="field">
+      <div class="field-label">A3. Address / landmark description</div>
+      <input type="text" id="address_landmark">
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: B. Climate Risk Assessment ==================== -->
+<div class="section hidden" data-section="2">
+  <div class="section-header">
+    <div class="section-badge">B</div>
+    <div class="section-title">Climate Risk Assessment</div>
+  </div>
+  <div class="card">
+    <div class="note-box">NOTE TO ENUMERATOR: The following climate risk fields are pre-populated from spatial/GIS maps. Please VALIDATE each answer with the household respondent.</div>
+
+    <div class="field">
+      <div class="field-label">B1. Is this area prone to STORM SURGE? <span class="req">*</span></div>
+      <div class="field-hint">[Pre-filled from spatial data] Validate with respondent</div>
+      <div class="option-group" data-name="storm_surge_risk" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">B2. Is this area prone to HIGH TIDE inundation? <span class="req">*</span></div>
+      <div class="option-group" data-name="high_tide_risk" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">B3. Is this area prone to URBAN FLOODING? <span class="req">*</span></div>
+      <div class="option-group" data-name="urban_flooding_risk" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">B4. Has flood water ever entered your containment system or toilet? <span class="req">*</span></div>
+      <div class="option-group" data-name="flood_entered_containment" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="flood_entered_containment=yes">
+      <div class="field-label">B5. Up to what level does water generally reach? <span class="req">*</span></div>
+      <div class="option-group" data-name="flood_water_level" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="flood_entered_containment=yes">
+      <div class="field-label">B6. How frequently does this flooding happen? <span class="req">*</span></div>
+      <div class="option-group" data-name="flood_frequency" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: C. Environmental Risk ==================== -->
+<div class="section hidden" data-section="3">
+  <div class="section-header">
+    <div class="section-badge">C</div>
+    <div class="section-title">Environmental Risk Assessment</div>
+  </div>
+  <div class="card">
+    <div class="note-box">NOTE TO ENUMERATOR: The following environmental risk fields are pre-populated from spatial/GIS maps. Please VALIDATE each answer with the household respondent.</div>
+    <div class="field">
+      <div class="field-label">C1. Is this area known to have a HIGH GROUND WATER TABLE? <span class="req">*</span></div>
+      <div class="option-group" data-name="high_gwt_risk" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">C2. Is this area prone to SINKHOLES or ground subsidence? <span class="req">*</span></div>
+      <div class="option-group" data-name="sinkhole_risk" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">C3. Have you noticed water seeping into your septic tank or pit from the ground? <span class="req">*</span></div>
+      <div class="option-group" data-name="water_seepage_tank" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: D. Household Information ==================== -->
+<div class="section hidden" data-section="4">
+  <div class="section-header">
+    <div class="section-badge">D</div>
+    <div class="section-title">Household Information</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">D1. How many family members live in this household? <span class="req">*</span></div>
+      <input type="number" id="family_members" min="1" max="30" inputmode="numeric">
+    </div>
+    <div class="field">
+      <div class="field-label">D2. How many children (under 5 years) are in the household?</div>
+      <input type="number" id="children_under5" min="0" max="15" inputmode="numeric">
+    </div>
+    <div class="field">
+      <div class="field-label">D3. Type of dwelling <span class="req">*</span></div>
+      <div class="option-group" data-name="dwelling_type" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: E. Containment System ==================== -->
+<div class="section hidden" data-section="5">
+  <div class="section-header">
+    <div class="section-badge">E</div>
+    <div class="section-title">Containment System / Septic Tank</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">E1. What type of onsite sanitation system do you have? <span class="req">*</span></div>
+      <div class="option-group" data-name="sanitation_type" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="sanitation_type=other">
+      <div class="field-label">E1a. Please specify other sanitation type</div>
+      <input type="text" id="sanitation_type_other">
+    </div>
+    <div class="field">
+      <div class="field-label">E2. WALL construction: Sealed or Porous? <span class="req">*</span></div>
+      <div class="field-hint">Sealed = concrete/masonry with plaster; Porous = brick without plaster, stone</div>
+      <div class="option-group" data-name="wall_type" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">E3. BOTTOM construction: Sealed or Not sealed? <span class="req">*</span></div>
+      <div class="field-hint">Sealed = concrete slab at bottom; Not sealed = open to soil</div>
+      <div class="option-group" data-name="bottom_type" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="bottom_type=sealed">
+      <div class="field-label">E4. Does the tank have internal partition wall(s)? <span class="req">*</span></div>
+      <div class="option-group" data-name="has_partition" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="has_partition=yes">
+      <div class="field-label">E5. How many partition walls inside the tank?</div>
+      <input type="number" id="partition_count" min="1" max="5" inputmode="numeric">
+    </div>
+    <div class="field conditional" data-show-when="bottom_type=sealed">
+      <div class="field-label">E6. Is there any OUTLET from the tank? <span class="req">*</span></div>
+      <div class="option-group" data-name="has_outlet" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="has_outlet=yes">
+      <div class="field-label">E7. Where does the outlet discharge to? <span class="req">*</span></div>
+      <div class="option-group" data-name="outlet_destination" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">E8. Year this tank/pit was constructed?</div>
+      <div class="field-hint">Enter 0 if unknown</div>
+      <input type="number" id="year_constructed" min="0" max="2026" inputmode="numeric">
+    </div>
+    <div class="field">
+      <div class="field-label">E9. Approximate size (L x W x D)</div>
+      <div class="field-hint">e.g., 6ft x 4ft x 5ft or 2m x 1.5m x 1.5m</div>
+      <input type="text" id="tank_size">
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: F. Greywater ==================== -->
+<div class="section hidden" data-section="6">
+  <div class="section-header">
+    <div class="section-badge">F</div>
+    <div class="section-title">Greywater Management</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">F1. Does kitchen wastewater go into the SAME tank as toilet wastewater? <span class="req">*</span></div>
+      <div class="option-group" data-name="kitchen_same_tank" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">F2. Does bathroom / washing water go into the SAME tank? <span class="req">*</span></div>
+      <div class="option-group" data-name="bathroom_same_tank" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="kitchen_same_tank=no|bathroom_same_tank=no">
+      <div class="field-label">F3. Where does the greywater discharge? <span class="req">*</span></div>
+      <div class="option-group" data-name="greywater_destination" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: G. Desludging ==================== -->
+<div class="section hidden" data-section="7">
+  <div class="section-header">
+    <div class="section-badge">G</div>
+    <div class="section-title">Desludging History</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">G1. Has your septic tank ever been desludged (emptied)? <span class="req">*</span></div>
+      <div class="option-group" data-name="ever_desludged" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=yes">
+      <div class="field-label">G2. When was the LAST desludging done?</div>
+      <div class="field-hint">e.g., March 2023 or 2022</div>
+      <input type="text" id="last_desludge_when">
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=yes">
+      <div class="field-label">G3. How was the desludging done? <span class="req">*</span></div>
+      <div class="option-group" data-name="desludging_method" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="desludging_method=truck">
+      <div class="field-label">G4. How many trips did the truck take?</div>
+      <div class="field-hint">Enter 0 if unknown</div>
+      <input type="number" id="truck_trips" min="0" max="20" inputmode="numeric">
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=yes">
+      <div class="field-label">G5. How much were you charged? (PHP)</div>
+      <div class="field-hint">Enter 0 if unknown</div>
+      <input type="number" id="desludging_cost" min="0" inputmode="numeric">
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=yes">
+      <div class="field-label">G6. Who did you contact for desludging?</div>
+      <div class="option-group" data-name="desludging_provider" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="desludging_provider=other">
+      <div class="field-label">G6a. Please specify</div>
+      <input type="text" id="desludge_provider_other">
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=yes">
+      <div class="field-label">G7. Satisfied with the desludging service?</div>
+      <div class="option-group" data-name="desludging_satisfaction" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="ever_desludged=no">
+      <div class="field-label">G8. Why has the tank never been emptied?</div>
+      <div class="field-hint">Select all that apply</div>
+      <div class="option-group" data-name="no_desludge_reason" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="no_desludge_reason=other">
+      <div class="field-label">G8a. Please specify</div>
+      <input type="text" id="no_desludge_other">
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 8: H. Water Supply ==================== -->
+<div class="section hidden" data-section="8">
+  <div class="section-header">
+    <div class="section-badge">H</div>
+    <div class="section-title">Water Supply Sources</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">H1. Primary source of DRINKING water? <span class="req">*</span></div>
+      <div class="option-group" data-name="drinking_water_source" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">H2. Primary source of NON-DRINKING water? <span class="req">*</span></div>
+      <div class="option-group" data-name="nondrinking_water_source" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
+      <div class="field-label">H3. How deep is the borewell? (feet)</div>
+      <div class="field-hint">Enter 0 if unknown</div>
+      <input type="number" id="borewell_depth_ft" min="0" inputmode="numeric">
+    </div>
+    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
+      <div class="field-label">H4. Distance from borewell to septic tank? (meters)</div>
+      <div class="field-hint">Enter 0 if unknown</div>
+      <input type="number" id="borewell_tank_dist_m" min="0" inputmode="numeric">
+    </div>
+    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
+      <div class="field-label">H5. Ever noticed odor or discoloration in borewell water?</div>
+      <div class="option-group" data-name="borewell_odor_discolor" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: I. Health ==================== -->
+<div class="section hidden" data-section="9">
+  <div class="section-header">
+    <div class="section-badge">I</div>
+    <div class="section-title">Health & Past Issues</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">I1. Has any family member experienced diarrhea in the past 6 months? <span class="req">*</span></div>
+      <div class="option-group" data-name="diarrhea_6months" data-type="radio"></div>
+    </div>
+    <div class="field">
+      <div class="field-label">I2. Has any family member experienced cholera or waterborne disease? <span class="req">*</span></div>
+      <div class="option-group" data-name="cholera_waterborne" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="diarrhea_6months=yes|cholera_waterborne=yes">
+      <div class="field-label">I3. How many family members were affected?</div>
+      <input type="number" id="health_affected_count" min="1" max="30" inputmode="numeric">
+    </div>
+    <div class="field">
+      <div class="field-label">I4. Any PAST ISSUES with your septic tank? <span class="req">*</span></div>
+      <div class="field-hint">e.g., overflow, collapse, foul smell, blockage</div>
+      <div class="option-group" data-name="past_septic_issues" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="past_septic_issues=yes">
+      <div class="field-label">I5. Describe the septic tank issue(s)</div>
+      <textarea id="septic_issue_desc"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">I6. Any PAST ISSUES with your toilet functioning? <span class="req">*</span></div>
+      <div class="option-group" data-name="past_toilet_issues" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="past_toilet_issues=yes">
+      <div class="field-label">I7. Describe the toilet issue(s)</div>
+      <textarea id="toilet_issue_desc"></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 10: J. Documentation ==================== -->
+<div class="section hidden" data-section="10">
+  <div class="section-header">
+    <div class="section-badge">J</div>
+    <div class="section-title">Documentation & Closure</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">J1. Photograph of the toilet facility</div>
+      <div class="photo-area" id="photoArea_toilet">
+        <div class="photo-placeholder" onclick="document.getElementById('file_toilet_photo').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <span>Tap to capture</span>
+        </div>
+        <div class="photo-preview" id="preview_toilet">
+          <img id="img_toilet_photo" src="" alt="">
+          <button class="remove-btn" onclick="removePhoto('toilet')">&times;</button>
+        </div>
+      </div>
+      <input type="file" id="file_toilet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'toilet')">
+    </div>
+    <div class="field">
+      <div class="field-label">J2. Photograph of the septic tank access point</div>
+      <div class="photo-area" id="photoArea_tank">
+        <div class="photo-placeholder" onclick="document.getElementById('file_tank_photo').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <span>Tap to capture</span>
+        </div>
+        <div class="photo-preview" id="preview_tank">
+          <img id="img_tank_photo" src="" alt="">
+          <button class="remove-btn" onclick="removePhoto('tank')">&times;</button>
+        </div>
+      </div>
+      <input type="file" id="file_tank_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'tank')">
+    </div>
+    <div class="field">
+      <div class="field-label">J3. Photograph of the outlet / drainage (if visible)</div>
+      <div class="field-hint">Optional — take photo only if outlet is visible</div>
+      <div class="photo-area" id="photoArea_outlet">
+        <div class="photo-placeholder" onclick="document.getElementById('file_outlet_photo').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <span>Tap to capture</span>
+        </div>
+        <div class="photo-preview" id="preview_outlet">
+          <img id="img_outlet_photo" src="" alt="">
+          <button class="remove-btn" onclick="removePhoto('outlet')">&times;</button>
+        </div>
+      </div>
+      <input type="file" id="file_outlet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'outlet')">
+    </div>
+    <div class="field">
+      <div class="field-label">J4. Additional observations by the enumerator</div>
+      <textarea id="enumerator_notes"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">J5. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-buttons" id="navButtons">
+  <button class="btn btn-prev hidden" id="btnPrev" onclick="navigate(-1)">← Back</button>
+  <button class="btn btn-next" id="btnNext" onclick="navigate(1)">Next →</button>
+</div>
+<div class="status" id="statusMsg"></div>
+<div class="footer">Innpact Solutions — CWIS Bohol Project</div>
+</div>
+
+<script>
+// ==================== CONFIGURATION ====================
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbv1u5wJcVSZi2mnIhieksv-y9lzK1KxvHGQfy5kpDdNHtDIemgQTxHawprh5cNZpY/exec';
+
+// ==================== DATA ====================
+const TOTAL_SECTIONS = 11; // 0-10
+let currentSection = 0;
+let gpsData = { lat: null, lng: null, accuracy: null };
+let photos = { hh: null, toilet: null, tank: null, outlet: null };
+let radioValues = {};
+
+const BARANGAYS = {
+  dauis: [
+    {v:'biking',l:'Biking'},{v:'bingag',l:'Bingag'},{v:'catarman',l:'Catarman'},{v:'dao_dauis',l:'Dao'},
+    {v:'mariveles',l:'Mariveles'},{v:'mayacabac',l:'Mayacabac'},{v:'poblacion_dauis',l:'Poblacion'},
+    {v:'san_isidro_dauis',l:'San Isidro'},{v:'songculan',l:'Songculan'},{v:'tabalong',l:'Tabalong'},
+    {v:'tinago',l:'Tinago'},{v:'totolan',l:'Totolan'}
+  ],
+  panglao: [
+    {v:'bil_isan',l:'Bil-isan'},{v:'bolod',l:'Bolod'},{v:'danao',l:'Danao'},{v:'doljo',l:'Doljo'},
+    {v:'libaong',l:'Libaong'},{v:'looc_panglao',l:'Looc'},{v:'lourdes',l:'Lourdes'},
+    {v:'poblacion_panglao',l:'Poblacion'},{v:'tangnan',l:'Tangnan'},{v:'tawala',l:'Tawala'}
+  ],
+  tagbilaran_city: [
+    {v:'bool',l:'Bool'},{v:'booy',l:'Booy'},{v:'cabawan',l:'Cabawan'},{v:'cogon',l:'Cogon'},
+    {v:'dampas',l:'Dampas'},{v:'dao_tagbilaran',l:'Dao'},{v:'manga',l:'Manga'},{v:'mansasa',l:'Mansasa'},
+    {v:'poblacion_i',l:'Poblacion I'},{v:'poblacion_ii',l:'Poblacion II'},{v:'poblacion_iii',l:'Poblacion III'},
+    {v:'san_isidro_tagbilaran',l:'San Isidro'},{v:'taloto',l:'Taloto'},{v:'tiptip',l:'Tiptip'},{v:'ubujan',l:'Ubujan'}
+  ]
+};
+
+const CHOICE_LISTS = {
+  yn_dk: [{v:'yes',l:'Yes'},{v:'no',l:'No'},{v:'dont_know',l:"Don't Know"}],
+  yn: [{v:'yes',l:'Yes'},{v:'no',l:'No'}],
+  flood_level: [{v:'ankle',l:'Ankle level'},{v:'knee',l:'Knee level'},{v:'waist',l:'Waist level'},{v:'above_waist',l:'Above waist'},{v:'submerged',l:'Fully submerged'}],
+  flood_freq: [{v:'every_year',l:'Every year'},{v:'every_2_3_years',l:'Every 2-3 years'},{v:'rarely',l:'Rarely'},{v:'only_once',l:'Only once'}],
+  dwelling_type: [{v:'permanent',l:'Permanent (RCC/Concrete)'},{v:'semi_permanent',l:'Semi-permanent'},{v:'temporary',l:'Temporary'},{v:'informal',l:'Informal settlement'}],
+  sanitation_type: [{v:'septic_tank',l:'Septic tank'},{v:'lined_pit',l:'Lined pit'},{v:'unlined_pit',l:'Unlined pit'},{v:'other',l:'Other (specify)'}],
+  wall_type: [{v:'sealed',l:'Sealed (concrete/masonry)'},{v:'porous',l:'Porous (brick/stone)'},{v:'dont_know',l:"Don't Know"}],
+  bottom_type: [{v:'sealed',l:'Sealed (concrete slab)'},{v:'not_sealed',l:'Not sealed (open to ground)'},{v:'dont_know',l:"Don't Know"}],
+  outlet_dest: [{v:'soak_pit',l:'Soak pit'},{v:'open_drain',l:'Open drain'},{v:'water_body',l:'Water body'},{v:'road_side',l:'Road side/open ground'},{v:'dont_know',l:"Don't Know"}],
+  greywater_dest: [{v:'open_drain',l:'Open drain'},{v:'soak_pit',l:'Soak pit'},{v:'water_body',l:'Water body'},{v:'road_side',l:'Road side/open ground'},{v:'garden',l:'Garden/yard'},{v:'dont_know',l:"Don't Know"}],
+  desludge_method: [{v:'manual',l:'Manually (by workers)'},{v:'truck',l:'Desludging truck (vacuum tanker)'}],
+  desludge_provider: [{v:'municipal',l:'Municipal / LGU service'},{v:'private',l:'Private operator'},{v:'informal',l:'Informal worker'},{v:'other',l:'Other (specify)'}],
+  satisfaction: [{v:'very_satisfied',l:'Very satisfied'},{v:'satisfied',l:'Satisfied'},{v:'not_satisfied',l:'Not satisfied'},{v:'very_dissatisfied',l:'Very dissatisfied'}],
+  no_desludge_reason: [{v:'not_full',l:'Tank is not full yet'},{v:'no_contact',l:"Don't know whom to call"},{v:'too_expensive',l:'Too expensive'},{v:'no_service',l:'No service available'},{v:'other',l:'Other (specify)'}],
+  water_source: [{v:'municipal_piped',l:'Municipal piped water'},{v:'borewell',l:'Borewell / tubewell'},{v:'hand_pump',l:'Hand pump'},{v:'tanker',l:'Water tanker'},{v:'bottled',l:'Bottled/packaged water'},{v:'other',l:'Other'}],
+  water_source_nd: [{v:'municipal_piped',l:'Municipal piped water'},{v:'borewell',l:'Borewell / tubewell'},{v:'hand_pump',l:'Hand pump'},{v:'tanker',l:'Water tanker'},{v:'other',l:'Other'}],
+};
+
+// Map field names to choice lists
+const FIELD_CHOICES = {
+  storm_surge_risk:'yn_dk', high_tide_risk:'yn_dk', urban_flooding_risk:'yn_dk',
+  flood_entered_containment:'yn', flood_water_level:'flood_level', flood_frequency:'flood_freq',
+  high_gwt_risk:'yn_dk', sinkhole_risk:'yn_dk', water_seepage_tank:'yn',
+  dwelling_type:'dwelling_type', sanitation_type:'sanitation_type', wall_type:'wall_type',
+  bottom_type:'bottom_type', has_partition:'yn_dk', has_outlet:'yn_dk', outlet_destination:'outlet_dest',
+  kitchen_same_tank:'yn_dk', bathroom_same_tank:'yn_dk', greywater_destination:'greywater_dest',
+  ever_desludged:'yn', desludging_method:'desludge_method', desludging_provider:'desludge_provider',
+  desludging_satisfaction:'satisfaction', no_desludge_reason:'no_desludge_reason',
+  drinking_water_source:'water_source', nondrinking_water_source:'water_source_nd',
+  borewell_odor_discolor:'yn',
+  diarrhea_6months:'yn', cholera_waterborne:'yn',
+  past_septic_issues:'yn', past_toilet_issues:'yn',
+  respondent_consent:'yn'
+};
+
+// ==================== INIT ====================
+function init() {
+  // Build all option groups
+  document.querySelectorAll('.option-group').forEach(group => {
+    const name = group.dataset.name;
+    const type = group.dataset.type;
+    const listKey = FIELD_CHOICES[name];
+    if (!listKey || !CHOICE_LISTS[listKey]) return;
+    const choices = CHOICE_LISTS[listKey];
+
+    choices.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'option-item';
+      item.dataset.value = c.v;
+      const dot = document.createElement('div');
+      dot.className = type === 'checkbox' ? 'option-check' : 'option-dot';
+      const label = document.createElement('span');
+      label.textContent = c.l;
+      item.appendChild(dot);
+      item.appendChild(label);
+
+      item.addEventListener('click', () => {
+        if (type === 'checkbox') {
+          item.classList.toggle('selected');
+          const dot = item.querySelector('.option-check');
+          dot.textContent = item.classList.contains('selected') ? '✓' : '';
+          // Collect all selected
+          const selected = [...group.querySelectorAll('.option-item.selected')].map(i => i.dataset.value);
+          radioValues[name] = selected.join(' ');
+        } else {
+          group.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          radioValues[name] = c.v;
+        }
+        updateConditionals();
+      });
+      group.appendChild(item);
+    });
+  });
+
+  updateProgress();
+}
+
+// ==================== BARANGAY CASCADE ====================
+function updateBarangays() {
+  const lgu = document.getElementById('city_municipality').value;
+  const sel = document.getElementById('barangay_ward');
+  sel.innerHTML = '<option value="">— Select —</option>';
+  if (BARANGAYS[lgu]) {
+    BARANGAYS[lgu].forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.v; opt.textContent = b.l;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+// ==================== CONDITIONAL LOGIC ====================
+function updateConditionals() {
+  document.querySelectorAll('.conditional').forEach(field => {
+    const rule = field.dataset.showWhen;
+    if (!rule) return;
+    // Rules can be "field=val" or "field=val|field2=val2" (OR logic)
+    const conditions = rule.split('|');
+    const show = conditions.some(cond => {
+      const [key, val] = cond.split('=');
+      const current = radioValues[key] || '';
+      if (current.includes(' ')) {
+        // Multi-select: check if val is in the space-separated list
+        return current.split(' ').includes(val);
+      }
+      return current === val;
+    });
+    field.classList.toggle('show', show);
+    if (!show) field.classList.remove('show');
+    else field.classList.add('show');
+  });
+}
+
+// ==================== GPS ====================
+function captureGPS() {
+  const btn = document.getElementById('btnGps');
+  const box = document.getElementById('gpsBox');
+  if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Acquiring…';
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      gpsData.lat = pos.coords.latitude.toFixed(6);
+      gpsData.lng = pos.coords.longitude.toFixed(6);
+      gpsData.accuracy = pos.coords.accuracy.toFixed(1);
+      box.classList.add('captured');
+      box.innerHTML = `<div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
+        <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m</div>
+        <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+    },
+    err => { alert('GPS error: ' + err.message); btn.disabled = false; btn.innerHTML = '📍 Capture GPS'; },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+
+// ==================== PHOTOS ====================
+function handlePhoto(input, key) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('Photo must be under 2 MB'); input.value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    photos[key] = e.target.result;
+    document.getElementById(`img_${key}_photo`).src = photos[key];
+    document.getElementById(`photoArea_${key}`).classList.add('has-photo');
+    document.getElementById(`photoArea_${key}`).querySelector('.photo-placeholder').style.display = 'none';
+    document.getElementById(`preview_${key}`).style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(key) {
+  photos[key] = null;
+  document.getElementById(`file_${key}_photo`).value = '';
+  document.getElementById(`photoArea_${key}`).classList.remove('has-photo');
+  document.getElementById(`photoArea_${key}`).querySelector('.photo-placeholder').style.display = 'flex';
+  document.getElementById(`preview_${key}`).style.display = 'none';
+}
+
+// ==================== NAVIGATION ====================
+function navigate(dir) {
+  const next = currentSection + dir;
+  if (next < 0 || next >= TOTAL_SECTIONS) return;
+
+  // Hide current
+  document.querySelector(`[data-section="${currentSection}"]`).classList.add('hidden');
+  // Show next
+  currentSection = next;
+  document.querySelector(`[data-section="${currentSection}"]`).classList.remove('hidden');
+
+  // Buttons
+  document.getElementById('btnPrev').classList.toggle('hidden', currentSection === 0);
+  const btnNext = document.getElementById('btnNext');
+  if (currentSection === TOTAL_SECTIONS - 1) {
+    btnNext.textContent = '✓ Submit Survey';
+    btnNext.className = 'btn btn-submit';
+    btnNext.onclick = submitSurvey;
+  } else {
+    btnNext.textContent = 'Next →';
+    btnNext.className = 'btn btn-next';
+    btnNext.onclick = () => navigate(1);
+  }
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = ((currentSection + 1) / TOTAL_SECTIONS * 100).toFixed(0);
+  document.getElementById('progressFill').style.width = pct + '%';
+  const labels = ['ID','A','B','C','D','E','F','G','H','I','J'];
+  document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${currentSection + 1} of ${TOTAL_SECTIONS}`;
+}
+
+// ==================== SUBMIT ====================
+async function submitSurvey() {
+  const status = document.getElementById('statusMsg');
+  const btnNext = document.getElementById('btnNext');
+
+  // Gather all data
+  const data = {
+    timestamp: new Date().toISOString(),
+    // Section ID
+    city_municipality: v('city_municipality'),
+    barangay_ward: v('barangay_ward'),
+    respondent_name: v('respondent_name'),
+    contact_number: v('contact_number'),
+    // Section A
+    latitude: gpsData.lat || '',
+    longitude: gpsData.lng || '',
+    gps_accuracy: gpsData.accuracy || '',
+    hh_photo: photos.hh || '',
+    address_landmark: v('address_landmark'),
+    // Section B-I: all radio values
+    ...radioValues,
+    // Section D numbers
+    family_members: v('family_members'),
+    children_under5: v('children_under5'),
+    // Section E extras
+    sanitation_type_other: v('sanitation_type_other'),
+    partition_count: v('partition_count'),
+    year_constructed: v('year_constructed'),
+    tank_size: v('tank_size'),
+    // Section G extras
+    last_desludge_when: v('last_desludge_when'),
+    truck_trips: v('truck_trips'),
+    desludging_cost: v('desludging_cost'),
+    desludge_provider_other: v('desludge_provider_other'),
+    no_desludge_other: v('no_desludge_other'),
+    // Section H extras
+    borewell_depth_ft: v('borewell_depth_ft'),
+    borewell_tank_dist_m: v('borewell_tank_dist_m'),
+    // Section I extras
+    health_affected_count: v('health_affected_count'),
+    septic_issue_desc: v('septic_issue_desc'),
+    toilet_issue_desc: v('toilet_issue_desc'),
+    // Section J
+    toilet_photo: photos.toilet || '',
+    tank_access_photo: photos.tank || '',
+    outlet_photo: photos.outlet || '',
+    enumerator_notes: v('enumerator_notes'),
+  };
+
+  // Basic validation
+  if (!data.respondent_name) { showStatus('Please enter Respondent Name (Section ID)', 'error'); return; }
+  if (!data.city_municipality) { showStatus('Please select City/Municipality (Section ID)', 'error'); return; }
+  if (!data.barangay_ward) { showStatus('Please select Barangay (Section ID)', 'error'); return; }
+  if (!radioValues.respondent_consent || radioValues.respondent_consent !== 'yes') {
+    showStatus('Respondent consent (J5) must be "Yes" to submit', 'error'); return;
+  }
+
+  btnNext.disabled = true;
+  btnNext.textContent = '⏳ Submitting…';
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+    showStatus('✓ Survey submitted successfully!', 'success');
+    btnNext.textContent = '✓ Submitted';
+  } catch (err) {
+    showStatus('Submission failed: ' + err.message, 'error');
+    btnNext.disabled = false;
+    btnNext.textContent = '✓ Submit Survey';
+  }
+}
+
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+  if (type === 'success') setTimeout(() => { el.style.display = 'none'; }, 8000);
+}
+
+// Init
+init();
+</script>
+</body>
+</html>
