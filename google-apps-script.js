@@ -25,10 +25,7 @@ const HEADERS = [
   'Latitude',
   'Longitude',
   'GPS Accuracy (m)',
-  'Address / Landmark',
-  // Photos
-  'HH Photo URL',
-  'HH Photo GPS',
+  // Photos (Section J)
   'Toilet Photo URL',
   'Toilet Photo GPS',
   'Tank Photo URL',
@@ -36,20 +33,12 @@ const HEADERS = [
   'Outlet Photo URL',
   'Outlet Photo GPS',
   // Section B
-  'B1. Storm Surge Risk',
-  'B2. High Tide Risk',
-  'B3. Urban Flooding Risk',
-  'B4. Flood Entered Containment',
-  'B5. Flood Water Level',
-  'B6. Flood Frequency',
-  // Section C
-  'C1. High GWT Risk',
-  'C2. Sinkhole Risk',
-  'C3. Water Seepage Tank',
+  'B1. Flood Entered Containment',
+  'B2. Flood Water Level',
+  'B3. Flood Frequency',
   // Section D
   'D1. Family Members',
-  'D2. Children Under 5',
-  'D3. Dwelling Type',
+  'D2. Dwelling Type',
   // Section E
   'E1. Sanitation Type',
   'E1a. Sanitation Type Other',
@@ -71,29 +60,51 @@ const HEADERS = [
   'G3. Desludging Method',
   'G4. Truck Trips',
   'G5. Desludging Cost (PHP)',
-  'G6. Desludging Provider',
-  'G6a. Provider Other',
-  'G7. Desludging Satisfaction',
-  'G8. No Desludge Reason',
-  'G8a. No Desludge Other',
+  'G6. No Desludge Reason',
+  'G6a. No Desludge Other',
   // Section H
-  'H1. Drinking Water Source',
-  'H2. Non-Drinking Water Source',
-  'H3. Borewell Depth (ft)',
-  'H4. Borewell-Tank Distance (m)',
-  'H5. Borewell Odor/Discolor',
+  'H1. Water Supply Sources',
+  'H1a. Water Supply Other',
   // Section I
-  'I1. Diarrhea 6 Months',
-  'I2. Cholera / Waterborne',
-  'I3. Health Affected Count',
-  'I4. Past Septic Issues',
-  'I5. Septic Issue Description',
-  'I6. Past Toilet Issues',
-  'I7. Toilet Issue Description',
+  'I1. Past Toilet Issues',
+  'I2. Toilet Issue Description',
   // Section J
   'J4. Enumerator Notes',
   'J5. Respondent Consent',
 ];
+
+// ==========================================
+// Apply headers to a sheet
+// ==========================================
+function applyHeaders(sheet) {
+  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  const headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
+  headerRange.setBackground('#1a6b4e');
+  headerRange.setFontColor('#ffffff');
+  headerRange.setFontWeight('bold');
+  sheet.setFrozenRows(1);
+}
+
+// ==========================================
+// Run this ONCE manually to add headers to existing sheet
+// ==========================================
+function setupHeaders() {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  let sheet = ss.getSheetByName('Responses');
+  if (!sheet) {
+    sheet = ss.insertSheet('Responses');
+  }
+  // Insert header row at top (row 1), shifting existing data down
+  sheet.insertRowBefore(1);
+  sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  const headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
+  headerRange.setBackground('#1a6b4e');
+  headerRange.setFontColor('#ffffff');
+  headerRange.setFontWeight('bold');
+  sheet.setFrozenRows(1);
+  SpreadsheetApp.flush();
+  Logger.log('Headers set up successfully!');
+}
 
 // ==========================================
 // Handle POST request from survey form
@@ -109,17 +120,13 @@ function doPost(e) {
     // Create sheet with headers if it doesn't exist
     if (!sheet) {
       sheet = ss.insertSheet('Responses');
-      sheet.appendRow(HEADERS);
-      // Style header row
-      const headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
-      headerRange.setBackground('#1a6b4e');
-      headerRange.setFontColor('#ffffff');
-      headerRange.setFontWeight('bold');
-      sheet.setFrozenRows(1);
+      applyHeaders(sheet);
+    } else if (sheet.getLastRow() === 0 || sheet.getRange(1,1).getValue() === '') {
+      // Sheet exists but has no headers — add them
+      applyHeaders(sheet);
     }
 
     // Save photos to Drive and get URLs
-    const hhPhotoUrl    = savePhotoToDrive(data.hh_photo, data.respondent_name, 'HH', data.timestamp);
     const toiletPhotoUrl = savePhotoToDrive(data.toilet_photo, data.respondent_name, 'Toilet', data.timestamp);
     const tankPhotoUrl  = savePhotoToDrive(data.tank_access_photo, data.respondent_name, 'Tank', data.timestamp);
     const outletPhotoUrl = savePhotoToDrive(data.outlet_photo, data.respondent_name, 'Outlet', data.timestamp);
@@ -135,10 +142,7 @@ function doPost(e) {
       data.latitude || '',
       data.longitude || '',
       data.gps_accuracy || '',
-      data.address_landmark || '',
-      // Photos
-      hhPhotoUrl,
-      data.hh_photo_gps || '',
+      // Photos (Section J)
       toiletPhotoUrl,
       data.toilet_photo_gps || '',
       tankPhotoUrl,
@@ -146,19 +150,11 @@ function doPost(e) {
       outletPhotoUrl,
       data.outlet_photo_gps || '',
       // Section B
-      data.storm_surge_risk || '',
-      data.high_tide_risk || '',
-      data.urban_flooding_risk || '',
       data.flood_entered_containment || '',
       data.flood_water_level || '',
       data.flood_frequency || '',
-      // Section C
-      data.high_gwt_risk || '',
-      data.sinkhole_risk || '',
-      data.water_seepage_tank || '',
       // Section D
       data.family_members || '',
-      data.children_under5 || '',
       data.dwelling_type || '',
       // Section E
       data.sanitation_type || '',
@@ -181,23 +177,12 @@ function doPost(e) {
       data.desludging_method || '',
       data.truck_trips || '',
       data.desludging_cost || '',
-      data.desludging_provider || '',
-      data.desludge_provider_other || '',
-      data.desludging_satisfaction || '',
       data.no_desludge_reason || '',
       data.no_desludge_other || '',
       // Section H
-      data.drinking_water_source || '',
-      data.nondrinking_water_source || '',
-      data.borewell_depth_ft || '',
-      data.borewell_tank_dist_m || '',
-      data.borewell_odor_discolor || '',
+      data.water_supply_sources || '',
+      data.water_supply_other || '',
       // Section I
-      data.diarrhea_6months || '',
-      data.cholera_waterborne || '',
-      data.health_affected_count || '',
-      data.past_septic_issues || '',
-      data.septic_issue_desc || '',
       data.past_toilet_issues || '',
       data.toilet_issue_desc || '',
       // Section J

@@ -194,89 +194,35 @@ input[type="file"]{display:none}
         </button>
       </div>
     </div>
-    <div class="field">
-      <div class="field-label">A2. Photograph of the household / containment system <span class="req">*</span></div>
-      <div class="photo-area" id="photoArea_hh">
-        <div class="photo-placeholder" onclick="document.getElementById('file_hh_photo').click()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
-          <span>Tap to capture photo</span>
-        </div>
-        <div class="photo-preview" id="preview_hh">
-          <img id="img_hh_photo" src="" alt="">
-          <button class="remove-btn" onclick="removePhoto('hh')">&times;</button>
-        </div>
-      </div>
-      <input type="file" id="file_hh_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'hh')">
-    </div>
-    <div class="field">
-      <div class="field-label">A3. Address / landmark description</div>
-      <input type="text" id="address_landmark">
-    </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 2: B. Climate Risk Assessment ==================== -->
+<!-- ==================== SECTION 2: B. Flood Risk ==================== -->
 <div class="section hidden" data-section="2">
   <div class="section-header">
     <div class="section-badge">B</div>
-    <div class="section-title">Climate Risk Assessment</div>
+    <div class="section-title">Flood Risk</div>
   </div>
   <div class="card">
-    <div class="note-box">NOTE TO ENUMERATOR: The following climate risk fields are pre-populated from spatial/GIS maps. Please VALIDATE each answer with the household respondent.</div>
-
     <div class="field">
-      <div class="field-label">B1. Is this area prone to STORM SURGE? <span class="req">*</span></div>
-      <div class="field-hint">[Pre-filled from spatial data] Validate with respondent</div>
-      <div class="option-group" data-name="storm_surge_risk" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">B2. Is this area prone to HIGH TIDE inundation? <span class="req">*</span></div>
-      <div class="option-group" data-name="high_tide_risk" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">B3. Is this area prone to URBAN FLOODING? <span class="req">*</span></div>
-      <div class="option-group" data-name="urban_flooding_risk" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">B4. Has flood water ever entered your containment system or toilet? <span class="req">*</span></div>
+      <div class="field-label">B1. Has flood water ever entered your containment system or toilet? <span class="req">*</span></div>
       <div class="option-group" data-name="flood_entered_containment" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flood_entered_containment=yes">
-      <div class="field-label">B5. Up to what level does water generally reach? <span class="req">*</span></div>
+      <div class="field-label">B2. Up to what level does water generally reach? <span class="req">*</span></div>
       <div class="option-group" data-name="flood_water_level" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flood_entered_containment=yes">
-      <div class="field-label">B6. How frequently does this flooding happen? <span class="req">*</span></div>
+      <div class="field-label">B3. How frequently does this flooding happen? <span class="req">*</span></div>
       <div class="option-group" data-name="flood_frequency" data-type="radio"></div>
     </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 3: C. Environmental Risk ==================== -->
-<div class="section hidden" data-section="3">
-  <div class="section-header">
-    <div class="section-badge">C</div>
-    <div class="section-title">Environmental Risk Assessment</div>
-  </div>
-  <div class="card">
-    <div class="note-box">NOTE TO ENUMERATOR: The following environmental risk fields are pre-populated from spatial/GIS maps. Please VALIDATE each answer with the household respondent.</div>
-    <div class="field">
-      <div class="field-label">C1. Is this area known to have a HIGH GROUND WATER TABLE? <span class="req">*</span></div>
-      <div class="option-group" data-name="high_gwt_risk" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">C2. Is this area prone to SINKHOLES or ground subsidence? <span class="req">*</span></div>
-      <div class="option-group" data-name="sinkhole_risk" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">C3. Have you noticed water seeping into your septic tank or pit from the ground? <span class="req">*</span></div>
-      <div class="option-group" data-name="water_seepage_tank" data-type="radio"></div>
-    </div>
-  </div>
-</div>
 
-<!-- ==================== SECTION 4: D. Household Information ==================== -->
-<div class="section hidden" data-section="4">
+
+<!-- ==================== SECTION 3: D. Household Information ==================== -->
+<div class="section hidden" data-section="3">
   <div class="section-header">
     <div class="section-badge">D</div>
     <div class="section-title">Household Information</div>
@@ -287,18 +233,14 @@ input[type="file"]{display:none}
       <input type="number" id="family_members" min="1" max="30" inputmode="numeric">
     </div>
     <div class="field">
-      <div class="field-label">D2. How many children (under 5 years) are in the household?</div>
-      <input type="number" id="children_under5" min="0" max="15" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div class="field-label">D3. Type of dwelling <span class="req">*</span></div>
+      <div class="field-label">D2. Type of dwelling <span class="req">*</span></div>
       <div class="option-group" data-name="dwelling_type" data-type="radio"></div>
     </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 5: E. Containment System ==================== -->
-<div class="section hidden" data-section="5">
+<!-- ==================== SECTION 4: E. Containment System ==================== -->
+<div class="section hidden" data-section="4">
   <div class="section-header">
     <div class="section-badge">E</div>
     <div class="section-title">Containment System / Septic Tank</div>
@@ -351,8 +293,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 6: F. Greywater ==================== -->
-<div class="section hidden" data-section="6">
+<!-- ==================== SECTION 5: F. Greywater Management ==================== -->
+<div class="section hidden" data-section="5">
   <div class="section-header">
     <div class="section-badge">F</div>
     <div class="section-title">Greywater Management</div>
@@ -373,8 +315,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 7: G. Desludging ==================== -->
-<div class="section hidden" data-section="7">
+<!-- ==================== SECTION 6: G. Desludging ==================== -->
+<div class="section hidden" data-section="6">
   <div class="section-header">
     <div class="section-badge">G</div>
     <div class="section-title">Desludging History</div>
@@ -403,103 +345,57 @@ input[type="file"]{display:none}
       <div class="field-hint">Enter 0 if unknown</div>
       <input type="number" id="desludging_cost" min="0" inputmode="numeric">
     </div>
-    <div class="field conditional" data-show-when="ever_desludged=yes">
-      <div class="field-label">G6. Who did you contact for desludging?</div>
-      <div class="option-group" data-name="desludging_provider" data-type="radio"></div>
-    </div>
-    <div class="field conditional" data-show-when="desludging_provider=other">
-      <div class="field-label">G6a. Please specify</div>
-      <input type="text" id="desludge_provider_other">
-    </div>
-    <div class="field conditional" data-show-when="ever_desludged=yes">
-      <div class="field-label">G7. Satisfied with the desludging service?</div>
-      <div class="option-group" data-name="desludging_satisfaction" data-type="radio"></div>
-    </div>
     <div class="field conditional" data-show-when="ever_desludged=no">
-      <div class="field-label">G8. Why has the tank never been emptied?</div>
+      <div class="field-label">G6. Why has the tank never been emptied?</div>
       <div class="field-hint">Select all that apply</div>
       <div class="option-group" data-name="no_desludge_reason" data-type="checkbox"></div>
     </div>
     <div class="field conditional" data-show-when="no_desludge_reason=other">
-      <div class="field-label">G8a. Please specify</div>
+      <div class="field-label">G6a. Please specify</div>
       <input type="text" id="no_desludge_other">
     </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 8: H. Water Supply ==================== -->
-<div class="section hidden" data-section="8">
+<!-- ==================== SECTION 7: H. Water Supply ==================== -->
+<div class="section hidden" data-section="7">
   <div class="section-header">
     <div class="section-badge">H</div>
     <div class="section-title">Water Supply Sources</div>
   </div>
   <div class="card">
     <div class="field">
-      <div class="field-label">H1. Primary source of DRINKING water? <span class="req">*</span></div>
-      <div class="option-group" data-name="drinking_water_source" data-type="radio"></div>
+      <div class="field-label">H1. Source of water supply <span class="req">*</span></div>
+      <div class="field-hint">Select all that apply</div>
+      <div class="option-group" data-name="water_supply_sources" data-type="checkbox"></div>
     </div>
-    <div class="field">
-      <div class="field-label">H2. Primary source of NON-DRINKING water? <span class="req">*</span></div>
-      <div class="option-group" data-name="nondrinking_water_source" data-type="radio"></div>
-    </div>
-    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
-      <div class="field-label">H3. How deep is the borewell? (feet)</div>
-      <div class="field-hint">Enter 0 if unknown</div>
-      <input type="number" id="borewell_depth_ft" min="0" inputmode="numeric">
-    </div>
-    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
-      <div class="field-label">H4. Distance from borewell to septic tank? (meters)</div>
-      <div class="field-hint">Enter 0 if unknown</div>
-      <input type="number" id="borewell_tank_dist_m" min="0" inputmode="numeric">
-    </div>
-    <div class="field conditional" data-show-when="drinking_water_source=borewell|nondrinking_water_source=borewell">
-      <div class="field-label">H5. Ever noticed odor or discoloration in borewell water?</div>
-      <div class="option-group" data-name="borewell_odor_discolor" data-type="radio"></div>
+    <div class="field conditional" data-show-when="water_supply_sources=other">
+      <div class="field-label">H1a. Please specify other water source</div>
+      <input type="text" id="water_supply_other">
     </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 9: I. Health ==================== -->
-<div class="section hidden" data-section="9">
+<!-- ==================== SECTION 8: I. Toilet Issues ==================== -->
+<div class="section hidden" data-section="8">
   <div class="section-header">
     <div class="section-badge">I</div>
-    <div class="section-title">Health & Past Issues</div>
+    <div class="section-title">Toilet & Sanitation Issues</div>
   </div>
   <div class="card">
     <div class="field">
-      <div class="field-label">I1. Has any family member experienced diarrhea in the past 6 months? <span class="req">*</span></div>
-      <div class="option-group" data-name="diarrhea_6months" data-type="radio"></div>
-    </div>
-    <div class="field">
-      <div class="field-label">I2. Has any family member experienced cholera or waterborne disease? <span class="req">*</span></div>
-      <div class="option-group" data-name="cholera_waterborne" data-type="radio"></div>
-    </div>
-    <div class="field conditional" data-show-when="diarrhea_6months=yes|cholera_waterborne=yes">
-      <div class="field-label">I3. How many family members were affected?</div>
-      <input type="number" id="health_affected_count" min="1" max="30" inputmode="numeric">
-    </div>
-    <div class="field">
-      <div class="field-label">I4. Any PAST ISSUES with your septic tank? <span class="req">*</span></div>
-      <div class="field-hint">e.g., overflow, collapse, foul smell, blockage</div>
-      <div class="option-group" data-name="past_septic_issues" data-type="radio"></div>
-    </div>
-    <div class="field conditional" data-show-when="past_septic_issues=yes">
-      <div class="field-label">I5. Describe the septic tank issue(s)</div>
-      <textarea id="septic_issue_desc"></textarea>
-    </div>
-    <div class="field">
-      <div class="field-label">I6. Any PAST ISSUES with your toilet functioning? <span class="req">*</span></div>
+      <div class="field-label">I1. Any past issues with your toilet functioning? <span class="req">*</span></div>
       <div class="option-group" data-name="past_toilet_issues" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="past_toilet_issues=yes">
-      <div class="field-label">I7. Describe the toilet issue(s)</div>
+      <div class="field-label">I2. Please describe the issue(s)</div>
       <textarea id="toilet_issue_desc"></textarea>
     </div>
   </div>
 </div>
 
-<!-- ==================== SECTION 10: J. Documentation ==================== -->
-<div class="section hidden" data-section="10">
+<!-- ==================== SECTION 9: J. Documentation ==================== -->
+<div class="section hidden" data-section="9">
   <div class="section-header">
     <div class="section-badge">J</div>
     <div class="section-title">Documentation & Closure</div>
@@ -573,10 +469,10 @@ input[type="file"]{display:none}
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxvz3lmrLwBWZqBpBVCyX8KN31t37nlywPrhyk1njeUAUEXXt8cHZnHpekZ2eejD41rw/exec';
 
 // ==================== DATA ====================
-const TOTAL_SECTIONS = 11; // 0-10
+const TOTAL_SECTIONS = 10; // 0-9
 let currentSection = 0;
 let gpsData = { lat: null, lng: null, accuracy: null };
-let photos = { hh: null, toilet: null, tank: null, outlet: null };
+let photos = { toilet: null, tank: null, outlet: null };
 let radioValues = {};
 
 const BARANGAYS = {
@@ -614,24 +510,18 @@ const CHOICE_LISTS = {
   desludge_provider: [{v:'municipal',l:'Municipal / LGU service'},{v:'private',l:'Private operator'},{v:'informal',l:'Informal worker'},{v:'other',l:'Other (specify)'}],
   satisfaction: [{v:'very_satisfied',l:'Very satisfied'},{v:'satisfied',l:'Satisfied'},{v:'not_satisfied',l:'Not satisfied'},{v:'very_dissatisfied',l:'Very dissatisfied'}],
   no_desludge_reason: [{v:'not_full',l:'Tank is not full yet'},{v:'no_contact',l:"Don't know whom to call"},{v:'too_expensive',l:'Too expensive'},{v:'no_service',l:'No service available'},{v:'other',l:'Other (specify)'}],
-  water_source: [{v:'municipal_piped',l:'Municipal piped water'},{v:'borewell',l:'Borewell / tubewell'},{v:'hand_pump',l:'Hand pump'},{v:'tanker',l:'Water tanker'},{v:'bottled',l:'Bottled/packaged water'},{v:'other',l:'Other'}],
-  water_source_nd: [{v:'municipal_piped',l:'Municipal piped water'},{v:'borewell',l:'Borewell / tubewell'},{v:'hand_pump',l:'Hand pump'},{v:'tanker',l:'Water tanker'},{v:'other',l:'Other'}],
+  water_supply_sources: [{v:'borewell',l:'Borewell'},{v:'piped_water',l:'Piped water supply'},{v:'tanker_water',l:'Tanker water'},{v:'open_well',l:'Open well'},{v:'surface_water',l:'Surface water (river, pond, etc.)'},{v:'other',l:'Others (specify)'}],
 };
 
 // Map field names to choice lists
 const FIELD_CHOICES = {
-  storm_surge_risk:'yn_dk', high_tide_risk:'yn_dk', urban_flooding_risk:'yn_dk',
   flood_entered_containment:'yn', flood_water_level:'flood_level', flood_frequency:'flood_freq',
-  high_gwt_risk:'yn_dk', sinkhole_risk:'yn_dk', water_seepage_tank:'yn',
   dwelling_type:'dwelling_type', sanitation_type:'sanitation_type', wall_type:'wall_type',
   bottom_type:'bottom_type', has_partition:'yn_dk', has_outlet:'yn_dk', outlet_destination:'outlet_dest',
   kitchen_same_tank:'yn_dk', bathroom_same_tank:'yn_dk', greywater_destination:'greywater_dest',
-  ever_desludged:'yn', desludging_method:'desludge_method', desludging_provider:'desludge_provider',
-  desludging_satisfaction:'satisfaction', no_desludge_reason:'no_desludge_reason',
-  drinking_water_source:'water_source', nondrinking_water_source:'water_source_nd',
-  borewell_odor_discolor:'yn',
-  diarrhea_6months:'yn', cholera_waterborne:'yn',
-  past_septic_issues:'yn', past_toilet_issues:'yn',
+  ever_desludged:'yn', desludging_method:'desludge_method', no_desludge_reason:'no_desludge_reason',
+  water_supply_sources:'water_supply_sources',
+  past_toilet_issues:'yn',
   respondent_consent:'yn'
 };
 
@@ -819,7 +709,7 @@ function captureGPS() {
 }
 
 // ==================== PHOTOS ====================
-let photoMetadata = { hh: null, toilet: null, tank: null, outlet: null };
+let photoMetadata = { toilet: null, tank: null, outlet: null };
 
 function handlePhoto(input, key) {
   const file = input.files[0];
@@ -880,7 +770,7 @@ function navigate(dir) {
 function updateProgress() {
   const pct = ((currentSection + 1) / TOTAL_SECTIONS * 100).toFixed(0);
   document.getElementById('progressFill').style.width = pct + '%';
-  const labels = ['ID','A','B','C','D','E','F','G','H','I','J'];
+  const labels = ['ID','A','B','D','E','F','G','H','I','J'];
   document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${currentSection + 1} of ${TOTAL_SECTIONS}`;
 }
 
@@ -901,20 +791,17 @@ async function submitSurvey() {
     latitude: gpsData.lat || '',
     longitude: gpsData.lng || '',
     gps_accuracy: gpsData.accuracy || '',
-    hh_photo: photos.hh || '',
-    hh_photo_gps: photoMetadata.hh ? JSON.stringify(photoMetadata.hh) : '',
+    // Photos (Section J)
     toilet_photo: photos.toilet || '',
     toilet_photo_gps: photoMetadata.toilet ? JSON.stringify(photoMetadata.toilet) : '',
     tank_access_photo: photos.tank || '',
     tank_photo_gps: photoMetadata.tank ? JSON.stringify(photoMetadata.tank) : '',
     outlet_photo: photos.outlet || '',
     outlet_photo_gps: photoMetadata.outlet ? JSON.stringify(photoMetadata.outlet) : '',
-    address_landmark: v('address_landmark'),
     // Section B-I: all radio values
     ...radioValues,
     // Section D numbers
     family_members: v('family_members'),
-    children_under5: v('children_under5'),
     // Section E extras
     sanitation_type_other: v('sanitation_type_other'),
     partition_count: v('partition_count'),
@@ -924,14 +811,10 @@ async function submitSurvey() {
     last_desludge_when: v('last_desludge_when'),
     truck_trips: v('truck_trips'),
     desludging_cost: v('desludging_cost'),
-    desludge_provider_other: v('desludge_provider_other'),
     no_desludge_other: v('no_desludge_other'),
     // Section H extras
-    borewell_depth_ft: v('borewell_depth_ft'),
-    borewell_tank_dist_m: v('borewell_tank_dist_m'),
+    water_supply_other: v('water_supply_other'),
     // Section I extras
-    health_affected_count: v('health_affected_count'),
-    septic_issue_desc: v('septic_issue_desc'),
     toilet_issue_desc: v('toilet_issue_desc'),
     // Section J
     enumerator_notes: v('enumerator_notes'),
