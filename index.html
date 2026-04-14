@@ -125,6 +125,11 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .conditional{display:none}
 .conditional.show{display:block}
 
+/* Validation errors */
+.field-error .option-group,.field-error select,.field-error input,.field-error textarea,.field-error .gps-box{border-color:var(--danger)!important}
+.field-error .option-item{border-color:rgba(192,57,43,0.3)}
+.error-msg{color:var(--danger);font-size:0.75rem;margin-top:0.35rem;font-weight:500}
+
 input[type="file"]{display:none}
 
 .footer{text-align:center;padding:1.5rem 0;color:var(--text-dim);font-size:0.65rem;opacity:0.6}
@@ -824,10 +829,119 @@ function removePhoto(key) {
   document.getElementById(`preview_${key}`).style.display = 'none';
 }
 
+// ==================== VALIDATION ====================
+function validateCurrentSection() {
+  const section = document.querySelector(`[data-section="${currentSection}"]`);
+  let firstInvalid = null;
+  let valid = true;
+
+  // Clear previous error highlights
+  section.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+  section.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+  // Check required selects
+  section.querySelectorAll('select').forEach(sel => {
+    const field = sel.closest('.field');
+    if (!field) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!sel.value) {
+      markInvalid(field, 'Please select an option');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+  });
+
+  // Check required text/number inputs (not inside hidden conditionals)
+  section.querySelectorAll('input[type="text"],input[type="number"]').forEach(inp => {
+    const field = inp.closest('.field');
+    if (!field) return;
+    // Skip hidden conditional fields
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!inp.value.trim()) {
+      markInvalid(field, 'This field is required');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+  });
+
+  // Check required radio groups (not inside hidden conditionals)
+  section.querySelectorAll('.option-group[data-type="radio"]').forEach(group => {
+    const field = group.closest('.field');
+    if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    const selected = group.querySelector('.option-item.selected');
+    if (!selected) {
+      markInvalid(field, 'Please select an option');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+  });
+
+  // Check required checkbox groups (at least one selected)
+  section.querySelectorAll('.option-group[data-type="checkbox"]').forEach(group => {
+    const field = group.closest('.field');
+    if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    const selected = group.querySelector('.option-item.selected');
+    if (!selected) {
+      markInvalid(field, 'Please select at least one option');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+  });
+
+  // Check GPS (Section 1)
+  if (currentSection === 1 && !gpsData.lat) {
+    const gpsField = section.querySelector('.field');
+    if (gpsField) {
+      markInvalid(gpsField, 'Please capture GPS coordinates');
+      if (!firstInvalid) firstInvalid = gpsField;
+      valid = false;
+    }
+  }
+
+  // Check consent on last section
+  if (currentSection === 9) {
+    const consentGroup = section.querySelector('[data-name="respondent_consent"]');
+    if (consentGroup) {
+      const sel = consentGroup.querySelector('.option-item.selected');
+      if (sel && sel.dataset.value === 'no') {
+        const field = consentGroup.closest('.field');
+        markInvalid(field, 'Consent is required to submit');
+        if (!firstInvalid) firstInvalid = field;
+        valid = false;
+      }
+    }
+  }
+
+  if (firstInvalid) {
+    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  return valid;
+}
+
+function markInvalid(field, msg) {
+  field.classList.add('field-error');
+  const err = document.createElement('div');
+  err.className = 'error-msg';
+  err.textContent = msg;
+  field.appendChild(err);
+}
+
 // ==================== NAVIGATION ====================
 function navigate(dir) {
   const next = currentSection + dir;
   if (next < 0 || next >= TOTAL_SECTIONS) return;
+
+  // Validate before moving forward
+  if (dir > 0 && !validateCurrentSection()) return;
 
   // Hide current
   document.querySelector(`[data-section="${currentSection}"]`).classList.add('hidden');
@@ -861,6 +975,9 @@ function updateProgress() {
 
 // ==================== SUBMIT ====================
 async function submitSurvey() {
+  // Validate last section before submitting
+  if (!validateCurrentSection()) return;
+
   const status = document.getElementById('statusMsg');
   const btnNext = document.getElementById('btnNext');
 
