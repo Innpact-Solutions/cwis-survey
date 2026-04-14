@@ -182,9 +182,7 @@ input[type="file"]{display:none}
 <div class="welcome-page show" id="welcomePage">
   <div class="welcome-container">
     <div class="welcome-logos">
-      <img src="https://1000logos.net/wp-content/uploads/2021/05/The-World-Bank-logo.png" alt="World Bank" class="welcome-logo">
       <img src="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png" alt="Province of Bohol" class="welcome-logo">
-      <img src="https://innpactsolutions.com/wp-content/uploads/2023/08/logo-2.png" alt="Innpact Solutions" class="welcome-logo" style="height:50px;max-width:80px">
     </div>
 
     <div class="welcome-content">
@@ -241,28 +239,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 1: A. Location & Geo-Tagging ==================== -->
+<!-- ==================== SECTION 1: B. Flood Risk ==================== -->
 <div class="section hidden" data-section="1">
-  <div class="section-header">
-    <div class="section-badge">A</div>
-    <div class="section-title">Location & Geo-Tagging</div>
-  </div>
-  <div class="card">
-    <div class="field">
-      <div class="field-label">A1. GPS coordinates of the household <span class="req">*</span></div>
-      <div class="field-hint">Ensure GPS is enabled on device. Wait for accuracy &lt; 10m.</div>
-      <div class="gps-box" id="gpsBox">
-        <button class="btn-gps" id="btnGps" onclick="captureGPS()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="9"/></svg>
-          Capture GPS
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ==================== SECTION 2: B. Flood Risk ==================== -->
-<div class="section hidden" data-section="2">
   <div class="section-header">
     <div class="section-badge">B</div>
     <div class="section-title">Flood Risk</div>
@@ -285,8 +263,8 @@ input[type="file"]{display:none}
 
 
 
-<!-- ==================== SECTION 3: D. Household Information ==================== -->
-<div class="section hidden" data-section="3">
+<!-- ==================== SECTION 2: D. Household Information ==================== -->
+<div class="section hidden" data-section="2">
   <div class="section-header">
     <div class="section-badge">D</div>
     <div class="section-title">Household Information</div>
@@ -303,8 +281,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 4: E. Containment System ==================== -->
-<div class="section hidden" data-section="4">
+<!-- ==================== SECTION 3: E. Containment System ==================== -->
+<div class="section hidden" data-section="3">
   <div class="section-header">
     <div class="section-badge">E</div>
     <div class="section-title">Containment System / Septic Tank</div>
@@ -357,8 +335,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 5: F. Greywater Management ==================== -->
-<div class="section hidden" data-section="5">
+<!-- ==================== SECTION 4: F. Greywater Management ==================== -->
+<div class="section hidden" data-section="4">
   <div class="section-header">
     <div class="section-badge">F</div>
     <div class="section-title">Greywater Management</div>
@@ -379,8 +357,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 6: G. Desludging ==================== -->
-<div class="section hidden" data-section="6">
+<!-- ==================== SECTION 5: G. Desludging ==================== -->
+<div class="section hidden" data-section="5">
   <div class="section-header">
     <div class="section-badge">G</div>
     <div class="section-title">Desludging History</div>
@@ -421,8 +399,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 7: H. Water Supply ==================== -->
-<div class="section hidden" data-section="7">
+<!-- ==================== SECTION 6: H. Water Supply ==================== -->
+<div class="section hidden" data-section="6">
   <div class="section-header">
     <div class="section-badge">H</div>
     <div class="section-title">Water Supply Sources</div>
@@ -440,8 +418,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 8: I. Toilet Issues ==================== -->
-<div class="section hidden" data-section="8">
+<!-- ==================== SECTION 7: I. Toilet Issues ==================== -->
+<div class="section hidden" data-section="7">
   <div class="section-header">
     <div class="section-badge">I</div>
     <div class="section-title">Toilet & Sanitation Issues</div>
@@ -458,8 +436,8 @@ input[type="file"]{display:none}
   </div>
 </div>
 
-<!-- ==================== SECTION 9: J. Documentation ==================== -->
-<div class="section hidden" data-section="9">
+<!-- ==================== SECTION 8: J. Documentation ==================== -->
+<div class="section hidden" data-section="8">
   <div class="section-header">
     <div class="section-badge">J</div>
     <div class="section-title">Documentation & Closure</div>
@@ -515,6 +493,26 @@ input[type="file"]{display:none}
     <div class="field">
       <div class="field-label">J5. Respondent consent for data use confirmed? <span class="req">*</span></div>
       <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 9: A. Location & Geo-Tagging ==================== -->
+<div class="section hidden" data-section="9">
+  <div class="section-header">
+    <div class="section-badge">A</div>
+    <div class="section-title">Location & Geo-Tagging</div>
+  </div>
+  <div class="card">
+    <div class="field">
+      <div class="field-label">A1. GPS coordinates of the household <span class="req">*</span></div>
+      <div class="field-hint">Ensure GPS is enabled on device. Wait for accuracy &lt; 10m.</div>
+      <div class="gps-box" id="gpsBox">
+        <button class="btn-gps" id="btnGps" onclick="captureGPS()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="9"/></svg>
+          Capture GPS
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -895,8 +893,8 @@ function validateCurrentSection() {
     }
   });
 
-  // Check GPS (Section 1)
-  if (currentSection === 1 && !gpsData.lat) {
+  // Check GPS (Section 9 - last section)
+  if (currentSection === 9 && !gpsData.lat) {
     const gpsField = section.querySelector('.field');
     if (gpsField) {
       markInvalid(gpsField, 'Please capture GPS coordinates');
@@ -905,8 +903,8 @@ function validateCurrentSection() {
     }
   }
 
-  // Check consent on last section
-  if (currentSection === 9) {
+  // Check consent on Documentation section
+  if (currentSection === 8) {
     const consentGroup = section.querySelector('[data-name="respondent_consent"]');
     if (consentGroup) {
       const sel = consentGroup.querySelector('.option-item.selected');
@@ -967,7 +965,7 @@ function navigate(dir) {
 function updateProgress() {
   const pct = ((currentSection + 1) / TOTAL_SECTIONS * 100).toFixed(0);
   document.getElementById('progressFill').style.width = pct + '%';
-  const labels = ['ID','A','B','D','E','F','G','H','I','J'];
+  const labels = ['ID','B','D','E','F','G','H','I','J','A'];
   document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${currentSection + 1} of ${TOTAL_SECTIONS}`;
 }
 

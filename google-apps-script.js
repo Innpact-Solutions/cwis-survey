@@ -21,10 +21,6 @@ const HEADERS = [
   'Barangay / Ward',
   'Respondent Name',
   'Contact Number',
-  // Section A
-  'Latitude',
-  'Longitude',
-  'GPS Accuracy (m)',
   // Photos (Section J)
   'Toilet Photo URL',
   'Toilet Photo GPS',
@@ -71,6 +67,10 @@ const HEADERS = [
   // Section J
   'J4. Enumerator Notes',
   'J5. Respondent Consent',
+  // Section A (GPS - last section)
+  'Latitude',
+  'Longitude',
+  'GPS Accuracy (m)',
 ];
 
 // ==========================================
@@ -145,10 +145,6 @@ function doPost(e) {
       data.barangay_ward || '',
       data.respondent_name || '',
       data.contact_number || '',
-      // Section A
-      data.latitude || '',
-      data.longitude || '',
-      data.gps_accuracy || '',
       // Photos (Section J)
       toiletPhotoUrl,
       data.toilet_photo_gps || '',
@@ -195,6 +191,10 @@ function doPost(e) {
       // Section J
       data.enumerator_notes || '',
       data.respondent_consent || '',
+      // Section A (GPS - last section)
+      data.latitude || '',
+      data.longitude || '',
+      data.gps_accuracy || '',
     ];
 
     sheet.appendRow(row);
