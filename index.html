@@ -924,6 +924,8 @@ function captureGPS() {
   document.getElementById('gpsModalTips').style.display = '';
 
   const ACCURACY_THRESHOLD = 10;
+  const maxWaitTime = 120000; // 2 minutes
+  const startTime = Date.now();
   bestGpsAccuracy = null;
   bestGpsData = null;
   currentGpsAccuracy = null;
@@ -935,6 +937,8 @@ function captureGPS() {
       const lng = pos.coords.longitude.toFixed(6);
       const accStr = accuracy.toFixed(1);
       currentGpsAccuracy = accuracy;
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const remaining = Math.max(0, Math.ceil((maxWaitTime - (Date.now() - startTime)) / 1000));
 
       if (bestGpsAccuracy === null || accuracy < bestGpsAccuracy) {
         bestGpsAccuracy = accuracy;
@@ -949,6 +953,7 @@ function captureGPS() {
       const hint = document.getElementById('gpsModalHint');
       const acceptBtn = document.getElementById('btnGpsAccept');
       const tips = document.getElementById('gpsModalTips');
+      const timedOut = Date.now() - startTime >= maxWaitTime;
 
       if (accuracy <= ACCURACY_THRESHOLD) {
         ring.className = 'gps-ring good';
@@ -958,19 +963,26 @@ function captureGPS() {
         acceptBtn.classList.add('active');
         acceptBtn.textContent = `✓ Use This Location (±${accStr}m)`;
         tips.style.display = 'none';
+      } else if (timedOut) {
+        ring.className = 'gps-ring fair';
+        status.textContent = '⚠️ Time limit reached';
+        status.style.color = 'var(--warning)';
+        hint.textContent = `Best accuracy available: ±${bestGpsData.accStr}m. You may use this or retry in a more open area.`;
+        acceptBtn.classList.add('active');
+        acceptBtn.textContent = `Use This Location (±${bestGpsData.accStr}m)`;
+        tips.style.display = 'none';
       } else if (accuracy <= 20) {
         ring.className = 'gps-ring fair';
         status.textContent = '⚠️ Improving...';
         status.style.color = 'var(--warning)';
-        hint.textContent = 'Signal is fair. Move to a more open area for better accuracy.';
-        acceptBtn.classList.add('active');
-        acceptBtn.textContent = `Use This Location (±${accStr}m)`;
+        hint.textContent = `Signal is fair. Move to an open area. Auto-unlock in ${remaining}s if no improvement.`;
+        acceptBtn.classList.remove('active');
         tips.style.display = '';
       } else {
         ring.className = 'gps-ring';
         status.textContent = '❌ Weak Signal';
         status.style.color = 'var(--danger)';
-        hint.textContent = 'Please move outdoors to an open area with clear sky view.';
+        hint.textContent = `Please move outdoors to an open area. Auto-unlock in ${remaining}s.`;
         acceptBtn.classList.remove('active');
         tips.style.display = '';
       }
