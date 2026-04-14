@@ -1,9 +1,200 @@
-      <button class="btn-start-survey" onclick="startSurvey()">Start Survey →</button>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CWIS Household Sanitation Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f4f1ec;--card:#fff;--card-border:#e2ddd5;
+  --accent:#1a6b4e;--accent-light:#e8f5ee;--accent-hover:#145a40;
+  --text:#1a1a1a;--text-dim:#6b6560;--text-label:#4a453f;
+  --danger:#c0392b;--danger-bg:#fdf0ef;
+  --warning:#e67e22;--warning-bg:#fef9f0;
+  --radius:10px;--font:'DM Sans',sans-serif;--font-display:'Instrument Serif',serif;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+html{font-size:15px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;padding:0 0 2rem}
+
+/* Top bar */
+.topbar{background:var(--accent);color:#fff;padding:1rem 1.25rem;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topbar h1{font-family:var(--font-display);font-size:1.35rem;font-weight:400;letter-spacing:0.01em}
+.topbar .sub{font-size:0.7rem;opacity:0.75;margin-top:0.15rem;letter-spacing:0.04em;text-transform:uppercase}
+
+/* Progress */
+.progress-wrap{background:#fff;border-bottom:1px solid var(--card-border);padding:0.6rem 1.25rem;position:sticky;top:60px;z-index:99}
+.progress-bar{height:5px;background:#e8e4de;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 0.4s ease;width:0%}
+.progress-text{font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;text-align:right}
+
+/* Container */
+.container{max-width:520px;margin:0 auto;padding:0 1rem}
+
+/* Section */
+.section{margin-top:1.25rem;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;padding:0 0.25rem}
+.section-badge{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+.section-title{font-size:1rem;font-weight:700;color:var(--text)}
+
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);
+  padding:1.25rem;box-shadow:var(--shadow)}
+
+/* Fields */
+.field{margin-bottom:1.25rem}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:0.82rem;font-weight:600;color:var(--text-label);margin-bottom:0.4rem;line-height:1.4}
+.field-label .req{color:var(--danger);margin-left:2px}
+.field-hint{font-size:0.72rem;color:var(--text-dim);margin-bottom:0.4rem;font-style:italic;line-height:1.4}
+
+.note-box{background:var(--warning-bg);border:1px solid rgba(230,126,34,0.25);border-radius:8px;
+  padding:0.75rem;font-size:0.75rem;color:#7a5a20;line-height:1.5;margin-bottom:1rem}
+
+input[type="text"],input[type="number"],textarea,select{
+  width:100%;padding:0.7rem 0.85rem;background:var(--bg);border:1.5px solid var(--card-border);
+  border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.9rem;transition:border 0.2s,box-shadow 0.2s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+textarea{resize:vertical;min-height:70px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6560' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 0.85rem center;padding-right:2.2rem}
+
+/* Radio/checkbox groups */
+.option-group{display:flex;flex-direction:column;gap:0.4rem}
+.option-item{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.75rem;background:var(--bg);
+  border:1.5px solid var(--card-border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.85rem}
+.option-item:hover{border-color:var(--accent);background:var(--accent-light)}
+.option-item.selected{border-color:var(--accent);background:var(--accent-light)}
+.option-item input{display:none}
+.option-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.option-item.selected .option-dot{border-color:var(--accent);background:var(--accent)}
+.option-item.selected .option-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+/* Checkbox variant */
+.option-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.65rem;color:#fff}
+.option-item.selected .option-check{border-color:var(--accent);background:var(--accent)}
+
+/* GPS */
+.gps-box{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;padding:0.85rem;text-align:center}
+.gps-box.captured{border-style:solid;border-color:var(--accent);background:var(--accent-light)}
+.gps-coords{font-family:'Courier New',monospace;font-size:0.85rem;color:var(--accent);margin-top:0.2rem}
+.gps-accuracy{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
+.btn-gps{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:var(--accent);
+  border:none;border-radius:100px;color:#fff;font-family:var(--font);font-size:0.8rem;font-weight:600;cursor:pointer}
+.btn-gps:disabled{opacity:0.5;cursor:wait}
+.btn-gps:hover:not(:disabled){background:var(--accent-hover)}
+
+/* Photo */
+.photo-area{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;overflow:hidden}
+.photo-area.has-photo{border-style:solid;border-color:var(--accent)}
+.photo-placeholder{display:flex;flex-direction:column;align-items:center;gap:0.5rem;padding:1.25rem;cursor:pointer}
+.photo-placeholder:hover{background:rgba(26,107,78,0.03)}
+.photo-placeholder svg{width:28px;height:28px;color:var(--text-dim);opacity:0.5}
+.photo-placeholder span{font-size:0.8rem;color:var(--text-dim)}
+.photo-preview{position:relative;display:none}
+.photo-preview img{width:100%;max-height:200px;object-fit:cover;display:block}
+.photo-preview .remove-btn{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+  background:rgba(0,0,0,0.65);border:none;color:#fff;font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* Navigation */
+.nav-buttons{display:flex;gap:0.75rem;margin-top:1.25rem;padding:0 0.25rem}
+.btn{flex:1;padding:0.8rem;border-radius:8px;font-family:var(--font);font-size:0.9rem;font-weight:600;
+  cursor:pointer;transition:all 0.15s;text-align:center}
+.btn-prev{background:var(--card);border:1.5px solid var(--card-border);color:var(--text)}
+.btn-prev:hover{background:var(--bg)}
+.btn-next{background:var(--accent);border:1.5px solid var(--accent);color:#fff}
+.btn-next:hover{background:var(--accent-hover)}
+.btn-submit{background:var(--accent);border:1.5px solid var(--accent);color:#fff;flex:2}
+.btn-submit:hover{background:var(--accent-hover)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* Status */
+.status{text-align:center;padding:0.75rem;border-radius:8px;font-size:0.82rem;font-weight:500;margin-top:0.75rem;display:none}
+.status.success{display:block;background:var(--accent-light);border:1px solid rgba(26,107,78,0.3);color:var(--accent)}
+.status.error{display:block;background:var(--danger-bg);border:1px solid rgba(192,57,43,0.25);color:var(--danger)}
+
+/* Hidden sections */
+.hidden{display:none!important}
+
+/* Conditional fields */
+.conditional{display:none}
+.conditional.show{display:block}
+
+input[type="file"]{display:none}
+
+.footer{text-align:center;padding:1.5rem 0;color:var(--text-dim);font-size:0.65rem;opacity:0.6}
+
+/* Welcome Page */
+.welcome-page{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-height:100dvh;padding:2rem 1.25rem;background:linear-gradient(135deg, #1a6b4e 0%, #0d5a3e 50%, #0a4a31 100%);color:#fff;flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:1000;overflow-y:auto}
+.welcome-page.show{display:flex}
+.welcome-container{max-width:700px;width:100%;animation:slideUp 0.6s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.welcome-logos{display:flex;justify-content:center;align-items:center;gap:2.5rem;margin-bottom:3.5rem;flex-wrap:wrap}
+.welcome-logo{height:90px;max-width:140px;object-fit:contain;filter:brightness(1.15);drop-shadow:0 4px 8px rgba(0,0,0,0.2)}
+.innpact-box{height:90px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.15);padding:1rem;border-radius:12px;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.innpact-box-text{font-size:0.8rem;font-weight:700;letter-spacing:0.05em;line-height:1.4}
+.welcome-content{margin:1rem 0}
+.welcome-content h1{font-family:var(--font-display);font-size:2.2rem;margin-bottom:1.5rem;font-weight:400;letter-spacing:0.02em;line-height:1.3}
+.welcome-content .subtitle{font-size:1.05rem;line-height:1.9;margin-bottom:1.5rem;opacity:0.98;font-weight:500}
+.welcome-content p{font-size:0.95rem;line-height:1.8;margin-bottom:1.2rem;opacity:0.92}
+.welcome-divider{height:2px;background:linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);margin:2.5rem 0}
+.welcome-contact{background:rgba(255,255,255,0.12);padding:1.75rem;border-radius:14px;margin:2.5rem 0;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);box-shadow:0 8px 32px rgba(0,0,0,0.1)}
+.welcome-contact h3{font-size:0.95rem;margin-bottom:0.75rem;opacity:0.95;font-weight:700;letter-spacing:0.01em}
+.welcome-contact p{margin:0.6rem 0;font-size:0.9rem;opacity:0.9}
+.welcome-contact a{color:#fff;text-decoration:none;font-weight:700;transition:opacity 0.2s}
+.welcome-contact a:hover{opacity:0.8}
+.btn-start-survey{display:inline-block;padding:1.1rem 3.5rem;background:#fff;color:#1a6b4e;border:none;border-radius:10px;font-family:var(--font);font-size:1.05rem;font-weight:700;cursor:pointer;transition:all 0.3s ease;margin-top:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,0.3);letter-spacing:0.01em}
+.btn-start-survey:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.4);background:#f0f0f0}
+.btn-start-survey:active{transform:translateY(-1px)}
+.btn-start-survey:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.25)}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>CWIS Household Sanitation Survey</h1>
+  <div class="sub">Bohol — Dauis · Panglao · Tagbilaran City</div>
 </div>
 
-<div class="container" id="formContainer" style="display:none">
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">Section 1 of 10</div>
+</div>
+<!-- ==================== WELCOME PAGE ==================== -->
+<div class=\"welcome-page\" id=\"welcomePage\">
+  <div class=\"welcome-logos\">
+    <img src=\"https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png\" alt=\"Province of Bohol\" class=\"welcome-logo\">
+    <img src=\"https://1000logos.net/wp-content/uploads/2021/05/The-World-Bank-logo.png\" alt=\"World Bank\" class=\"welcome-logo\">
+    <img src=\"https://innpactsolutions.com/wp-content/uploads/2023/08/logo-2.png\" alt=\"Innpact Solutions\" class=\"welcome-logo\">
+  </div>
+
+  <div class=\"welcome-content\">
+    <h1>Welcome</h1>
+    <p>This survey is part of the <strong>Citywide Inclusive Sanitation Plan (CWIS)</strong> for Tagbilaran, Panglao, and Dauis.</p>
+    <p>Your responses will be kept confidential and used only for project assessment.</p>
+    <p><strong>Supported by the World Bank.</strong></p>
+    
+    <div class=\"welcome-divider\"></div>
+    
+    <div class=\"welcome-contact\">
+      <h3>For questions, contact:</h3>
+      <p><strong>Mr. Suraj Kumar</strong></p>
+      <p>📞 <a href=\"tel:+639524609581\">09524609581</a></p>
+    </div>
+    
+    <button class=\"btn-start-survey\" onclick=\"startSurvey()\">Start Survey →</button>
+  </div>
+</div>
+<div class="container" id="formContainer">
+
+<!-- ==================== SECTION 0: Survey Identification ==================== -->
+<div class="section" data-section="0">
+  <div class="section-header">
     <div class="section-badge">ID</div>
     <div class="section-title">Survey Identification</div>
   </div>
@@ -385,13 +576,12 @@ const FIELD_CHOICES = {
 // ==================== WELCOME PAGE ====================
 function startSurvey() {
   document.getElementById('welcomePage').classList.remove('show');
-  document.getElementById('topbar').style.display = 'block';
-  document.getElementById('progressWrap').style.display = 'block';
+  document.querySelector('.progress-wrap').style.display = 'block';
   document.getElementById('formContainer').style.display = 'block';
   
   // Initialize first section
   currentSection = 0;
-  document.querySelector(`[data-section="0"]`).classList.remove('hidden');
+  document.querySelector(`[data-section=\"0\"]`).classList.remove('hidden');
   document.getElementById('btnPrev').classList.add('hidden');
   const btnNext = document.getElementById('btnNext');
   btnNext.textContent = 'Next →';
@@ -404,10 +594,9 @@ function startSurvey() {
 
 // ==================== INIT ====================
 function init() {
-  // Show welcome page and hide form elements
+  // Show welcome page
   document.getElementById('welcomePage').classList.add('show');
-  document.getElementById('topbar').style.display = 'none';
-  document.getElementById('progressWrap').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
   document.getElementById('formContainer').style.display = 'none';
   
   // Build all option groups
