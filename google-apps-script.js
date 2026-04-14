@@ -28,6 +28,8 @@ const HEADERS = [
   'Tank Photo GPS',
   'Outlet Photo URL',
   'Outlet Photo GPS',
+  'House Photo URL',
+  'House Photo GPS',
   // Section B
   'B1. Flood Entered Containment',
   'B2. Flood Water Level',
@@ -65,8 +67,8 @@ const HEADERS = [
   'I1. Past Toilet Issues',
   'I2. Toilet Issue Description',
   // Section J
-  'J4. Enumerator Notes',
-  'J5. Respondent Consent',
+  'J5. Sanitation Feedback',
+  'J6. Respondent Consent',
   // Section A (GPS - last section)
   'Latitude',
   'Longitude',
@@ -152,6 +154,9 @@ function doPost(e) {
       data.tank_photo_gps || '',
       outletPhotoUrl,
       data.outlet_photo_gps || '',
+      // House photo
+      savePhotoToDrive(data.house_photo, data.respondent_name, 'House', data.timestamp),
+      data.house_photo_gps || '',
       // Section B
       data.flood_entered_containment || '',
       data.flood_water_level || '',
@@ -189,7 +194,7 @@ function doPost(e) {
       data.past_toilet_issues || '',
       data.toilet_issue_desc || '',
       // Section J
-      data.enumerator_notes || '',
+      data.sanitation_feedback || '',
       data.respondent_consent || '',
       // Section A (GPS - last section)
       data.latitude || '',

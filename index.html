@@ -679,11 +679,27 @@ input[type="file"]{display:none}
       <input type="file" id="file_outlet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'outlet')">
     </div>
     <div class="field">
-      <div class="field-label">J4. Additional observations by the enumerator</div>
-      <textarea id="enumerator_notes"></textarea>
+      <div class="field-label">J4. Photograph of the house <span class="req">*</span></div>
+      <div class="field-hint">Take a photo of the front of your house.</div>
+      <div class="photo-area" id="photoArea_house">
+        <div class="photo-placeholder" onclick="document.getElementById('file_house_photo').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
+          <span>Tap to capture</span>
+        </div>
+        <div class="photo-preview" id="preview_house">
+          <img id="img_house_photo" src="" alt="">
+          <button class="remove-btn" onclick="removePhoto('house')">&times;</button>
+        </div>
+      </div>
+      <input type="file" id="file_house_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'house')">
     </div>
     <div class="field">
-      <div class="field-label">J5. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="field-label">J5. Any suggestions to improve sanitation in your area?</div>
+      <div class="field-hint">Share any sanitation problems you face or ideas to improve sanitation services in your community.</div>
+      <textarea id="sanitation_feedback"></textarea>
+    </div>
+    <div class="field">
+      <div class="field-label">J6. Respondent consent for data use confirmed? <span class="req">*</span></div>
       <div class="field-hint">By selecting "Yes", you agree that your responses can be used for the CWIS sanitation planning project.</div>
       <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
     </div>
@@ -727,7 +743,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxvz3lmrLwBWZqBpBVC
 const TOTAL_SECTIONS = 10; // 0-9
 let currentSection = 0;
 let gpsData = { lat: null, lng: null, accuracy: null };
-let photos = { toilet: null, tank: null, outlet: null };
+let photos = { toilet: null, tank: null, outlet: null, house: null };
 let radioValues = {};
 
 const BARANGAYS = {
@@ -1024,7 +1040,7 @@ function cancelGPS() {
 }
 
 // ==================== PHOTOS ====================
-let photoMetadata = { toilet: null, tank: null, outlet: null };
+let photoMetadata = { toilet: null, tank: null, outlet: null, house: null };
 
 function handlePhoto(input, key) {
   const file = input.files[0];
@@ -1136,6 +1152,12 @@ function validateCurrentSection() {
       if (!firstInvalid) firstInvalid = field;
       valid = false;
     }
+    if (!photos.house) {
+      const field = document.getElementById('photoArea_house').closest('.field');
+      markInvalid(field, 'Please capture a photo of the house');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
   }
 
   // Check GPS (Section 9 - last section)
@@ -1241,6 +1263,8 @@ async function submitSurvey() {
     tank_photo_gps: photoMetadata.tank ? JSON.stringify(photoMetadata.tank) : '',
     outlet_photo: photos.outlet || '',
     outlet_photo_gps: photoMetadata.outlet ? JSON.stringify(photoMetadata.outlet) : '',
+    house_photo: photos.house || '',
+    house_photo_gps: photoMetadata.house ? JSON.stringify(photoMetadata.house) : '',
     // Section B-I: all radio values
     ...radioValues,
     // Section D numbers
@@ -1260,7 +1284,7 @@ async function submitSurvey() {
     // Section I extras
     toilet_issue_desc: v('toilet_issue_desc'),
     // Section J
-    enumerator_notes: v('enumerator_notes'),
+    sanitation_feedback: v('sanitation_feedback'),
   };
 
   // Basic validation
