@@ -206,7 +206,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('hh')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_hh_photo" accept="image/*" onchange="handlePhoto(this,'hh')">
+      <input type="file" id="file_hh_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'hh')">
     </div>
     <div class="field">
       <div class="field-label">A3. Address / landmark description</div>
@@ -517,7 +517,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('toilet')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_toilet_photo" accept="image/*" onchange="handlePhoto(this,'toilet')">
+      <input type="file" id="file_toilet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'toilet')">
     </div>
     <div class="field">
       <div class="field-label">J2. Photograph of the septic tank access point</div>
@@ -531,7 +531,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('tank')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_tank_photo" accept="image/*" onchange="handlePhoto(this,'tank')">
+      <input type="file" id="file_tank_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'tank')">
     </div>
     <div class="field">
       <div class="field-label">J3. Photograph of the outlet / drainage (if visible)</div>
@@ -546,7 +546,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('outlet')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_outlet_photo" accept="image/*" onchange="handlePhoto(this,'outlet')">
+      <input type="file" id="file_outlet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'outlet')">
     </div>
     <div class="field">
       <div class="field-label">J4. Additional observations by the enumerator</div>
@@ -716,6 +716,8 @@ function updateConditionals() {
 
 // ==================== GPS ====================
 let gpsWatchId = null;
+let bestGpsAccuracy = null;
+let bestGpsData = null;
 
 function captureGPS() {
   const btn = document.getElementById('btnGps');
@@ -723,11 +725,14 @@ function captureGPS() {
   if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
   
   btn.disabled = true;
-  btn.innerHTML = '⏳ Waiting for good accuracy (<6m)…';
+  btn.innerHTML = '⏳ Starting GPS capture...';
   
-  const ACCURACY_THRESHOLD = 6; // meters
-  const maxWaitTime = 120000; // 2 minutes max wait
+  const ACCURACY_THRESHOLD = 6; // meters - target accuracy
+  const maxWaitTime = 120000; // 2 minutes (120 seconds) max wait
   const startTime = Date.now();
+  bestGpsAccuracy = null;
+  bestGpsData = null;
+  let showedWarning = false;
   
   gpsWatchId = navigator.geolocation.watchPosition(
     pos => {
@@ -735,43 +740,79 @@ function captureGPS() {
       const lat = pos.coords.latitude.toFixed(6);
       const lng = pos.coords.longitude.toFixed(6);
       const accStr = accuracy.toFixed(1);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
       
-      // Show current status
-      btn.innerHTML = `📍 Accuracy: ±${accStr}m (need <6m)`;
+      // Store best accuracy found so far
+      if (bestGpsAccuracy === null || accuracy < bestGpsAccuracy) {
+        bestGpsAccuracy = accuracy;
+        bestGpsData = { lat, lng, accStr };
+      }
       
-      // Check if accuracy is good enough
+      // Show current status with time remaining
+      if (accuracy <= ACCURACY_THRESHOLD) {
+        btn.innerHTML = `✓ Excellent accuracy: ±${accStr}m (${elapsed}s)`;
+      } else if (accuracy <= 10) {
+        btn.innerHTML = `⚠️ Good accuracy: ±${accStr}m - Go to open area (${elapsed}s)`;
+      } else if (accuracy <= 20) {
+        btn.innerHTML = `⚠️ Poor accuracy: ±${accStr}m - Move to OPEN area (${elapsed}s)`;
+      } else {
+        btn.innerHTML = `❌ Very poor: ±${accStr}m - MUST go OUTDOORS (${elapsed}s)`;
+      }
+      
+      // Show warning once if in poor signal area
+      if (!showedWarning && accuracy > 15) {
+        showedWarning = true;
+        box.innerHTML = `<div style="color:var(--danger);font-weight:600;margin-bottom:0.4rem;line-height:1.4">⚠️ Weak GPS Signal</div>
+          <div style="color:var(--text-dim);font-size:0.8rem;margin-bottom:0.5rem;line-height:1.5">Please move to an OPEN AREA:<br/>• Outside buildings<br/>• Away from trees<br/>• Clear sky view</div>
+          <div class="gps-accuracy">Current: ±${accStr} m (Waiting...)</div>`;
+      }
+      
+      // Check if accuracy is good enough (below 6m)
       if (accuracy <= ACCURACY_THRESHOLD) {
         gpsData.lat = lat;
         gpsData.lng = lng;
         gpsData.accuracy = accStr;
         
-        // Stop watching
         navigator.geolocation.clearWatch(gpsWatchId);
         gpsWatchId = null;
         
-        // Display captured coords
         box.classList.add('captured');
-        box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
+        box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured - Excellent</div>
           <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
-          <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m (Good!)</div>
+          <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m (${elapsed}s)</div>
           <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
         btn.disabled = false;
         btn.innerHTML = '✓ GPS Captured';
       } else if (Date.now() - startTime > maxWaitTime) {
-        // Timeout after 2 minutes
+        // After 2 minutes, use best accuracy available
         navigator.geolocation.clearWatch(gpsWatchId);
         gpsWatchId = null;
-        btn.disabled = false;
-        btn.innerHTML = '📍 Capture GPS';
-        alert(`GPS timeout: Best accuracy achieved was ±${accStr}m. Try again in an open area.`);
+        
+        if (bestGpsData) {
+          gpsData.lat = bestGpsData.lat;
+          gpsData.lng = bestGpsData.lng;
+          gpsData.accuracy = bestGpsData.accStr;
+          
+          box.classList.add('captured');
+          const isGood = bestGpsAccuracy <= ACCURACY_THRESHOLD;
+          const status = isGood ? '✓ Captured - Good' : '⚠️ Captured - Fair';
+          const statusColor = isGood ? 'color:var(--accent)' : 'color:var(--warning)';
+          box.innerHTML = `<div style="${statusColor};font-weight:600;margin-bottom:0.3rem">${status}</div>
+            <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
+            <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m (Best available)</div>
+            <div style="font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;font-style:italic">Timeout after 2 minutes. Consider retrying in open area for better accuracy.</div>
+            <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+          btn.disabled = false;
+          btn.innerHTML = '✓ GPS Captured';
+        }
       }
     },
     err => {
       if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
       gpsWatchId = null;
-      alert('GPS error: ' + err.message);
       btn.disabled = false;
       btn.innerHTML = '📍 Capture GPS';
+      alert('GPS error: ' + err.message + '\n\nMake sure location permissions are enabled and you are in an open area.');
     },
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
