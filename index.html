@@ -206,7 +206,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('hh')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_hh_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'hh')">
+      <input type="file" id="file_hh_photo" accept="image/*" onchange="handlePhoto(this,'hh')">
     </div>
     <div class="field">
       <div class="field-label">A3. Address / landmark description</div>
@@ -517,7 +517,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('toilet')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_toilet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'toilet')">
+      <input type="file" id="file_toilet_photo" accept="image/*" onchange="handlePhoto(this,'toilet')">
     </div>
     <div class="field">
       <div class="field-label">J2. Photograph of the septic tank access point</div>
@@ -531,7 +531,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('tank')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_tank_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'tank')">
+      <input type="file" id="file_tank_photo" accept="image/*" onchange="handlePhoto(this,'tank')">
     </div>
     <div class="field">
       <div class="field-label">J3. Photograph of the outlet / drainage (if visible)</div>
@@ -546,7 +546,7 @@ input[type="file"]{display:none}
           <button class="remove-btn" onclick="removePhoto('outlet')">&times;</button>
         </div>
       </div>
-      <input type="file" id="file_outlet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'outlet')">
+      <input type="file" id="file_outlet_photo" accept="image/*" onchange="handlePhoto(this,'outlet')">
     </div>
     <div class="field">
       <div class="field-label">J4. Additional observations by the enumerator</div>
@@ -715,35 +715,84 @@ function updateConditionals() {
 }
 
 // ==================== GPS ====================
+let gpsWatchId = null;
+
 function captureGPS() {
   const btn = document.getElementById('btnGps');
   const box = document.getElementById('gpsBox');
   if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+  
   btn.disabled = true;
-  btn.innerHTML = '⏳ Acquiring…';
-  navigator.geolocation.getCurrentPosition(
+  btn.innerHTML = '⏳ Waiting for good accuracy (<6m)…';
+  
+  const ACCURACY_THRESHOLD = 6; // meters
+  const maxWaitTime = 120000; // 2 minutes max wait
+  const startTime = Date.now();
+  
+  gpsWatchId = navigator.geolocation.watchPosition(
     pos => {
-      gpsData.lat = pos.coords.latitude.toFixed(6);
-      gpsData.lng = pos.coords.longitude.toFixed(6);
-      gpsData.accuracy = pos.coords.accuracy.toFixed(1);
-      box.classList.add('captured');
-      box.innerHTML = `<div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
-        <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m</div>
-        <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+      const accuracy = pos.coords.accuracy;
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      const accStr = accuracy.toFixed(1);
+      
+      // Show current status
+      btn.innerHTML = `📍 Accuracy: ±${accStr}m (need <6m)`;
+      
+      // Check if accuracy is good enough
+      if (accuracy <= ACCURACY_THRESHOLD) {
+        gpsData.lat = lat;
+        gpsData.lng = lng;
+        gpsData.accuracy = accStr;
+        
+        // Stop watching
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+        
+        // Display captured coords
+        box.classList.add('captured');
+        box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
+          <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
+          <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m (Good!)</div>
+          <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+        btn.disabled = false;
+        btn.innerHTML = '✓ GPS Captured';
+      } else if (Date.now() - startTime > maxWaitTime) {
+        // Timeout after 2 minutes
+        navigator.geolocation.clearWatch(gpsWatchId);
+        gpsWatchId = null;
+        btn.disabled = false;
+        btn.innerHTML = '📍 Capture GPS';
+        alert(`GPS timeout: Best accuracy achieved was ±${accStr}m. Try again in an open area.`);
+      }
     },
-    err => { alert('GPS error: ' + err.message); btn.disabled = false; btn.innerHTML = '📍 Capture GPS'; },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+    err => {
+      if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+      gpsWatchId = null;
+      alert('GPS error: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = '📍 Capture GPS';
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 }
 
 // ==================== PHOTOS ====================
+let photoMetadata = { hh: null, toilet: null, tank: null, outlet: null };
+
 function handlePhoto(input, key) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { alert('Photo must be under 2 MB'); input.value = ''; return; }
   const reader = new FileReader();
   reader.onload = e => {
     photos[key] = e.target.result;
+    // Capture GPS coordinates with the photo
+    photoMetadata[key] = {
+      lat: gpsData.lat || null,
+      lng: gpsData.lng || null,
+      accuracy: gpsData.accuracy || null,
+      timestamp: new Date().toISOString()
+    };
     document.getElementById(`img_${key}_photo`).src = photos[key];
     document.getElementById(`photoArea_${key}`).classList.add('has-photo');
     document.getElementById(`photoArea_${key}`).querySelector('.photo-placeholder').style.display = 'none';
@@ -812,6 +861,13 @@ async function submitSurvey() {
     longitude: gpsData.lng || '',
     gps_accuracy: gpsData.accuracy || '',
     hh_photo: photos.hh || '',
+    hh_photo_gps: photoMetadata.hh ? JSON.stringify(photoMetadata.hh) : '',
+    toilet_photo: photos.toilet || '',
+    toilet_photo_gps: photoMetadata.toilet ? JSON.stringify(photoMetadata.toilet) : '',
+    tank_access_photo: photos.tank || '',
+    tank_photo_gps: photoMetadata.tank ? JSON.stringify(photoMetadata.tank) : '',
+    outlet_photo: photos.outlet || '',
+    outlet_photo_gps: photoMetadata.outlet ? JSON.stringify(photoMetadata.outlet) : '',
     address_landmark: v('address_landmark'),
     // Section B-I: all radio values
     ...radioValues,
@@ -837,9 +893,6 @@ async function submitSurvey() {
     septic_issue_desc: v('septic_issue_desc'),
     toilet_issue_desc: v('toilet_issue_desc'),
     // Section J
-    toilet_photo: photos.toilet || '',
-    tank_access_photo: photos.tank || '',
-    outlet_photo: photos.outlet || '',
     enumerator_notes: v('enumerator_notes'),
   };
 
