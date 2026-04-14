@@ -151,46 +151,49 @@ input[type="file"]{display:none}
 .btn-start-survey{display:inline-block;padding:1.1rem 3.5rem;background:#fff;color:#1a6b4e;border:none;border-radius:10px;font-family:var(--font);font-size:1.05rem;font-weight:700;cursor:pointer;transition:all 0.3s ease;margin-top:2.5rem;box-shadow:0 8px 24px rgba(0,0,0,0.3);letter-spacing:0.01em}
 .btn-start-survey:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.4);background:#f0f0f0}
 .btn-start-survey:active{transform:translateY(-1px)}
-.btn-start-survey:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.25)}
 </style>
 </head>
 <body>
 
-<div class="topbar">
+<div class="topbar" id="topbar" style="display:none">
   <h1>CWIS Household Sanitation Survey</h1>
   <div class="sub">Bohol — Dauis · Panglao · Tagbilaran City</div>
 </div>
 
-<div class="progress-wrap">
+<div class="progress-wrap" id="progressWrap" style="display:none">
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="progress-text" id="progressText">Section 1 of 10</div>
 </div>
-<!-- ==================== WELCOME PAGE ==================== -->
-<div class=\"welcome-page\" id=\"welcomePage\">
-  <div class=\"welcome-logos\">
-    <img src=\"https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png\" alt=\"Province of Bohol\" class=\"welcome-logo\">
-    <img src=\"https://1000logos.net/wp-content/uploads/2021/05/The-World-Bank-logo.png\" alt=\"World Bank\" class=\"welcome-logo\">
-    <img src=\"https://innpactsolutions.com/wp-content/uploads/2023/08/logo-2.png\" alt=\"Innpact Solutions\" class=\"welcome-logo\">
-  </div>
 
-  <div class=\"welcome-content\">
-    <h1>Welcome</h1>
-    <p>This survey is part of the <strong>Citywide Inclusive Sanitation Plan (CWIS)</strong> for Tagbilaran, Panglao, and Dauis.</p>
-    <p>Your responses will be kept confidential and used only for project assessment.</p>
-    <p><strong>Supported by the World Bank.</strong></p>
-    
-    <div class=\"welcome-divider\"></div>
-    
-    <div class=\"welcome-contact\">
-      <h3>For questions, contact:</h3>
-      <p><strong>Mr. Suraj Kumar</strong></p>
-      <p>📞 <a href=\"tel:+639524609581\">09524609581</a></p>
+<!-- ==================== WELCOME PAGE ==================== -->
+<div class="welcome-page show" id="welcomePage">
+  <div class="welcome-container">
+    <div class="welcome-logos">
+      <img src="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png" alt="Province of Bohol" class="welcome-logo">
+      <img src="https://1000logos.net/wp-content/uploads/2021/05/The-World-Bank-logo.png" alt="World Bank" class="welcome-logo">
+      <img src="https://innpactsolutions.com/wp-content/uploads/2023/08/logo-2.png" alt="Innpact Solutions" class="welcome-logo">
     </div>
-    
-    <button class=\"btn-start-survey\" onclick=\"startSurvey()\">Start Survey →</button>
+
+    <div class="welcome-content">
+      <h1>Welcome</h1>
+      <p class="subtitle">This survey is part of the <strong>Citywide Inclusive Sanitation Plan (CWIS)</strong> for Tagbilaran, Panglao, and Dauis.</p>
+      <p>Your responses will be kept confidential and used only for project assessment.</p>
+      <p><strong>Supported by the World Bank.</strong></p>
+      
+      <div class="welcome-divider"></div>
+      
+      <div class="welcome-contact">
+        <h3>For questions, contact:</h3>
+        <p><strong>Mr. Suraj Kumar</strong></p>
+        <p>📞 <a href="tel:+639524609581">09524609581</a></p>
+      </div>
+      
+      <button class="btn-start-survey" onclick="startSurvey()">Start Survey →</button>
+    </div>
   </div>
 </div>
-<div class="container" id="formContainer">
+
+<div class="container" id="formContainer" style="display:none">
 
 <!-- ==================== SECTION 0: Survey Identification ==================== -->
 <div class="section" data-section="0">
@@ -576,8 +579,9 @@ const FIELD_CHOICES = {
 // ==================== WELCOME PAGE ====================
 function startSurvey() {
   document.getElementById('welcomePage').classList.remove('show');
-  document.querySelector('.progress-wrap').style.display = 'block';
-  document.getElementById('formContainer').style.display = 'block';
+  document.getElementById('topbar').style.display = '';
+  document.getElementById('progressWrap').style.display = '';
+  document.getElementById('formContainer').style.display = '';
   
   // Initialize first section
   currentSection = 0;
@@ -594,9 +598,10 @@ function startSurvey() {
 
 // ==================== INIT ====================
 function init() {
-  // Show welcome page
+  // Show welcome page, hide everything else
   document.getElementById('welcomePage').classList.add('show');
-  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('topbar').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('formContainer').style.display = 'none';
   
   // Build all option groups
