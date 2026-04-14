@@ -92,10 +92,14 @@ function setupHeaders() {
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   let sheet = ss.getSheetByName('Responses');
   if (!sheet) {
-    sheet = ss.insertSheet('Responses');
+    // Use the first sheet (e.g. Sheet1) and rename it
+    sheet = ss.getSheets()[0];
+    sheet.setName('Responses');
   }
-  // Insert header row at top (row 1), shifting existing data down
-  sheet.insertRowBefore(1);
+  // Clear row 1 and write headers (or insert if data exists)
+  if (sheet.getLastRow() > 0 && sheet.getRange(1,1).getValue() !== '' && sheet.getRange(1,1).getValue() !== 'Timestamp') {
+    sheet.insertRowBefore(1);
+  }
   sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
   const headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
   headerRange.setBackground('#1a6b4e');
@@ -103,7 +107,7 @@ function setupHeaders() {
   headerRange.setFontWeight('bold');
   sheet.setFrozenRows(1);
   SpreadsheetApp.flush();
-  Logger.log('Headers set up successfully!');
+  Logger.log('Headers set up on sheet: ' + sheet.getName());
 }
 
 // ==========================================
