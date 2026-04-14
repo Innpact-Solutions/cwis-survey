@@ -121,8 +121,11 @@ function doPost(e) {
     if (!sheet) {
       sheet = ss.insertSheet('Responses');
       applyHeaders(sheet);
-    } else if (sheet.getLastRow() === 0 || sheet.getRange(1,1).getValue() === '') {
-      // Sheet exists but has no headers — add them
+    } else if (sheet.getLastRow() === 0 || sheet.getRange(1,1).getValue() !== 'Timestamp') {
+      // Sheet exists but has no headers or wrong headers — add them
+      if (sheet.getLastRow() > 0 && sheet.getRange(1,1).getValue() !== 'Timestamp') {
+        sheet.insertRowBefore(1);
+      }
       applyHeaders(sheet);
     }
 
