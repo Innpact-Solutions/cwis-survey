@@ -507,9 +507,9 @@ input[type="file"]{display:none}
       <div class="option-group" data-name="outlet_destination" data-type="radio"></div>
     </div>
     <div class="field">
-      <div class="field-label">E8. Year this tank/pit was constructed?</div>
-      <div class="field-hint">Enter 0 if unknown</div>
-      <input type="number" id="year_constructed" min="0" max="2026" inputmode="numeric">
+      <div class="field-label">E8. How old is this tank/pit?</div>
+      <div class="field-hint">Approximate age of your septic tank or pit.</div>
+      <div class="option-group" data-name="year_constructed" data-type="radio"></div>
     </div>
     <div class="field">
       <div class="field-label">E9. Approximate size (L x W x D)</div>
@@ -784,6 +784,7 @@ const CHOICE_LISTS = {
   desludge_provider: [{v:'municipal',l:'Municipal / LGU service'},{v:'private',l:'Private operator'},{v:'informal',l:'Informal worker'},{v:'other',l:'Other (specify)'}],
   satisfaction: [{v:'very_satisfied',l:'Very satisfied'},{v:'satisfied',l:'Satisfied'},{v:'not_satisfied',l:'Not satisfied'},{v:'very_dissatisfied',l:'Very dissatisfied'}],
   no_desludge_reason: [{v:'not_full',l:'Tank is not full yet'},{v:'no_contact',l:"Don't know whom to call"},{v:'too_expensive',l:'Too expensive'},{v:'no_service',l:'No service available'},{v:'other',l:'Other (specify)'}],
+  year_constructed: [{v:'less_than_5',l:'Less than 5 years'},{v:'5_10_years',l:'5–10 years'},{v:'10_20_years',l:'10–20 years'},{v:'more_than_20',l:'More than 20 years'},{v:'dont_know',l:"Don't know"}],
   water_supply_sources: [{v:'borewell',l:'Borewell'},{v:'piped_water',l:'Piped water supply'},{v:'tanker_water',l:'Tanker water'},{v:'open_well',l:'Open well'},{v:'surface_water',l:'Surface water (river, pond, etc.)'},{v:'other',l:'Others (specify)'}],
 };
 
@@ -792,6 +793,7 @@ const FIELD_CHOICES = {
   flood_entered_containment:'yn', flood_water_level:'flood_level', flood_frequency:'flood_freq',
   dwelling_type:'dwelling_type', sanitation_type:'sanitation_type', wall_type:'wall_type',
   bottom_type:'bottom_type', has_partition:'yn_dk', has_outlet:'yn_dk', outlet_destination:'outlet_dest',
+  year_constructed:'year_constructed',
   kitchen_same_tank:'yn_dk', bathroom_same_tank:'yn_dk', greywater_destination:'greywater_dest',
   ever_desludged:'yn', last_desludge_when:'last_desludge_when', desludging_method:'desludge_method',
   truck_trips:'truck_trips', desludging_cost:'desludging_cost', no_desludge_reason:'no_desludge_reason',
@@ -1276,7 +1278,6 @@ async function submitSurvey() {
     // Section E extras
     sanitation_type_other: v('sanitation_type_other'),
     partition_count: v('partition_count'),
-    year_constructed: v('year_constructed'),
     tank_size: v('tank_size'),
     // Section G extras
     no_desludge_other: v('no_desludge_other'),
