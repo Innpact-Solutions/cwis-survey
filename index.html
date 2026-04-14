@@ -164,9 +164,39 @@ input[type="file"]{display:none}
   .btn-start-survey{max-width:360px;padding:1.1rem 2.5rem;font-size:1.05rem}
   .btn-start-survey:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,107,78,0.35)}
 }
+
+/* Desktop blocker */
+.desktop-blocker{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-height:100dvh;
+  background:#fff;color:var(--text);flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;z-index:2000;padding:2rem}
+.desktop-blocker.show{display:flex}
+.desktop-blocker-inner{max-width:480px;animation:slideUp 0.6s ease}
+.desktop-blocker-inner img.blocker-logo{height:80px;margin-bottom:1.5rem}
+.desktop-blocker-inner h1{font-family:var(--font-display);font-size:2rem;color:var(--accent);margin-bottom:0.75rem;font-weight:400}
+.desktop-blocker-inner p{font-size:0.95rem;color:var(--text-dim);line-height:1.7;margin-bottom:0.5rem}
+.qr-container{background:var(--bg);border:2px solid var(--card-border);border-radius:16px;padding:1.5rem;
+  display:inline-block;margin:1.5rem 0}
+.qr-container img{width:200px;height:200px}
+.qr-label{font-size:0.8rem;color:var(--text-dim);margin-top:0.75rem;font-weight:500}
+.survey-url{font-size:0.75rem;color:var(--accent);word-break:break-all;margin-top:0.5rem;font-family:'Courier New',monospace}
 </style>
 </head>
 <body>
+
+<!-- Desktop Blocker -->
+<div class="desktop-blocker" id="desktopBlocker">
+  <div class="desktop-blocker-inner">
+    <img src="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png" alt="Province of Bohol" class="blocker-logo">
+    <h1>Mobile Only</h1>
+    <p>This survey is designed for <strong>mobile devices</strong> only.</p>
+    <p>Please scan the QR code below with your phone to access the survey.</p>
+    <div class="qr-container">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https%3A%2F%2Finnpact-solutions.github.io%2Fcwis-survey%2F" alt="QR Code">
+      <div class="qr-label">Scan with your phone camera</div>
+    </div>
+    <div class="survey-url">https://innpact-solutions.github.io/cwis-survey/</div>
+  </div>
+</div>
 
 <div class="topbar" id="topbar" style="display:none">
   <h1>CWIS Household Sanitation Survey</h1>
@@ -608,7 +638,22 @@ function startSurvey() {
 }
 
 // ==================== INIT ====================
+function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+    || (navigator.maxTouchPoints > 0 && window.innerWidth <= 1024);
+}
+
 function init() {
+  // Block desktop users
+  if (!isMobileDevice()) {
+    document.getElementById('desktopBlocker').classList.add('show');
+    document.getElementById('welcomePage').classList.remove('show');
+    document.getElementById('topbar').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'none';
+    document.getElementById('formContainer').style.display = 'none';
+    return;
+  }
+
   // Show welcome page, hide everything else
   document.getElementById('welcomePage').classList.add('show');
   document.getElementById('topbar').style.display = 'none';
