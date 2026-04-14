@@ -707,7 +707,7 @@ function captureGPS() {
   btn.disabled = true;
   btn.innerHTML = '⏳ Starting GPS capture...';
   
-  const ACCURACY_THRESHOLD = 6; // meters - target accuracy
+  const ACCURACY_THRESHOLD = 10; // meters - target accuracy
   const maxWaitTime = 120000; // 2 minutes (120 seconds) max wait
   const startTime = Date.now();
   bestGpsAccuracy = null;
@@ -730,9 +730,7 @@ function captureGPS() {
       
       // Show current status with time remaining
       if (accuracy <= ACCURACY_THRESHOLD) {
-        btn.innerHTML = `✓ Excellent accuracy: ±${accStr}m (${elapsed}s)`;
-      } else if (accuracy <= 10) {
-        btn.innerHTML = `⚠️ Good accuracy: ±${accStr}m - Go to open area (${elapsed}s)`;
+        btn.innerHTML = `✓ Good accuracy: ±${accStr}m (${elapsed}s)`;
       } else if (accuracy <= 20) {
         btn.innerHTML = `⚠️ Poor accuracy: ±${accStr}m - Move to OPEN area (${elapsed}s)`;
       } else {
@@ -757,7 +755,7 @@ function captureGPS() {
         gpsWatchId = null;
         
         box.classList.add('captured');
-        box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured - Excellent</div>
+        box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
           <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
           <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m (${elapsed}s)</div>
           <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
