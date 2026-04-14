@@ -499,7 +499,7 @@ input[type="file"]{display:none}
   </div>
   <div class="card">
     <div class="field">
-      <div class="field-label">J1. Photograph of the toilet facility</div>
+      <div class="field-label">J1. Photograph of the toilet facility <span class="req">*</span></div>
       <div class="photo-area" id="photoArea_toilet">
         <div class="photo-placeholder" onclick="document.getElementById('file_toilet_photo').click()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
@@ -513,7 +513,7 @@ input[type="file"]{display:none}
       <input type="file" id="file_toilet_photo" accept="image/*" capture="environment" onchange="handlePhoto(this,'toilet')">
     </div>
     <div class="field">
-      <div class="field-label">J2. Photograph of the septic tank access point</div>
+      <div class="field-label">J2. Photograph of the septic tank access point <span class="req">*</span></div>
       <div class="photo-area" id="photoArea_tank">
         <div class="photo-placeholder" onclick="document.getElementById('file_tank_photo').click()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
@@ -961,6 +961,22 @@ function validateCurrentSection() {
       valid = false;
     }
   });
+
+  // Check photos on Documentation section (section 8)
+  if (currentSection === 8) {
+    if (!photos.toilet) {
+      const field = document.getElementById('photoArea_toilet').closest('.field');
+      markInvalid(field, 'Please capture a photo of the toilet');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+    if (!photos.tank) {
+      const field = document.getElementById('photoArea_tank').closest('.field');
+      markInvalid(field, 'Please capture a photo of the septic tank');
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
+    }
+  }
 
   // Check GPS (Section 9 - last section)
   if (currentSection === 9 && !gpsData.lat) {
