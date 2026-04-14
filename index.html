@@ -557,9 +557,9 @@ input[type="file"]{display:none}
       <div class="option-group" data-name="ever_desludged" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="ever_desludged=yes">
-      <div class="field-label">G2. When was the LAST desludging done?</div>
-      <div class="field-hint">e.g., March 2023 or 2022</div>
-      <input type="text" id="last_desludge_when">
+      <div class="field-label">G2. When was the LAST desludging done? <span class="req">*</span></div>
+      <div class="field-hint">How long ago was your septic tank last emptied?</div>
+      <div class="option-group" data-name="last_desludge_when" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="ever_desludged=yes">
       <div class="field-label">G3. How was the desludging done? <span class="req">*</span></div>
@@ -567,14 +567,14 @@ input[type="file"]{display:none}
       <div class="option-group" data-name="desludging_method" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="desludging_method=truck">
-      <div class="field-label">G4. How many trips did the truck take?</div>
-      <div class="field-hint">Enter 0 if unknown</div>
-      <input type="number" id="truck_trips" min="0" max="20" inputmode="numeric">
+      <div class="field-label">G4. How many trips did the truck take? <span class="req">*</span></div>
+      <div class="field-hint">How many times did the vacuum truck come to empty your tank?</div>
+      <div class="option-group" data-name="truck_trips" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="ever_desludged=yes">
-      <div class="field-label">G5. How much were you charged? (PHP)</div>
-      <div class="field-hint">Enter 0 if unknown</div>
-      <input type="number" id="desludging_cost" min="0" inputmode="numeric">
+      <div class="field-label">G5. How much were you charged? (PHP) <span class="req">*</span></div>
+      <div class="field-hint">Approximate cost you paid for desludging service.</div>
+      <div class="option-group" data-name="desludging_cost" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="ever_desludged=no">
       <div class="field-label">G6. Why has the tank never been emptied?</div>
@@ -778,6 +778,9 @@ const CHOICE_LISTS = {
   outlet_dest: [{v:'soak_pit',l:'Soak pit'},{v:'open_drain',l:'Open drain'},{v:'water_body',l:'Water body'},{v:'road_side',l:'Road side/open ground'},{v:'dont_know',l:"Don't Know"}],
   greywater_dest: [{v:'open_drain',l:'Open drain'},{v:'soak_pit',l:'Soak pit'},{v:'water_body',l:'Water body'},{v:'road_side',l:'Road side/open ground'},{v:'garden',l:'Garden/yard'},{v:'dont_know',l:"Don't Know"}],
   desludge_method: [{v:'manual',l:'Manually (by workers)'},{v:'truck',l:'Desludging truck (vacuum tanker)'}],
+  last_desludge_when: [{v:'within_1_year',l:'Within the last year'},{v:'1_3_years',l:'1–3 years ago'},{v:'3_5_years',l:'3–5 years ago'},{v:'more_than_5_years',l:'More than 5 years ago'},{v:'dont_remember',l:"Don't remember"}],
+  truck_trips: [{v:'1',l:'1 trip'},{v:'2',l:'2 trips'},{v:'3',l:'3 trips'},{v:'4_or_more',l:'4 or more trips'},{v:'dont_know',l:"Don't know"}],
+  desludging_cost: [{v:'less_than_1000',l:'Less than ₱1,000'},{v:'1000_3000',l:'₱1,000 – ₱3,000'},{v:'3000_5000',l:'₱3,000 – ₱5,000'},{v:'5000_10000',l:'₱5,000 – ₱10,000'},{v:'more_than_10000',l:'More than ₱10,000'},{v:'dont_remember',l:"Don't remember"}],
   desludge_provider: [{v:'municipal',l:'Municipal / LGU service'},{v:'private',l:'Private operator'},{v:'informal',l:'Informal worker'},{v:'other',l:'Other (specify)'}],
   satisfaction: [{v:'very_satisfied',l:'Very satisfied'},{v:'satisfied',l:'Satisfied'},{v:'not_satisfied',l:'Not satisfied'},{v:'very_dissatisfied',l:'Very dissatisfied'}],
   no_desludge_reason: [{v:'not_full',l:'Tank is not full yet'},{v:'no_contact',l:"Don't know whom to call"},{v:'too_expensive',l:'Too expensive'},{v:'no_service',l:'No service available'},{v:'other',l:'Other (specify)'}],
@@ -790,7 +793,8 @@ const FIELD_CHOICES = {
   dwelling_type:'dwelling_type', sanitation_type:'sanitation_type', wall_type:'wall_type',
   bottom_type:'bottom_type', has_partition:'yn_dk', has_outlet:'yn_dk', outlet_destination:'outlet_dest',
   kitchen_same_tank:'yn_dk', bathroom_same_tank:'yn_dk', greywater_destination:'greywater_dest',
-  ever_desludged:'yn', desludging_method:'desludge_method', no_desludge_reason:'no_desludge_reason',
+  ever_desludged:'yn', last_desludge_when:'last_desludge_when', desludging_method:'desludge_method',
+  truck_trips:'truck_trips', desludging_cost:'desludging_cost', no_desludge_reason:'no_desludge_reason',
   water_supply_sources:'water_supply_sources',
   past_toilet_issues:'yn',
   respondent_consent:'yn'
@@ -1275,9 +1279,6 @@ async function submitSurvey() {
     year_constructed: v('year_constructed'),
     tank_size: v('tank_size'),
     // Section G extras
-    last_desludge_when: v('last_desludge_when'),
-    truck_trips: v('truck_trips'),
-    desludging_cost: v('desludging_cost'),
     no_desludge_other: v('no_desludge_other'),
     // Section H extras
     water_supply_other: v('water_supply_other'),
