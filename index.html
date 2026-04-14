@@ -198,6 +198,24 @@ input[type="file"]{display:none}
 .btn-modal-close{margin-top:1.25rem;padding:0.7rem 2rem;background:var(--accent);border:none;border-radius:8px;
   color:#fff;font-family:var(--font);font-size:0.9rem;font-weight:600;cursor:pointer}
 .btn-modal-close:hover{background:var(--accent-hover)}
+
+/* Instructions page */
+.instructions-page{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-height:100dvh;
+  background:#fff;color:var(--text);flex-direction:column;justify-content:center;align-items:center;
+  text-align:left;z-index:999;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.5rem 1rem}
+.instructions-page.show{display:flex}
+.instructions-inner{max-width:480px;width:100%;animation:slideUp 0.4s ease;padding:0 0.5rem}
+.instructions-inner h2{font-family:var(--font-display);font-size:1.5rem;color:var(--accent);text-align:center;
+  margin-bottom:1.25rem;font-weight:400}
+.instructions-item{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:1rem}
+.instructions-icon{width:36px;height:36px;border-radius:10px;background:var(--accent-light);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.instructions-text{font-size:0.88rem;line-height:1.6;color:var(--text)}
+.instructions-text strong{color:var(--accent)}
+.btn-continue{display:block;width:100%;max-width:320px;margin:1.5rem auto 0;padding:1rem 2rem;
+  background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);
+  font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(26,107,78,0.3)}
+.btn-continue:active{transform:scale(0.97)}
 </style>
 </head>
 <body>
@@ -254,8 +272,42 @@ input[type="file"]{display:none}
         <p>📞 <a href="tel:+639524609581">09524609581</a></p>
       </div>
       
-      <button class="btn-start-survey" onclick="startSurvey()">Start Survey →</button>
+      <button class="btn-start-survey" onclick="showInstructions()">Start Survey →</button>
     </div>
+  </div>
+</div>
+
+<!-- Instructions Page -->
+<div class="instructions-page" id="instructionsPage">
+  <div class="instructions-inner">
+    <h2>Before You Begin</h2>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">🏠</div>
+      <div class="instructions-text"><strong>Be at your house</strong> while filling this form. You will need to take photos and share your GPS location.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">🎯</div>
+      <div class="instructions-text"><strong>Purpose:</strong> This survey helps plan better sanitation services for your community under the CWIS program.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">✅</div>
+      <div class="instructions-text"><strong>Accurate answers matter.</strong> Your responses directly shape sanitation improvements in your area.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">📷</div>
+      <div class="instructions-text">You will be asked to <strong>photograph your toilet and septic tank</strong>. Please have access to these areas.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">🔒</div>
+      <div class="instructions-text">All responses are <strong>confidential</strong> and used only for project planning.</div>
+    </div>
+
+    <button class="btn-continue" onclick="startSurvey()">I Understand, Continue →</button>
   </div>
 </div>
 
@@ -663,7 +715,13 @@ const FIELD_CHOICES = {
 };
 
 // ==================== WELCOME PAGE ====================
+function showInstructions() {
+  document.getElementById('welcomePage').classList.remove('show');
+  document.getElementById('instructionsPage').classList.add('show');
+}
+
 function startSurvey() {
+  document.getElementById('instructionsPage').classList.remove('show');
   document.getElementById('welcomePage').classList.remove('show');
   document.getElementById('topbar').style.display = '';
   document.getElementById('progressWrap').style.display = '';
