@@ -270,6 +270,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">City / Municipality <span class="req">*</span></div>
+      <div class="field-hint">Select the city or municipality where your household is located.</div>
       <select id="city_municipality" onchange="updateBarangays()">
         <option value="">— Select —</option>
         <option value="dauis">Dauis</option>
@@ -285,6 +286,7 @@ input[type="file"]{display:none}
     </div>
     <div class="field">
       <div class="field-label">Respondent Name <span class="req">*</span></div>
+      <div class="field-hint">Enter the full name of the person answering this survey.</div>
       <input type="text" id="respondent_name" required>
     </div>
     <div class="field">
@@ -303,14 +305,17 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">B1. Has flood water ever entered your containment system or toilet? <span class="req">*</span></div>
+      <div class="field-hint">Think about whether flood water has ever reached or entered your toilet, septic tank, or pit during heavy rains or typhoons.</div>
       <div class="option-group" data-name="flood_entered_containment" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flood_entered_containment=yes">
       <div class="field-label">B2. Up to what level does water generally reach? <span class="req">*</span></div>
+      <div class="field-hint">Estimate how high the flood water rises around your toilet or tank area.</div>
       <div class="option-group" data-name="flood_water_level" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flood_entered_containment=yes">
       <div class="field-label">B3. How frequently does this flooding happen? <span class="req">*</span></div>
+      <div class="field-hint">How often does flood water reach your toilet or tank — every year, occasionally, or just once?</div>
       <div class="option-group" data-name="flood_frequency" data-type="radio"></div>
     </div>
   </div>
@@ -327,10 +332,12 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">D1. How many family members live in this household? <span class="req">*</span></div>
+      <div class="field-hint">Count everyone who regularly lives and sleeps in this house, including children.</div>
       <input type="number" id="family_members" min="1" max="30" inputmode="numeric">
     </div>
     <div class="field">
       <div class="field-label">D2. Type of dwelling <span class="req">*</span></div>
+      <div class="field-hint">What material is your house mainly built with? Concrete = Permanent, mixed materials = Semi-permanent, light materials (wood/nipa) = Temporary.</div>
       <div class="option-group" data-name="dwelling_type" data-type="radio"></div>
     </div>
   </div>
@@ -345,6 +352,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">E1. What type of onsite sanitation system do you have? <span class="req">*</span></div>
+      <div class="field-hint">This is the underground tank or pit where your toilet waste goes. A septic tank is usually a concrete box; a pit is a hole in the ground (lined or unlined).</div>
       <div class="option-group" data-name="sanitation_type" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="sanitation_type=other">
@@ -363,6 +371,7 @@ input[type="file"]{display:none}
     </div>
     <div class="field conditional" data-show-when="bottom_type=sealed">
       <div class="field-label">E4. Does the tank have internal partition wall(s)? <span class="req">*</span></div>
+      <div class="field-hint">A partition is a wall inside the tank that divides it into 2 or more chambers. Select "Don't Know" if you're unsure.</div>
       <div class="option-group" data-name="has_partition" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="has_partition=yes">
@@ -371,10 +380,12 @@ input[type="file"]{display:none}
     </div>
     <div class="field conditional" data-show-when="bottom_type=sealed">
       <div class="field-label">E6. Is there any OUTLET from the tank? <span class="req">*</span></div>
+      <div class="field-hint">An outlet is a pipe coming out of the tank that lets liquid flow out. Check if there is any pipe leading away from your tank.</div>
       <div class="option-group" data-name="has_outlet" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="has_outlet=yes">
       <div class="field-label">E7. Where does the outlet discharge to? <span class="req">*</span></div>
+      <div class="field-hint">Where does the liquid from the outlet pipe go? A soak pit absorbs it into the ground; an open drain is a visible channel.</div>
       <div class="option-group" data-name="outlet_destination" data-type="radio"></div>
     </div>
     <div class="field">
@@ -399,14 +410,17 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">F1. Does kitchen wastewater go into the SAME tank as toilet wastewater? <span class="req">*</span></div>
+      <div class="field-hint">Check if the water from your kitchen sink drains into the same septic tank/pit as your toilet.</div>
       <div class="option-group" data-name="kitchen_same_tank" data-type="radio"></div>
     </div>
     <div class="field">
       <div class="field-label">F2. Does bathroom / washing water go into the SAME tank? <span class="req">*</span></div>
+      <div class="field-hint">Check if the water from bathing, handwashing, or laundry goes into the same tank as your toilet.</div>
       <div class="option-group" data-name="bathroom_same_tank" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="kitchen_same_tank=no|bathroom_same_tank=no">
       <div class="field-label">F3. Where does the greywater discharge? <span class="req">*</span></div>
+      <div class="field-hint">Greywater is the used water from your kitchen, bathroom, or laundry (not toilet). Where does it go?</div>
       <div class="option-group" data-name="greywater_destination" data-type="radio"></div>
     </div>
   </div>
@@ -421,6 +435,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">G1. Has your septic tank ever been desludged (emptied)? <span class="req">*</span></div>
+      <div class="field-hint">Desludging means pumping out the solid waste from your septic tank, usually done by a vacuum truck or manually.</div>
       <div class="option-group" data-name="ever_desludged" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="ever_desludged=yes">
@@ -430,6 +445,7 @@ input[type="file"]{display:none}
     </div>
     <div class="field conditional" data-show-when="ever_desludged=yes">
       <div class="field-label">G3. How was the desludging done? <span class="req">*</span></div>
+      <div class="field-hint">Was a vacuum truck (tanker) used, or was it emptied manually by workers using buckets/tools?</div>
       <div class="option-group" data-name="desludging_method" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="desludging_method=truck">
@@ -463,7 +479,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">H1. Source of water supply <span class="req">*</span></div>
-      <div class="field-hint">Select all that apply</div>
+      <div class="field-hint">Select all the sources your household uses for water. You can choose more than one.</div>
       <div class="option-group" data-name="water_supply_sources" data-type="checkbox"></div>
     </div>
     <div class="field conditional" data-show-when="water_supply_sources=other">
@@ -482,6 +498,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">I1. Any past issues with your toilet functioning? <span class="req">*</span></div>
+      <div class="field-hint">For example: clogging, bad smell, overflowing, slow flushing, or water backing up.</div>
       <div class="option-group" data-name="past_toilet_issues" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="past_toilet_issues=yes">
@@ -500,6 +517,7 @@ input[type="file"]{display:none}
   <div class="card">
     <div class="field">
       <div class="field-label">J1. Photograph of the toilet facility <span class="req">*</span></div>
+      <div class="field-hint">Take a clear photo showing your toilet from the outside or inside.</div>
       <div class="photo-area" id="photoArea_toilet">
         <div class="photo-placeholder" onclick="document.getElementById('file_toilet_photo').click()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
@@ -514,6 +532,7 @@ input[type="file"]{display:none}
     </div>
     <div class="field">
       <div class="field-label">J2. Photograph of the septic tank access point <span class="req">*</span></div>
+      <div class="field-hint">Take a photo of the septic tank cover, lid, or the area where the tank is located.</div>
       <div class="photo-area" id="photoArea_tank">
         <div class="photo-placeholder" onclick="document.getElementById('file_tank_photo').click()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><circle cx="12" cy="12" r="3.5"/></svg>
@@ -547,6 +566,7 @@ input[type="file"]{display:none}
     </div>
     <div class="field">
       <div class="field-label">J5. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="field-hint">By selecting "Yes", you agree that your responses can be used for the CWIS sanitation planning project.</div>
       <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
     </div>
   </div>
