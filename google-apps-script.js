@@ -16,6 +16,7 @@ const SPREADSHEET_ID = '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw'; // CWIS S
 // Column headers matching survey fields
 const HEADERS = [
   'Timestamp',
+  'Language',
   'City / Municipality',
   'Barangay',
   'Respondent Name',
@@ -134,6 +135,7 @@ function doPost(e) {
     // Build row
     const row = [
       data.timestamp || '',
+      data.language || 'en',
       data.city_municipality || '',
       data.barangay_ward || '',
       data.respondent_name || '',

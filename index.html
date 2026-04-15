@@ -336,7 +336,10 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
         </div>
       </div>
       
-      <button class="btn-start-survey" onclick="showInstructions()">Start Survey →</button>
+      <div style="display:flex;flex-direction:column;gap:0.75rem;max-width:320px;margin:1.5rem auto 0">
+        <button class="btn-start-survey" style="margin:0" onclick="selectLanguage('en')">Start Survey in English →</button>
+        <button class="btn-start-survey" style="margin:0;background:#2d7d5f" onclick="selectLanguage('ceb')">Sugdi ang Survey sa Cebuano →</button>
+      </div>
     </div>
   </div>
 </div>
@@ -756,6 +759,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxvz3lmrLwBWZqBpBVC
 const TOTAL_SECTIONS = 9; // 0-8
 let currentSection = 0;
 let gpsData = { lat: null, lng: null, accuracy: null };
+let currentLang = 'en';
 let radioValues = {};
 
 const BARANGAYS = {
@@ -818,6 +822,304 @@ const FIELD_CHOICES = {
   at_home_currently:'at_home_currently'
 };
 
+// ==================== LANGUAGE SUPPORT ====================
+const CHOICE_LISTS_CEB = {
+  yn_dk: [{v:'yes',l:'Oo'},{v:'no',l:'Dili'},{v:'dont_know',l:'Wala Ko Kabalo'}],
+  yn: [{v:'yes',l:'Oo'},{v:'no',l:'Dili'}],
+  flood_level: [{v:'ankle',l:'Buol-buol'},{v:'knee',l:'Tuhod'},{v:'waist',l:'Hawak'},{v:'above_waist',l:'Ibabaw sa hawak'},{v:'submerged',l:'Hingpit nga nalunod'}],
+  flood_freq: [{v:'every_year',l:'Matag tuig'},{v:'every_2_3_years',l:'Matag 2–3 ka tuig'},{v:'rarely',l:'Panagsa ra'},{v:'only_once',l:'Usa ra ka higayon'}],
+  dwelling_type: [{v:'permanent',l:'Permanente (Semento)'},{v:'semi_permanent',l:'Semi-permanente'},{v:'temporary',l:'Temporaryo'},{v:'informal',l:'Impormal nga puy-anan'}],
+  sanitation_type: [{v:'septic_tank',l:'Septic tank'},{v:'lined_pit',l:'Lined pit (may sapaw)'},{v:'unlined_pit',l:'Unlined pit (walay sapaw)'},{v:'other',l:'Uban (isulat)'}],
+  wall_type: [{v:'sealed',l:'Selyado (semento/masonry)'},{v:'porous',l:'Porous (brick/bato)'},{v:'dont_know',l:'Wala Ko Kabalo'}],
+  bottom_type: [{v:'sealed',l:'Selyado (concrete slab)'},{v:'not_sealed',l:'Dili selyado (bukas sa yuta)'},{v:'dont_know',l:'Wala Ko Kabalo'}],
+  outlet_dest: [{v:'soak_pit',l:'Soak pit'},{v:'open_drain',l:'Bukas nga kanal'},{v:'water_body',l:'Katubigan (suba, dagat, etc.)'},{v:'road_side',l:'Daplin sa dalan/bukas nga yuta'},{v:'dont_know',l:'Wala Ko Kabalo'}],
+  greywater_dest: [{v:'open_drain',l:'Bukas nga kanal'},{v:'soak_pit',l:'Soak pit'},{v:'water_body',l:'Katubigan'},{v:'road_side',l:'Daplin sa dalan/bukas nga yuta'},{v:'garden',l:'Hardin/nataran'},{v:'dont_know',l:'Wala Ko Kabalo'}],
+  desludge_method: [{v:'manual',l:'Manual (sa mga trabahante)'},{v:'truck',l:'Truck sa paghurot (vacuum tanker)'}],
+  last_desludge_when: [{v:'within_1_year',l:'Sulod sa usa ka tuig'},{v:'1_3_years',l:'1–3 ka tuig na ang milabay'},{v:'3_5_years',l:'3–5 ka tuig na ang milabay'},{v:'more_than_5_years',l:'Kapin sa 5 ka tuig na ang milabay'},{v:'dont_remember',l:'Dili ko mahinumdom'}],
+  truck_trips: [{v:'1',l:'1 ka biyahe'},{v:'2',l:'2 ka biyahe'},{v:'3',l:'3 ka biyahe'},{v:'4_or_more',l:'4 o mas pa ka biyahe'},{v:'dont_know',l:'Wala ko kabalo'}],
+  desludging_cost: [{v:'less_than_1000',l:'Ubos sa ₱1,000'},{v:'1000_3000',l:'₱1,000 – ₱3,000'},{v:'3000_5000',l:'₱3,000 – ₱5,000'},{v:'5000_10000',l:'₱5,000 – ₱10,000'},{v:'more_than_10000',l:'Kapin sa ₱10,000'},{v:'dont_remember',l:'Dili ko mahinumdom'}],
+  no_desludge_reason: [{v:'not_full',l:'Wala pa mapuno ang tangke'},{v:'no_contact',l:'Wala ko kabalo kinsa tawagan'},{v:'too_expensive',l:'Mahal kaayo'},{v:'no_service',l:'Walay serbisyo nga magamit'},{v:'other',l:'Uban (isulat)'}],
+  year_constructed: [{v:'less_than_5',l:'Ubos sa 5 ka tuig'},{v:'5_10_years',l:'5–10 ka tuig'},{v:'10_20_years',l:'10–20 ka tuig'},{v:'more_than_20',l:'Kapin sa 20 ka tuig'},{v:'dont_know',l:'Wala ko kabalo'}],
+  water_supply_sources: [{v:'borewell',l:'Borewell (bomba sa tubig)'},{v:'piped_water',l:'Piped water (tubo sa tubig)'},{v:'tanker_water',l:'Tubig gikan sa tanker'},{v:'open_well',l:'Bukas nga atabay'},{v:'surface_water',l:'Ibabaw nga tubig (suba, sapa, etc.)'},{v:'other',l:'Uban (isulat)'}],
+  partition_count: [{v:'none',l:'Walay partition'},{v:'single',l:'Usa ka partition'},{v:'double',l:'Duha ka partition'}],
+  tank_size_known: [{v:'yes',l:'Oo, kabalo ko sa gidak-on'},{v:'no',l:'Wala ko kabalo'}],
+  at_home_currently: [{v:'yes',l:'Oo, naa ko sa balay'},{v:'no',l:'Dili, naa ko sa laing lugar'}],
+};
+
+const UI_TEXT = {
+  en: {
+    topbar_title: 'CWIS Household Sanitation Survey',
+    topbar_sub: 'Bohol — Dauis · Panglao · Tagbilaran City',
+    progress_section: 'Section', progress_of: 'of',
+    instr_title: 'Before You Begin',
+    instr_1: '<strong>Purpose:</strong> This survey helps plan better sanitation services for your community under the CWIS program.',
+    instr_2: '<strong>Accurate answers matter.</strong> Your responses directly shape sanitation improvements in your area.',
+    instr_3: 'The survey takes about <strong>5–10 minutes</strong>. You can fill it on your phone or laptop.',
+    instr_4: 'All responses are <strong>confidential</strong> and used only for project planning.',
+    btn_continue: 'I Understand, Continue →',
+    section_titles: ['Survey Identification','Flood Risk','Household Information','Containment System / Septic Tank','Greywater Management','Desludging History','Water Supply Sources','Toilet & Sanitation Issues','Documentation & Closure'],
+    btn_back: '← Back', btn_next: 'Next →', btn_submit: '✓ Submit Survey', btn_submitted: '✓ Submitted',
+    footer: 'Province of Bohol — Citywide Inclusive Sanitation',
+    select_default: '— Select —', select_city_first: '— Select City first —',
+    gps_capture: 'Capture GPS', gps_searching: 'Searching for GPS signal...', gps_wait: 'Please wait while we lock onto your location.',
+    gps_excellent: '✓ Excellent Signal!', gps_great: 'Accuracy is great. You can capture now.',
+    gps_use: '✓ Use This Location', gps_improving: '⚠️ Improving...',
+    gps_fair_msg: 'Signal is fair. Move to open area.', gps_weak: '❌ Weak Signal',
+    gps_move: 'Move outdoors to open area.', gps_timeout: '⚠️ Time limit reached',
+    gps_best: 'Best accuracy:', gps_cancel: 'Cancel', gps_captured: '✓ GPS Captured',
+    gps_accuracy_label: 'Accuracy:', gps_recapture: '↻ Re-capture',
+    gps_tip1: '📱 Hold your phone upright', gps_tip2: '🌤️ Move to an open area with clear sky', gps_tip3: '🏠 Stay away from buildings & trees',
+    gps_meters: 'meters', gps_auto_unlock: 'Auto-unlock in',
+    submit_title: 'Submitting Survey', submit_wait: 'Please wait while your responses are being saved...',
+    submit_success: 'Successfully Submitted!', submit_success_msg: 'Your survey responses have been saved. Thank you for participating.',
+    submit_error: 'Submission Failed', submit_error_default: 'Something went wrong. Please try again.',
+    btn_done: 'Done', btn_close: 'Close',
+    val_select: 'Please select an option', val_required: 'This field is required',
+    val_phone: 'Enter a valid 10-digit mobile number starting with 9',
+    val_at_least_one: 'Please select at least one option', val_gps: 'Please capture your GPS location',
+    val_consent: 'Consent is required to submit',
+    unit_meters: 'Meters', unit_feet: 'Feet', unit_label_m: 'Unit: Meters', unit_label_ft: 'Unit: Feet',
+    tank_volume: 'Volume:', tank_liters: 'liters', tank_enter_dim: 'Enter dimensions to see volume',
+    dim_length: 'Length', dim_width: 'Width', dim_depth: 'Depth',
+  },
+  ceb: {
+    topbar_title: 'CWIS Survey sa Sanitasyon sa Panimalay',
+    topbar_sub: 'Bohol — Dauis · Panglao · Tagbilaran City',
+    progress_section: 'Seksyon', progress_of: 'sa',
+    instr_title: 'Sa Dili Pa Magsugod',
+    instr_1: '<strong>Katuyoan:</strong> Kini nga survey makatabang sa pagplano og mas maayong serbisyo sa sanitasyon para sa imong komunidad ubos sa CWIS program.',
+    instr_2: '<strong>Importante ang husto nga mga tubag.</strong> Ang imong mga tubag direkta nga makaapekto sa pagpaayo sa sanitasyon sa imong lugar.',
+    instr_3: 'Ang survey mga <strong>5–10 minutos</strong> ra. Mahimo nimo kini sulatan sa imong telepono o laptop.',
+    instr_4: 'Ang tanan nga tubag <strong>sekreto</strong> ug gamiton lamang para sa pagplano sa proyekto.',
+    btn_continue: 'Nakasabot Ko, Padayon →',
+    section_titles: ['Pagpaila sa Survey','Risgo sa Baha','Impormasyon sa Panimalay','Sistema sa Tangke / Septic Tank','Pagdumala sa Greywater','Kasaysayan sa Paghurot','Tinubdan sa Tubig','Mga Problema sa Kasilyas ug Sanitasyon','Dokumentasyon ug Pagtapos'],
+    btn_back: '← Balik', btn_next: 'Sunod →', btn_submit: '✓ Isumite ang Survey', btn_submitted: '✓ Na-sumite Na',
+    footer: 'Probinsya sa Bohol — Citywide Inclusive Sanitation',
+    select_default: '— Pilia —', select_city_first: '— Pilia una ang Siyudad —',
+    gps_capture: 'Kuhaa ang GPS', gps_searching: 'Nangita sa GPS signal...', gps_wait: 'Palihog hulata samtang gipangita ang imong lokasyon.',
+    gps_excellent: '✓ Maayo Kaayo ang Signal!', gps_great: 'Maayo ang accuracy. Mahimo na nimo kuhaan.',
+    gps_use: '✓ Gamita Kini nga Lokasyon', gps_improving: '⚠️ Nag-improve...',
+    gps_fair_msg: 'Katamtaman ang signal. Balhin sa bukas nga lugar.', gps_weak: '❌ Huyang ang Signal',
+    gps_move: 'Balhin sa gawas sa bukas nga lugar.', gps_timeout: '⚠️ Nahuman na ang oras',
+    gps_best: 'Pinakamaayo nga accuracy:', gps_cancel: 'Kanselahon', gps_captured: '✓ Nakuha na ang GPS',
+    gps_accuracy_label: 'Accuracy:', gps_recapture: '↻ Kuhaa Pag-usab',
+    gps_tip1: '📱 Guniti ang telepono nga patindog', gps_tip2: '🌤️ Balhin sa bukas nga lugar nga klaro ang langit', gps_tip3: '🏠 Palayo sa mga bilding ug kahoy',
+    gps_meters: 'metros', gps_auto_unlock: 'Auto-unlock sa',
+    submit_title: 'Gisumite ang Survey', submit_wait: 'Palihog hulata samtang gi-save ang imong mga tubag...',
+    submit_success: 'Malampusong Na-sumite!', submit_success_msg: 'Ang imong mga tubag sa survey na-save na. Salamat sa imong pag-apil.',
+    submit_error: 'Napakyas ang Pag-sumite', submit_error_default: 'May sayop nga nahitabo. Palihog sulayi pag-usab.',
+    btn_done: 'Tapos', btn_close: 'Sirad-i',
+    val_select: 'Palihog pili og opsyon', val_required: 'Kinahanglan kini nga field',
+    val_phone: 'Isulat ang balido nga 10-digit mobile number nga nagsugod sa 9',
+    val_at_least_one: 'Palihog pili og labing menos usa ka opsyon', val_gps: 'Palihog kuhaa ang imong GPS lokasyon',
+    val_consent: 'Kinahanglan ang pagtugot aron ma-sumite',
+    unit_meters: 'Metro', unit_feet: 'Pye', unit_label_m: 'Yunit: Metro', unit_label_ft: 'Yunit: Pye',
+    tank_volume: 'Gidak-on:', tank_liters: 'litro', tank_enter_dim: 'Isulat ang gidak-on aron makita ang volume',
+    dim_length: 'Gitas-on', dim_width: 'Gilapdon', dim_depth: 'Gilawmon',
+  }
+};
+
+const FIELD_I18N_CEB = {
+  'city_municipality': { label: 'Siyudad / Munisipyo', hint: 'Pilia ang siyudad o munisipyo diin nahimutang ang imong panimalay.' },
+  'barangay_ward': { label: 'Barangay' },
+  'respondent_name': { label: 'Pangalan sa Respondent', hint: 'Isulat ang kompleto nga pangalan sa tawo nga nagtubag niini nga survey.' },
+  'contact_number': { label: 'Numero sa Kontak', hint: 'Isulat ang imong 10-digit nga mobile number (pananglitan: 9171234567).' },
+  'flood_entered_containment': { label: 'B1. Nakasulod ba ang tubig sa baha sa imong septic tank o kasilyas?', hint: 'Hunahunaa kung nakaabot ba ang tubig sa baha sa imong kasilyas, septic tank, o pit sa panahon sa kusog nga ulan o bagyo.' },
+  'flood_water_level': { label: 'B2. Hangtod asa ang katas-on sa tubig sa baha?', hint: 'Banabana kung unsa ka taas ang tubig sa baha sa palibot sa imong kasilyas o tangke.' },
+  'flood_frequency': { label: 'B3. Kadaghan ba kini mahitabo?', hint: 'Kadaghan ba mahitabo ang baha sa imong kasilyas o tangke — matag tuig, panagsa, o usa ra ka higayon?' },
+  'family_members': { label: 'D1. Pila ka miyembro sa pamilya ang nagpuyo niini nga panimalay?', hint: 'Ihapa ang tanan nga kanunay nagpuyo ug natulog niini nga balay, lakip ang mga bata.' },
+  'dwelling_type': { label: 'D2. Klase sa puy-anan', hint: 'Unsa ang nag-unang materyales sa imong balay? Semento = Permanente, sagol nga materyales = Semi-permanente, gaan nga materyales (kahoy/nipa) = Temporaryo.' },
+  'sanitation_type': { label: 'E1. Unsa nga klase sa onsite sanitation system ang anaa nimo?', hint: 'Kini ang tangke o lungag sa ilalom sa yuta diin moadto ang hugaw sa imong kasilyas. Ang septic tank kasagaran usa ka concrete box; ang pit usa ka lungag sa yuta.' },
+  'sanitation_type_other': { label: 'E1a. Palihog isulat ang ubang klase sa sanitasyon' },
+  'wall_type': { label: 'E2. Bungbong: Selyado o Porous?', hint: 'Selyado = semento/masonry nga may plaster; Porous = brick nga walay plaster, bato' },
+  'bottom_type': { label: 'E3. Ilalom: Selyado o Dili selyado?', hint: 'Selyado = concrete slab sa ilalom; Dili selyado = bukas sa yuta' },
+  'has_partition': { label: 'E4. Ang tangke ba adunay partition wall sa sulod?', hint: 'Ang partition usa ka bungbong sa sulod sa tangke nga nagbahin niini sa 2 o mas pa ka chambers. Pilia "Wala Ko Kabalo" kung dili ka sigurado.' },
+  'partition_count': { label: 'E5. Pila ka partition walls ang anaa sa sulod sa tangke?', hint: 'Ang partition nagbahin sa tangke sa managlahi nga chambers.' },
+  'has_outlet': { label: 'E6. Aduna bay OUTLET gikan sa tangke?', hint: 'Ang outlet usa ka tubo nga mogawas sa tangke aron magpadagayday sa likido. Tan-awa kung aduna bay tubo gikan sa imong tangke.' },
+  'outlet_destination': { label: 'E7. Asa mopadulong ang gawas sa outlet?', hint: 'Asa mopadulong ang likido gikan sa outlet pipe? Ang soak pit mosuyop niini sa yuta; ang bukas nga kanal usa ka makita nga agianan.' },
+  'year_constructed': { label: 'E8. Pilay edad niini nga tangke/pit?', hint: 'Gibanabana nga edad sa imong septic tank o pit.' },
+  'tank_size_known': { label: 'E9. Gibanabana nga gidak-on sa tangke', hint: 'Kabalo ba ka sa gibanabana nga gidak-on sa imong tangke/pit?' },
+  'kitchen_same_tank': { label: 'F1. Ang hugaw nga tubig sa kusina moadto ba sa PAREHAS nga tangke sa kasilyas?', hint: 'Tan-awa kung ang tubig gikan sa lababo sa kusina mopadulong sa parehas nga septic tank/pit sa imong kasilyas.' },
+  'bathroom_same_tank': { label: 'F2. Ang tubig sa banyo / laba moadto ba sa PAREHAS nga tangke?', hint: 'Tan-awa kung ang tubig gikan sa kaligo, paghugas sa kamot, o laba mopadulong sa parehas nga tangke sa imong kasilyas.' },
+  'greywater_destination': { label: 'F3. Asa mopadulong ang greywater?', hint: 'Ang greywater mao ang nagamit na nga tubig gikan sa imong kusina, banyo, o laba (dili kasilyas). Asa kini mopadulong?' },
+  'ever_desludged': { label: 'G1. Nahurutan ba (na-desludge) ang imong septic tank sukad?', hint: 'Ang paghurot nagpasabot sa pagbomba sa solid waste gikan sa imong septic tank, kasagaran gihimo sa vacuum truck o manual.' },
+  'last_desludge_when': { label: 'G2. Kanus-a ang KATAPUSAN nga paghurot?', hint: 'Kadugay na ba sukad gihurutan ang imong septic tank?' },
+  'desludging_method': { label: 'G3. Giunsa paghurot?', hint: 'Gigamitan ba og vacuum truck (tanker), o gihurutan ba kini sa mga trabahante gamit ang mga balde/kasangkapan?' },
+  'truck_trips': { label: 'G4. Pila ka biyahe sa truck?', hint: 'Pila ka beses miabot ang vacuum truck aron hurutan ang imong tangke?' },
+  'desludging_cost': { label: 'G5. Pila ang gibayad nimo? (PHP)', hint: 'Gibanabana nga gasto nga gibayad nimo sa serbisyo sa paghurot.' },
+  'no_desludge_reason': { label: 'G6. Ngano wala pa mahuruti ang tangke?', hint: 'Pilia ang tanan nga angay' },
+  'no_desludge_other': { label: 'G6a. Palihog isulat' },
+  'water_supply_sources': { label: 'H1. Tinubdan sa tubig', hint: 'Pilia ang tanan nga tinubdan sa tubig sa imong panimalay. Mahimo kang mopili og labaw sa usa.' },
+  'water_supply_other': { label: 'H1a. Palihog isulat ang ubang tinubdan sa tubig' },
+  'past_toilet_issues': { label: 'I1. Aduna bay mga problema kaniadto sa paggamit sa imong kasilyas?', hint: 'Pananglitan: pagbara, baho, pag-awas, hinay nga flush, o pagbalik sa tubig.' },
+  'toilet_issue_desc': { label: 'I2. Palihog ihulagway ang (mga) problema' },
+  'at_home_currently': { label: 'J1. Naa ka ba karon sa imong balay samtang nagsulat niini?', hint: 'Kung oo, kuhaon namo ang imong GPS location para sa mapping sa sanitation infrastructure. Kung dili, palihog ihatag ang imong adres ug usa ka duol nga landmark.' },
+  'household_address': { label: 'J2. Adres', hint: 'Isulat ang imong kompleto nga adres sa balay lakip ang ngalan sa kalsada, purok/sitio kung aduna.' },
+  'nearby_landmark': { label: 'J3. Duol nga Landmark', hint: 'Hisguti ang usa ka nailhan nga lugar o istruktura duol sa imong balay (pananglitan: simbahan, eskwelahan, tindahan, barangay hall).' },
+  'sanitation_feedback': { label: 'J4. Aduna bay mga sugyot aron mapauswag ang sanitasyon sa imong lugar?', hint: 'Ipaambit ang bisan unsa nga problema sa sanitasyon o ideya aron mapauswag ang serbisyo sa sanitasyon sa imong komunidad.' },
+  'respondent_consent': { label: 'J5. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' },
+};
+
+const GPS_FIELD_CEB = { label: 'J2. GPS coordinates sa imong panimalay', hint: 'I-tap aron makuha ang imong karon nga lokasyon. Hulata ang accuracy ≤ 10m para sa pinakamaayo nga resulta.' };
+const TANK_DIM_CEB = { label: 'Isulat ang gidak-on', hint: 'Isulat ang gitas-on, gilapdon ug gilawmon sa tangke/pit.' };
+
+function T(key) { return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || UI_TEXT.en[key] || key; }
+
+function updateFieldText(field, ft) {
+  if (ft.label) {
+    const label = field.querySelector('.field-label');
+    if (label) {
+      const hadReq = !!label.querySelector('.req');
+      label.textContent = ft.label + ' ';
+      if (hadReq) { const r = document.createElement('span'); r.className = 'req'; r.textContent = '*'; label.appendChild(r); }
+    }
+  }
+  if (ft.hint !== undefined) {
+    const hint = field.querySelector('.field-hint');
+    if (hint) hint.textContent = ft.hint;
+  }
+}
+
+function buildOptionGroups() {
+  document.querySelectorAll('.option-group').forEach(group => {
+    group.innerHTML = '';
+    const name = group.dataset.name;
+    const type = group.dataset.type;
+    const listKey = FIELD_CHOICES[name];
+    if (!listKey) return;
+    const choices = (currentLang === 'ceb' && CHOICE_LISTS_CEB[listKey]) ? CHOICE_LISTS_CEB[listKey] : CHOICE_LISTS[listKey];
+    if (!choices) return;
+
+    choices.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'option-item';
+      item.dataset.value = c.v;
+      // Restore selection state
+      if (type === 'checkbox') {
+        if ((radioValues[name] || '').split(' ').includes(c.v)) { item.classList.add('selected'); }
+      } else {
+        if (radioValues[name] === c.v) item.classList.add('selected');
+      }
+      const dot = document.createElement('div');
+      dot.className = type === 'checkbox' ? 'option-check' : 'option-dot';
+      if (type === 'checkbox' && item.classList.contains('selected')) dot.textContent = '✓';
+      const label = document.createElement('span');
+      label.textContent = c.l;
+      item.appendChild(dot);
+      item.appendChild(label);
+
+      item.addEventListener('click', () => {
+        if (type === 'checkbox') {
+          item.classList.toggle('selected');
+          const d = item.querySelector('.option-check');
+          d.textContent = item.classList.contains('selected') ? '✓' : '';
+          const selected = [...group.querySelectorAll('.option-item.selected')].map(i => i.dataset.value);
+          radioValues[name] = selected.join(' ');
+        } else {
+          group.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          radioValues[name] = c.v;
+        }
+        updateConditionals();
+      });
+      group.appendChild(item);
+    });
+  });
+}
+
+function applyTranslations() {
+  const t = UI_TEXT[currentLang];
+  // Topbar
+  document.querySelector('.topbar h1').textContent = t.topbar_title;
+  document.querySelector('.topbar .sub').textContent = t.topbar_sub;
+  // Section titles
+  document.querySelectorAll('.section-title').forEach((el, i) => {
+    if (t.section_titles[i]) el.textContent = t.section_titles[i];
+  });
+  // Instructions page
+  document.querySelector('.instructions-inner h2').textContent = t.instr_title;
+  const instrTexts = document.querySelectorAll('.instructions-text');
+  if (instrTexts[0]) instrTexts[0].innerHTML = t.instr_1;
+  if (instrTexts[1]) instrTexts[1].innerHTML = t.instr_2;
+  if (instrTexts[2]) instrTexts[2].innerHTML = t.instr_3;
+  if (instrTexts[3]) instrTexts[3].innerHTML = t.instr_4;
+  document.querySelector('.btn-continue').textContent = t.btn_continue;
+  // Navigation
+  document.getElementById('btnPrev').textContent = t.btn_back;
+  document.getElementById('btnNext').textContent = t.btn_next;
+  document.querySelector('.footer').textContent = t.footer;
+  // Select defaults
+  const citySelect = document.getElementById('city_municipality');
+  if (citySelect && citySelect.options[0]) citySelect.options[0].textContent = t.select_default;
+  const barangaySelect = document.getElementById('barangay_ward');
+  if (barangaySelect && barangaySelect.options[0]) barangaySelect.options[0].textContent = t.select_city_first;
+  // Field labels and hints
+  if (currentLang === 'ceb') {
+    // Option group fields
+    document.querySelectorAll('.option-group').forEach(group => {
+      const ft = FIELD_I18N_CEB[group.dataset.name];
+      if (ft) updateFieldText(group.closest('.field'), ft);
+    });
+    // Input/select/textarea fields
+    ['city_municipality','barangay_ward','respondent_name','contact_number','family_members',
+     'sanitation_type_other','no_desludge_other','water_supply_other','toilet_issue_desc',
+     'household_address','nearby_landmark','sanitation_feedback'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const ft = FIELD_I18N_CEB[id];
+      if (ft) updateFieldText(el.closest('.field'), ft);
+    });
+    // GPS field
+    const gpsField = document.querySelector('.field.conditional[data-show-when="at_home_currently=yes"]');
+    if (gpsField) updateFieldText(gpsField, GPS_FIELD_CEB);
+    // Tank dimension field
+    const dimField = document.querySelector('.field.conditional[data-show-when="tank_size_known=yes"]');
+    if (dimField) updateFieldText(dimField, TANK_DIM_CEB);
+  }
+  // GPS modal tips
+  const tips = document.getElementById('gpsModalTips');
+  if (tips) { const divs = tips.querySelectorAll('div'); if(divs[0]) divs[0].textContent=t.gps_tip1; if(divs[1]) divs[1].textContent=t.gps_tip2; if(divs[2]) divs[2].textContent=t.gps_tip3; }
+  // GPS ring unit
+  const gpsUnit = document.querySelector('.gps-ring-unit');
+  if (gpsUnit) gpsUnit.textContent = t.gps_meters;
+  // GPS capture button
+  const btnGps = document.getElementById('btnGps');
+  if (btnGps) { const svg = btnGps.querySelector('svg'); btnGps.textContent = ''; if(svg) { btnGps.appendChild(svg); btnGps.appendChild(document.createTextNode(' ')); } btnGps.appendChild(document.createTextNode(t.gps_capture)); }
+  // GPS cancel button
+  const gpsCancel = document.querySelector('.btn-gps-cancel');
+  if (gpsCancel) gpsCancel.textContent = t.gps_cancel;
+  // Unit toggle labels
+  document.querySelectorAll('.unit-option').forEach(el => {
+    const input = el.querySelector('input');
+    const u = el.dataset.unit;
+    el.textContent = '';
+    el.appendChild(input);
+    el.appendChild(document.createTextNode(' ' + (u === 'meter' ? t.unit_meters : t.unit_feet)));
+  });
+  // Dimension labels
+  document.querySelectorAll('.dim-field label').forEach((lbl, i) => {
+    if (i === 0) lbl.textContent = t.dim_length;
+    if (i === 1) lbl.textContent = t.dim_width;
+    if (i === 2) lbl.textContent = t.dim_depth;
+  });
+  // Unit label text
+  const tankUnitLabel = document.getElementById('tankUnitLabel');
+  if (tankUnitLabel) tankUnitLabel.textContent = t.unit_label_m;
+  // SVG diagram labels
+  document.querySelectorAll('.diagram-box svg text').forEach(txt => {
+    if (txt.textContent === 'No partition' || txt.textContent === 'Walay partition') txt.textContent = currentLang === 'ceb' ? 'Walay partition' : 'No partition';
+    else if (txt.textContent === 'Single partition' || txt.textContent === 'Usa ka partition') txt.textContent = currentLang === 'ceb' ? 'Usa ka partition' : 'Single partition';
+    else if (txt.textContent === 'Double partition' || txt.textContent === 'Duha ka partition') txt.textContent = currentLang === 'ceb' ? 'Duha ka partition' : 'Double partition';
+  });
+}
+
+function selectLanguage(lang) {
+  currentLang = lang;
+  buildOptionGroups();
+  applyTranslations();
+  showInstructions();
+}
+
 // ==================== WELCOME PAGE ====================
 function showInstructions() {
   document.getElementById('welcomePage').classList.remove('show');
@@ -836,7 +1138,7 @@ function startSurvey() {
   document.querySelector(`[data-section=\"0\"]`).classList.remove('hidden');
   document.getElementById('btnPrev').classList.add('hidden');
   const btnNext = document.getElementById('btnNext');
-  btnNext.textContent = 'Next →';
+  btnNext.textContent = T('btn_next');
   btnNext.className = 'btn btn-next';
   btnNext.onclick = () => navigate(1);
   
@@ -858,42 +1160,7 @@ function init() {
   }
   
   // Build all option groups
-  document.querySelectorAll('.option-group').forEach(group => {
-    const name = group.dataset.name;
-    const type = group.dataset.type;
-    const listKey = FIELD_CHOICES[name];
-    if (!listKey || !CHOICE_LISTS[listKey]) return;
-    const choices = CHOICE_LISTS[listKey];
-
-    choices.forEach(c => {
-      const item = document.createElement('div');
-      item.className = 'option-item';
-      item.dataset.value = c.v;
-      const dot = document.createElement('div');
-      dot.className = type === 'checkbox' ? 'option-check' : 'option-dot';
-      const label = document.createElement('span');
-      label.textContent = c.l;
-      item.appendChild(dot);
-      item.appendChild(label);
-
-      item.addEventListener('click', () => {
-        if (type === 'checkbox') {
-          item.classList.toggle('selected');
-          const dot = item.querySelector('.option-check');
-          dot.textContent = item.classList.contains('selected') ? '✓' : '';
-          // Collect all selected
-          const selected = [...group.querySelectorAll('.option-item.selected')].map(i => i.dataset.value);
-          radioValues[name] = selected.join(' ');
-        } else {
-          group.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
-          item.classList.add('selected');
-          radioValues[name] = c.v;
-        }
-        updateConditionals();
-      });
-      group.appendChild(item);
-    });
-  });
+  buildOptionGroups();
 
   updateProgress();
   updateTankDiagram();
@@ -903,7 +1170,7 @@ function init() {
 function updateBarangays() {
   const lgu = document.getElementById('city_municipality').value;
   const sel = document.getElementById('barangay_ward');
-  sel.innerHTML = '<option value="">— Select —</option>';
+  sel.innerHTML = '<option value="">' + T('select_default') + '</option>';
   if (BARANGAYS[lgu]) {
     BARANGAYS[lgu].forEach(b => {
       const opt = document.createElement('option');
@@ -944,7 +1211,7 @@ function setUnit(unit) {
     el.classList.toggle('selected', el.dataset.unit === unit);
     el.querySelector('input').checked = el.dataset.unit === unit;
   });
-  document.getElementById('tankUnitLabel').textContent = 'Unit: ' + (unit === 'meter' ? 'Meters' : 'Feet');
+  document.getElementById('tankUnitLabel').textContent = (unit === 'meter' ? T('unit_label_m') : T('unit_label_ft'));
   updateTankDiagram();
 }
 
@@ -1011,7 +1278,7 @@ function updateTankDiagram() {
 
   // Length label (bottom)
   const ly = oy + bh + 16;
-  ctx.fillText(L ? `${L} ${unitLabel}` : 'Length', ox + bw / 2, ly);
+  ctx.fillText(L ? `${L} ${unitLabel}` : T('dim_length'), ox + bw / 2, ly);
   if (L) {
     ctx.beginPath(); ctx.moveTo(ox + 2, ly - 8); ctx.lineTo(ox + bw - 2, ly - 8); ctx.strokeStyle = '#1a6b4e'; ctx.lineWidth = 0.8; ctx.stroke();
     drawArrow(ctx, ox + 2, ly - 8, 'left'); drawArrow(ctx, ox + bw - 2, ly - 8, 'right');
@@ -1019,7 +1286,7 @@ function updateTankDiagram() {
 
   // Depth label (left)
   ctx.save(); ctx.translate(ox - 14, oy + bh / 2); ctx.rotate(-Math.PI / 2);
-  ctx.fillText(D ? `${D} ${unitLabel}` : 'Depth', 0, 0); ctx.restore();
+  ctx.fillText(D ? `${D} ${unitLabel}` : T('dim_depth'), 0, 0); ctx.restore();
   if (D) {
     ctx.beginPath(); ctx.moveTo(ox - 8, oy + 2); ctx.lineTo(ox - 8, oy + bh - 2); ctx.strokeStyle = '#1a6b4e'; ctx.lineWidth = 0.8; ctx.stroke();
     drawArrow(ctx, ox - 8, oy + 2, 'up'); drawArrow(ctx, ox - 8, oy + bh - 2, 'down');
@@ -1027,21 +1294,21 @@ function updateTankDiagram() {
 
   // Width label (top-right)
   const wmx = ox + bw + bd * isoX / 2 + 6, wmy = oy - bd * isoY / 2 - 6;
-  ctx.fillText(Wid ? `${Wid} ${unitLabel}` : 'Width', wmx, wmy);
+  ctx.fillText(Wid ? `${Wid} ${unitLabel}` : T('dim_width'), wmx, wmy);
 
   // Volume calculation
   const volEl = document.getElementById('tankVolume');
   if (L > 0 && Wid > 0 && D > 0) {
     const vol = L * Wid * D;
-    let volText = `Volume: ${vol.toFixed(1)} ${unit === 'meter' ? 'm³' : 'ft³'}`;
+    let volText = `${T('tank_volume')} ${vol.toFixed(1)} ${unit === 'meter' ? 'm³' : 'ft³'}`;
     if (unit === 'meter') {
-      volText += ` (${(vol * 1000).toFixed(0)} liters)`;
+      volText += ` (${(vol * 1000).toFixed(0)} ${T('tank_liters')})`;
     } else {
-      volText += ` (${(vol * 28.3168).toFixed(0)} liters)`;
+      volText += ` (${(vol * 28.3168).toFixed(0)} ${T('tank_liters')})`;
     }
     volEl.textContent = volText;
   } else {
-    volEl.textContent = 'Enter dimensions to see volume';
+    volEl.textContent = T('tank_enter_dim');
   }
 }
 
@@ -1066,8 +1333,8 @@ function captureGPS() {
 
   document.getElementById('gpsModalOverlay').classList.add('show');
   document.getElementById('gpsRingValue').textContent = '--';
-  document.getElementById('gpsModalStatus').textContent = 'Searching for GPS signal...';
-  document.getElementById('gpsModalHint').textContent = 'Please wait while we lock onto your location.';
+  document.getElementById('gpsModalStatus').textContent = T('gps_searching');
+  document.getElementById('gpsModalHint').textContent = T('gps_wait');
   document.getElementById('gpsRing').className = 'gps-ring';
   document.getElementById('btnGpsAccept').classList.remove('active');
   document.getElementById('gpsModalTips').style.display = '';
@@ -1102,32 +1369,32 @@ function captureGPS() {
 
       if (accuracy <= ACCURACY_THRESHOLD) {
         ring.className = 'gps-ring good';
-        status.textContent = '✓ Excellent Signal!';
+        status.textContent = T('gps_excellent');
         status.style.color = 'var(--accent)';
-        hint.textContent = 'Accuracy is great. You can capture now.';
+        hint.textContent = T('gps_great');
         acceptBtn.classList.add('active');
-        acceptBtn.textContent = `✓ Use This Location (±${accStr}m)`;
+        acceptBtn.textContent = `${T('gps_use')} (±${accStr}m)`;
         tips.style.display = 'none';
       } else if (timedOut) {
         ring.className = 'gps-ring fair';
-        status.textContent = '⚠️ Time limit reached';
+        status.textContent = T('gps_timeout');
         status.style.color = 'var(--warning)';
-        hint.textContent = `Best accuracy: ±${bestGpsData.accStr}m. You may use this or retry.`;
+        hint.textContent = `${T('gps_best')} ±${bestGpsData.accStr}m.`;
         acceptBtn.classList.add('active');
-        acceptBtn.textContent = `Use This Location (±${bestGpsData.accStr}m)`;
+        acceptBtn.textContent = `${T('gps_use')} (±${bestGpsData.accStr}m)`;
         tips.style.display = 'none';
       } else if (accuracy <= 20) {
         ring.className = 'gps-ring fair';
-        status.textContent = '⚠️ Improving...';
+        status.textContent = T('gps_improving');
         status.style.color = 'var(--warning)';
-        hint.textContent = `Signal is fair. Move to open area. Auto-unlock in ${remaining}s.`;
+        hint.textContent = `${T('gps_fair_msg')} ${T('gps_auto_unlock')} ${remaining}s.`;
         acceptBtn.classList.remove('active');
         tips.style.display = '';
       } else {
         ring.className = 'gps-ring';
-        status.textContent = '❌ Weak Signal';
+        status.textContent = T('gps_weak');
         status.style.color = 'var(--danger)';
-        hint.textContent = `Move outdoors to open area. Auto-unlock in ${remaining}s.`;
+        hint.textContent = `${T('gps_move')} ${T('gps_auto_unlock')} ${remaining}s.`;
         acceptBtn.classList.remove('active');
         tips.style.display = '';
       }
@@ -1153,10 +1420,10 @@ function acceptGPS() {
 
   const box = document.getElementById('gpsBox');
   box.classList.add('captured');
-  box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
+  box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">${T('gps_captured')}</div>
     <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
-    <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m</div>
-    <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+    <div class="gps-accuracy">${T('gps_accuracy_label')} ±${gpsData.accuracy} m</div>
+    <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">${T('gps_recapture')}</button>`;
 
   document.getElementById('gpsModalOverlay').classList.remove('show');
 }
@@ -1208,7 +1475,7 @@ function validateCurrentSection() {
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
     if (!sel.value) {
-      markInvalid(field, 'Please select an option');
+      markInvalid(field, T('val_select'));
       if (!firstInvalid) firstInvalid = field;
       valid = false;
     }
@@ -1223,7 +1490,7 @@ function validateCurrentSection() {
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
     if (!inp.value.trim()) {
-      markInvalid(field, 'This field is required');
+      markInvalid(field, T('val_required'));
       if (!firstInvalid) firstInvalid = field;
       valid = false;
     }
@@ -1231,7 +1498,7 @@ function validateCurrentSection() {
     if (inp.id === 'contact_number' && inp.value.trim()) {
       const phone = inp.value.trim();
       if (!/^9\d{9}$/.test(phone)) {
-        markInvalid(field, 'Enter a valid 10-digit mobile number starting with 9');
+        markInvalid(field, T('val_phone'));
         if (!firstInvalid) firstInvalid = field;
         valid = false;
       }
@@ -1247,7 +1514,7 @@ function validateCurrentSection() {
     if (!label || !label.querySelector('.req')) return;
     const selected = group.querySelector('.option-item.selected');
     if (!selected) {
-      markInvalid(field, 'Please select an option');
+      markInvalid(field, T('val_select'));
       if (!firstInvalid) firstInvalid = field;
       valid = false;
     }
@@ -1262,7 +1529,7 @@ function validateCurrentSection() {
     if (!label || !label.querySelector('.req')) return;
     const selected = group.querySelector('.option-item.selected');
     if (!selected) {
-      markInvalid(field, 'Please select at least one option');
+      markInvalid(field, T('val_at_least_one'));
       if (!firstInvalid) firstInvalid = field;
       valid = false;
     }
@@ -1277,7 +1544,7 @@ function validateCurrentSection() {
     if (atHome === 'yes' && !gpsData.lat) {
       const gpsField = section.querySelector('[data-show-when="at_home_currently=yes"]');
       if (gpsField && gpsField.classList.contains('show')) {
-        markInvalid(gpsField, 'Please capture your GPS location');
+        markInvalid(gpsField, T('val_gps'));
         if (!firstInvalid) firstInvalid = gpsField;
         valid = false;
       }
@@ -1291,7 +1558,7 @@ function validateCurrentSection() {
       const sel = consentGroup.querySelector('.option-item.selected');
       if (sel && sel.dataset.value === 'no') {
         const field = consentGroup.closest('.field');
-        markInvalid(field, 'Consent is required to submit');
+        markInvalid(field, T('val_consent'));
         if (!firstInvalid) firstInvalid = field;
         valid = false;
       }
@@ -1330,11 +1597,11 @@ function navigate(dir) {
   document.getElementById('btnPrev').classList.toggle('hidden', currentSection === 0);
   const btnNext = document.getElementById('btnNext');
   if (currentSection === TOTAL_SECTIONS - 1) {
-    btnNext.textContent = '✓ Submit Survey';
+    btnNext.textContent = T('btn_submit');
     btnNext.className = 'btn btn-submit';
     btnNext.onclick = submitSurvey;
   } else {
-    btnNext.textContent = 'Next →';
+    btnNext.textContent = T('btn_next');
     btnNext.className = 'btn btn-next';
     btnNext.onclick = () => navigate(1);
   }
@@ -1347,7 +1614,7 @@ function updateProgress() {
   const pct = ((currentSection + 1) / TOTAL_SECTIONS * 100).toFixed(0);
   document.getElementById('progressFill').style.width = pct + '%';
   const labels = ['ID','B','D','E','F','G','H','I','J'];
-  document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${currentSection + 1} of ${TOTAL_SECTIONS}`;
+  document.getElementById('progressText').textContent = `${T('progress_section')} ${labels[currentSection]} — ${currentSection + 1} ${T('progress_of')} ${TOTAL_SECTIONS}`;
 }
 
 // ==================== SUBMIT ====================
@@ -1361,6 +1628,7 @@ async function submitSurvey() {
   // Gather all data
   const data = {
     timestamp: new Date().toISOString(),
+    language: currentLang,
     // Section ID
     city_municipality: v('city_municipality'),
     barangay_ward: v('barangay_ward'),
@@ -1411,11 +1679,11 @@ async function submitSurvey() {
       body: JSON.stringify(data)
     });
     showSubmitModal('success');
-    btnNext.textContent = '✓ Submitted';
+    btnNext.textContent = T('btn_submitted');
   } catch (err) {
     showSubmitModal('error', err.message);
     btnNext.disabled = false;
-    btnNext.textContent = '✓ Submit Survey';
+    btnNext.textContent = T('btn_submit');
   }
 }
 
@@ -1426,18 +1694,18 @@ function showSubmitModal(state, errorMsg) {
 
   if (state === 'loading') {
     modal.innerHTML = `<div class="submit-spinner"></div>
-      <h3>Submitting Survey</h3>
-      <p>Please wait while your responses are being saved...</p>`;
+      <h3>${T('submit_title')}</h3>
+      <p>${T('submit_wait')}</p>`;
   } else if (state === 'success') {
     modal.innerHTML = `<div class="submit-success-icon">✓</div>
-      <h3>Successfully Submitted!</h3>
-      <p>Your survey responses have been saved. Thank you for participating.</p>
-      <button class="btn-modal-close" onclick="closeSubmitModal()">Done</button>`;
+      <h3>${T('submit_success')}</h3>
+      <p>${T('submit_success_msg')}</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">${T('btn_done')}</button>`;
   } else if (state === 'error') {
     modal.innerHTML = `<div class="submit-error-icon">✕</div>
-      <h3>Submission Failed</h3>
-      <p>${errorMsg || 'Something went wrong. Please try again.'}</p>
-      <button class="btn-modal-close" onclick="closeSubmitModal()">Close</button>`;
+      <h3>${T('submit_error')}</h3>
+      <p>${errorMsg || T('submit_error_default')}</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">${T('btn_close')}</button>`;
   }
 }
 
