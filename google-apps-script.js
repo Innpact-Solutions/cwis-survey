@@ -4,7 +4,7 @@
 // SETUP INSTRUCTIONS:
 // 1. Go to https://script.google.com → New Project
 // 2. Paste this entire file content
-// 3. Replace SPREADSHEET_ID and DRIVE_FOLDER_ID below
+// 3. Replace SPREADSHEET_ID below
 // 4. Click Deploy → New Deployment → Web App
 //    - Execute as: Me
 //    - Who has access: Anyone
@@ -12,24 +12,14 @@
 // ==========================================
 
 const SPREADSHEET_ID = '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw'; // CWIS Survey Responses
-const DRIVE_FOLDER_ID = '1Lel80sZ6a1zILeHwyxr4w7OwNciUqv_A'; // CWIS Survey Photos folder
 
 // Column headers matching survey fields
 const HEADERS = [
   'Timestamp',
   'City / Municipality',
-  'Barangay / Ward',
+  'Barangay',
   'Respondent Name',
   'Contact Number',
-  // Photos (Section J)
-  'Toilet Photo URL',
-  'Toilet Photo GPS',
-  'Tank Photo URL',
-  'Tank Photo GPS',
-  'Outlet Photo URL',
-  'Outlet Photo GPS',
-  'House Photo URL',
-  'House Photo GPS',
   // Section B
   'B1. Flood Entered Containment',
   'B2. Flood Water Level',
@@ -47,7 +37,11 @@ const HEADERS = [
   'E6. Has Outlet',
   'E7. Outlet Destination',
   'E8. Year Constructed',
-  'E9. Tank Size',
+  'E9. Tank Size Known',
+  'E9. Tank Length',
+  'E9. Tank Width',
+  'E9. Tank Depth',
+  'E9. Tank Unit',
   // Section F
   'F1. Kitchen Same Tank',
   'F2. Bathroom Same Tank',
@@ -67,12 +61,10 @@ const HEADERS = [
   'I1. Past Toilet Issues',
   'I2. Toilet Issue Description',
   // Section J
-  'J5. Sanitation Feedback',
-  'J6. Respondent Consent',
-  // Section A (GPS - last section)
-  'Latitude',
-  'Longitude',
-  'GPS Accuracy (m)',
+  'J1. Address',
+  'J2. Nearby Landmark',
+  'J3. Sanitation Feedback',
+  'J4. Respondent Consent',
 ];
 
 // ==========================================
@@ -135,11 +127,6 @@ function doPost(e) {
       applyHeaders(sheet);
     }
 
-    // Save photos to Drive and get URLs
-    const toiletPhotoUrl = savePhotoToDrive(data.toilet_photo, data.respondent_name, 'Toilet', data.timestamp);
-    const tankPhotoUrl  = savePhotoToDrive(data.tank_access_photo, data.respondent_name, 'Tank', data.timestamp);
-    const outletPhotoUrl = savePhotoToDrive(data.outlet_photo, data.respondent_name, 'Outlet', data.timestamp);
-
     // Build row
     const row = [
       data.timestamp || '',
@@ -147,16 +134,6 @@ function doPost(e) {
       data.barangay_ward || '',
       data.respondent_name || '',
       data.contact_number || '',
-      // Photos (Section J)
-      toiletPhotoUrl,
-      data.toilet_photo_gps || '',
-      tankPhotoUrl,
-      data.tank_photo_gps || '',
-      outletPhotoUrl,
-      data.outlet_photo_gps || '',
-      // House photo
-      savePhotoToDrive(data.house_photo, data.respondent_name, 'House', data.timestamp),
-      data.house_photo_gps || '',
       // Section B
       data.flood_entered_containment || '',
       data.flood_water_level || '',
@@ -174,7 +151,11 @@ function doPost(e) {
       data.has_outlet || '',
       data.outlet_destination || '',
       data.year_constructed || '',
-      data.tank_size || '',
+      data.tank_size_known || '',
+      data.tank_length || '',
+      data.tank_width || '',
+      data.tank_depth || '',
+      data.tank_unit || '',
       // Section F
       data.kitchen_same_tank || '',
       data.bathroom_same_tank || '',
@@ -194,12 +175,10 @@ function doPost(e) {
       data.past_toilet_issues || '',
       data.toilet_issue_desc || '',
       // Section J
+      data.household_address || '',
+      data.nearby_landmark || '',
       data.sanitation_feedback || '',
       data.respondent_consent || '',
-      // Section A (GPS - last section)
-      data.latitude || '',
-      data.longitude || '',
-      data.gps_accuracy || '',
     ];
 
     sheet.appendRow(row);
@@ -215,34 +194,6 @@ function doPost(e) {
     return ContentService
       .createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// ==========================================
-// Save base64 photo to Google Drive
-// ==========================================
-function savePhotoToDrive(base64Data, respondentName, photoType, timestamp) {
-  if (!base64Data || base64Data.length < 50) return '';
-  try {
-    // Strip data:image/...;base64, prefix
-    const matches = base64Data.match(/^data:([a-zA-Z0-9+\/]+\/[a-zA-Z0-9+\/]+);base64,(.+)$/);
-    if (!matches) return '';
-    const mimeType = matches[1];
-    const base64 = matches[2];
-    const ext = mimeType.split('/')[1].replace('jpeg', 'jpg');
-
-    const blob = Utilities.newBlob(Utilities.base64Decode(base64), mimeType);
-    const safeName = (respondentName || 'unknown').replace(/[^a-zA-Z0-9_\- ]/g, '').trim();
-    const safeDate = (timestamp || new Date().toISOString()).replace(/[:.]/g, '-').slice(0, 19);
-    blob.setName(`${safeName}_${photoType}_${safeDate}.${ext}`);
-
-    const folder = DriveApp.getFolderById(DRIVE_FOLDER_ID);
-    const file = folder.createFile(blob);
-    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    return file.getUrl();
-  } catch (err) {
-    console.error('Photo save error:', err.message);
-    return 'Error saving photo: ' + err.message;
   }
 }
 
