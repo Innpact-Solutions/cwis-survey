@@ -185,7 +185,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .dim-stepper{display:flex;align-items:center;width:100%;border-radius:8px;overflow:hidden;border:1.5px solid var(--card-border);background:var(--bg)}
 .dim-stepper input{flex:1;text-align:center;padding:0.55rem 0.2rem;border:none;background:transparent;font-size:0.95rem;font-weight:600;font-family:var(--font);min-width:0;-moz-appearance:textfield}
 .dim-stepper input::-webkit-inner-spin-button,.dim-stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-.dim-btn{display:flex;align-items:center;justify-content:center;width:38px;min-width:38px;padding:0.5rem 0;background:var(--accent);color:#fff;border:none;font-size:1.2rem;font-weight:700;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.dim-btn{display:flex;align-items:center;justify-content:center;width:38px;min-width:38px;padding:0.5rem 0;background:var(--accent);color:#fff;border:none;font-size:1.2rem;font-weight:700;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none}
 .dim-btn:active{background:var(--accent-hover)}
 .dim-btn.minus{border-right:1px solid var(--card-border)}
 .dim-btn.plus{border-left:1px solid var(--card-border)}
@@ -560,25 +560,25 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
         <div class="dim-field">
           <label>Length</label>
           <div class="dim-stepper">
-            <button type="button" class="dim-btn minus" onclick="stepDim('tank_length',-1)">−</button>
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_length',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
             <input type="number" id="tank_length" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
-            <button type="button" class="dim-btn plus" onclick="stepDim('tank_length',1)">+</button>
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_length',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
           </div>
         </div>
         <div class="dim-field">
           <label>Width</label>
           <div class="dim-stepper">
-            <button type="button" class="dim-btn minus" onclick="stepDim('tank_width',-1)">−</button>
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_width',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
             <input type="number" id="tank_width" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
-            <button type="button" class="dim-btn plus" onclick="stepDim('tank_width',1)">+</button>
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_width',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
           </div>
         </div>
         <div class="dim-field">
           <label>Depth</label>
           <div class="dim-stepper">
-            <button type="button" class="dim-btn minus" onclick="stepDim('tank_depth',-1)">−</button>
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_depth',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
             <input type="number" id="tank_depth" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
-            <button type="button" class="dim-btn plus" onclick="stepDim('tank_depth',1)">+</button>
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_depth',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
           </div>
         </div>
       </div>
@@ -914,6 +914,8 @@ function updateBarangays() {
 }
 
 // ==================== UNIT TOGGLE & TANK DIAGRAM ====================
+let dimTimer = null;
+let dimDelay = 0;
 function stepDim(id, dir) {
   const inp = document.getElementById(id);
   let val = parseFloat(inp.value) || 0;
@@ -921,6 +923,20 @@ function stepDim(id, dir) {
   if (val < 0) val = 0;
   inp.value = val;
   updateTankDiagram();
+}
+function startDimHold(id, dir) {
+  stepDim(id, dir);
+  let count = 0;
+  function tick() {
+    count++;
+    stepDim(id, dir);
+    dimDelay = count < 5 ? 250 : count < 15 ? 120 : 50;
+    dimTimer = setTimeout(tick, dimDelay);
+  }
+  dimTimer = setTimeout(tick, 400);
+}
+function stopDimHold() {
+  if (dimTimer) { clearTimeout(dimTimer); dimTimer = null; }
 }
 
 function setUnit(unit) {
