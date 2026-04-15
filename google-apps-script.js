@@ -61,10 +61,14 @@ const HEADERS = [
   'I1. Past Toilet Issues',
   'I2. Toilet Issue Description',
   // Section J
-  'J1. Address',
-  'J2. Nearby Landmark',
-  'J3. Sanitation Feedback',
-  'J4. Respondent Consent',
+  'J1. At Home Currently',
+  'J2. Address',
+  'J2. Latitude',
+  'J2. Longitude',
+  'J2. GPS Accuracy (m)',
+  'J3. Nearby Landmark',
+  'J4. Sanitation Feedback',
+  'J5. Respondent Consent',
 ];
 
 // ==========================================
@@ -175,7 +179,11 @@ function doPost(e) {
       data.past_toilet_issues || '',
       data.toilet_issue_desc || '',
       // Section J
+      data.at_home_currently || '',
       data.household_address || '',
+      data.latitude || '',
+      data.longitude || '',
+      data.gps_accuracy || '',
       data.nearby_landmark || '',
       data.sanitation_feedback || '',
       data.respondent_consent || '',
