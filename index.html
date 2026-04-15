@@ -875,7 +875,7 @@ const UI_TEXT = {
     submit_error: 'Submission Failed', submit_error_default: 'Something went wrong. Please try again.',
     btn_done: 'Done', btn_close: 'Close',
     val_select: 'Please select an option', val_required: 'This field is required',
-    val_phone: 'Enter a valid 10-digit mobile number starting with 9',
+    val_phone: 'Enter a valid 10-digit mobile number',
     val_at_least_one: 'Please select at least one option', val_gps: 'Please capture your GPS location',
     val_consent: 'Consent is required to submit',
     unit_meters: 'Meters', unit_feet: 'Feet', unit_label_m: 'Unit: Meters', unit_label_ft: 'Unit: Feet',
@@ -910,7 +910,7 @@ const UI_TEXT = {
     submit_error: 'Napakyas ang Pag-sumite', submit_error_default: 'May sayop nga nahitabo. Palihog sulayi pag-usab.',
     btn_done: 'Tapos', btn_close: 'Sirad-i',
     val_select: 'Palihog pili og opsyon', val_required: 'Kinahanglan kini nga field',
-    val_phone: 'Isulat ang balido nga 10-digit mobile number nga nagsugod sa 9',
+    val_phone: 'Isulat ang balido nga 10-digit mobile number',
     val_at_least_one: 'Palihog pili og labing menos usa ka opsyon', val_gps: 'Palihog kuhaa ang imong GPS lokasyon',
     val_consent: 'Kinahanglan ang pagtugot aron ma-sumite',
     unit_meters: 'Metro', unit_feet: 'Pye', unit_label_m: 'Yunit: Metro', unit_label_ft: 'Yunit: Pye',
@@ -1497,7 +1497,7 @@ function validateCurrentSection() {
     // Validate Philippine mobile number
     if (inp.id === 'contact_number' && inp.value.trim()) {
       const phone = inp.value.trim();
-      if (!/^9\d{9}$/.test(phone)) {
+      if (!/^\d{10}$/.test(phone)) {
         markInvalid(field, T('val_phone'));
         if (!firstInvalid) firstInvalid = field;
         valid = false;
