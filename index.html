@@ -707,37 +707,22 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   </div>
   <div class="card">
     <div class="field">
-      <div class="field-label">J1. Are you currently at your house while filling this form? <span class="req">*</span></div>
-      <div class="field-hint">If yes, we will capture your GPS location for mapping sanitation infrastructure. If not, please provide your address and a nearby landmark instead.</div>
-      <div class="option-group" data-name="at_home_currently" data-type="radio"></div>
-    </div>
-    <div class="field conditional" data-show-when="at_home_currently=yes">
-      <div class="field-label">J2. GPS coordinates of your household</div>
-      <div class="field-hint">Tap to capture your current location. Wait for accuracy ≤ 10m for best results.</div>
-      <div class="gps-box" id="gpsBox">
-        <button class="btn-gps" id="btnGps" onclick="captureGPS()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="9"/></svg>
-          Capture GPS
-        </button>
-      </div>
-    </div>
-    <div class="field conditional" data-show-when="at_home_currently=no">
-      <div class="field-label">J2. Address <span class="req">*</span></div>
+      <div class="field-label">J1. Address <span class="req">*</span></div>
       <div class="field-hint">Enter your complete house/lot address including street name, purok/sitio if applicable.</div>
       <textarea id="household_address" rows="3"></textarea>
     </div>
-    <div class="field conditional" data-show-when="at_home_currently=no">
-      <div class="field-label">J3. Nearby Landmark <span class="req">*</span></div>
+    <div class="field">
+      <div class="field-label">J2. Nearby Landmark <span class="req">*</span></div>
       <div class="field-hint">Mention a well-known place or structure near your house (e.g., church, school, store, barangay hall).</div>
       <input type="text" id="nearby_landmark">
     </div>
     <div class="field">
-      <div class="field-label">J4. Any suggestions to improve sanitation in your area?</div>
+      <div class="field-label">J3. Any suggestions to improve sanitation in your area?</div>
       <div class="field-hint">Share any sanitation problems you face or ideas to improve sanitation services in your community.</div>
       <textarea id="sanitation_feedback"></textarea>
     </div>
     <div class="field">
-      <div class="field-label">J5. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="field-label">J4. Respondent consent for data use confirmed? <span class="req">*</span></div>
       <div class="field-hint">By selecting "Yes", you agree that your responses can be used for the CWIS sanitation planning project.</div>
       <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
     </div>
@@ -806,7 +791,6 @@ const CHOICE_LISTS = {
   water_supply_sources: [{v:'borewell',l:'Borewell'},{v:'piped_water',l:'Piped water supply'},{v:'tanker_water',l:'Tanker water'},{v:'open_well',l:'Open well'},{v:'surface_water',l:'Surface water (river, pond, etc.)'},{v:'other',l:'Others (specify)'}],
   partition_count: [{v:'none',l:'No partition'},{v:'single',l:'Single partition'},{v:'double',l:'Double partition'},{v:'more_than_2',l:'More than 2 partitions'}],
   tank_size_known: [{v:'yes',l:'Yes, I know the size'},{v:'no',l:"Don't know"}],
-  at_home_currently: [{v:'yes',l:'Yes, I am at home'},{v:'no',l:'No, I am somewhere else'}],
 };
 
 // Map field names to choice lists
@@ -820,8 +804,7 @@ const FIELD_CHOICES = {
   truck_trips:'truck_trips', desludging_cost:'desludging_cost', no_desludge_reason:'no_desludge_reason',
   water_supply_sources:'water_supply_sources',
   past_toilet_issues:'yn',
-  respondent_consent:'yn',
-  at_home_currently:'at_home_currently'
+  respondent_consent:'yn'
 };
 
 // ==================== LANGUAGE SUPPORT ====================
@@ -845,7 +828,6 @@ const CHOICE_LISTS_CEB = {
   water_supply_sources: [{v:'borewell',l:'Borewell (bomba sa tubig)'},{v:'piped_water',l:'Piped water (tubo sa tubig)'},{v:'tanker_water',l:'Tubig gikan sa tanker'},{v:'open_well',l:'Bukas nga atabay'},{v:'surface_water',l:'Ibabaw nga tubig (suba, sapa, etc.)'},{v:'other',l:'Uban (isulat)'}],
   partition_count: [{v:'none',l:'Walay partition'},{v:'single',l:'Usa ka partition'},{v:'double',l:'Duha ka partition'},{v:'more_than_2',l:'Labaw sa 2 ka partition'}],
   tank_size_known: [{v:'yes',l:'Oo, kabalo ko sa gidak-on'},{v:'no',l:'Wala ko kabalo'}],
-  at_home_currently: [{v:'yes',l:'Oo, naa ko sa balay'},{v:'no',l:'Dili, naa ko sa laing lugar'}],
 };
 
 const UI_TEXT = {
@@ -955,14 +937,12 @@ const FIELD_I18N_CEB = {
   'water_supply_other': { label: 'H1a. Palihog isulat ang ubang tinubdan sa tubig' },
   'past_toilet_issues': { label: 'I1. Aduna bay mga problema kaniadto sa paggamit sa imong kasilyas?', hint: 'Pananglitan: pagbara, baho, pag-awas, hinay nga flush, o pagbalik sa tubig.' },
   'toilet_issue_desc': { label: 'I2. Palihog ihulagway ang (mga) problema' },
-  'at_home_currently': { label: 'J1. Naa ka ba karon sa imong balay samtang nagsulat niini?', hint: 'Kung oo, kuhaon namo ang imong GPS location para sa mapping sa sanitation infrastructure. Kung dili, palihog ihatag ang imong adres ug usa ka duol nga landmark.' },
-  'household_address': { label: 'J2. Adres', hint: 'Isulat ang imong kompleto nga adres sa balay lakip ang ngalan sa kalsada, purok/sitio kung aduna.' },
-  'nearby_landmark': { label: 'J3. Duol nga Landmark', hint: 'Hisguti ang usa ka nailhan nga lugar o istruktura duol sa imong balay (pananglitan: simbahan, eskwelahan, tindahan, barangay hall).' },
-  'sanitation_feedback': { label: 'J4. Aduna bay mga sugyot aron mapauswag ang sanitasyon sa imong lugar?', hint: 'Ipaambit ang bisan unsa nga problema sa sanitasyon o ideya aron mapauswag ang serbisyo sa sanitasyon sa imong komunidad.' },
-  'respondent_consent': { label: 'J5. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' },
+  'household_address': { label: 'J1. Adres', hint: 'Isulat ang imong kompleto nga adres sa balay lakip ang ngalan sa kalsada, purok/sitio kung aduna.' },
+  'nearby_landmark': { label: 'J2. Duol nga Landmark', hint: 'Hisguti ang usa ka nailhan nga lugar o istruktura duol sa imong balay (pananglitan: simbahan, eskwelahan, tindahan, barangay hall).' },
+  'sanitation_feedback': { label: 'J3. Aduna bay mga sugyot aron mapauswag ang sanitasyon sa imong lugar?', hint: 'Ipaambit ang bisan unsa nga problema sa sanitasyon o ideya aron mapauswag ang serbisyo sa sanitasyon sa imong komunidad.' },
+  'respondent_consent': { label: 'J4. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' },
 };
 
-const GPS_FIELD_CEB = { label: 'J2. GPS coordinates sa imong panimalay', hint: 'I-tap aron makuha ang imong karon nga lokasyon. Hulata ang accuracy ≤ 10m para sa pinakamaayo nga resulta.' };
 const TANK_DIM_CEB = { label: 'Isulat ang gidak-on', hint: 'Isulat ang gitas-on, gilapdon ug gilawmon sa tangke/pit.' };
 
 function T(key) { return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || UI_TEXT.en[key] || key; }
@@ -1071,9 +1051,6 @@ function applyTranslations() {
       const ft = FIELD_I18N_CEB[id];
       if (ft) updateFieldText(el.closest('.field'), ft);
     });
-    // GPS field
-    const gpsField = document.querySelector('.field.conditional[data-show-when="at_home_currently=yes"]');
-    if (gpsField) updateFieldText(gpsField, GPS_FIELD_CEB);
     // Tank dimension field
     const dimField = document.querySelector('.field.conditional[data-show-when="tank_size_known=yes"]');
     if (dimField) updateFieldText(dimField, TANK_DIM_CEB);
@@ -1504,6 +1481,20 @@ function validateCurrentSection() {
         if (!firstInvalid) firstInvalid = field;
         valid = false;
       }
+    }
+  });
+
+  // Check required textareas (not inside hidden conditionals)
+  section.querySelectorAll('textarea').forEach(ta => {
+    const field = ta.closest('.field');
+    if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!ta.value.trim()) {
+      markInvalid(field, T('val_required'));
+      if (!firstInvalid) firstInvalid = field;
+      valid = false;
     }
   });
 
