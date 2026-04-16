@@ -129,9 +129,11 @@ tbody tr:hover{background:var(--accent-light)}
 
 <script>
 // ==========================================
-// PASTE YOUR DASHBOARD APPS SCRIPT URL HERE
+// CONFIG
 // ==========================================
 const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa5ME3Cf4g4O0Ihh0OGRJs9zYla89XcgAiXFc22bESG59AgNGuhZCDLRNPQf6Jxknf/exec';
+const SPREADSHEET_ID = '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw';
+const SHEET_NAME = 'Responses';
 
 let allData = [];
 let filteredData = [];
@@ -140,26 +142,31 @@ const PAGE_SIZE = 25;
 let chartInstances = {};
 
 // ==========================================
-// Load data — tries fetch first, falls back to JSONP
+// Load data — tries 3 methods in sequence
 // ==========================================
 function loadData() {
   const btn = document.getElementById('btnRefresh');
   btn.disabled = true;
   btn.textContent = '↻ Loading…';
 
-  // Try fetch first (works on most mobile browsers after Google's redirect)
-  loadViaFetch()
+  // Method 1: Google Sheets Visualization API (most reliable on mobile)
+  loadViaGoogleSheets()
     .then(json => handleDataLoaded(json, btn))
     .catch(() => {
-      // Fallback to JSONP (works on desktop, some mobile)
-      loadViaJSONP()
+      // Method 2: fetch from Apps Script
+      loadViaFetch()
         .then(json => handleDataLoaded(json, btn))
-        .catch(err => {
-          btn.disabled = false;
-          btn.textContent = '↻ Refresh';
-          document.getElementById('mainContent').innerHTML =
-            '<div class="error-box">⚠️ Failed to load data: ' + escapeHtml(err.message) +
-            '<br><br>Please try refreshing. If the problem persists, check that the Apps Script is deployed correctly.</div>';
+        .catch(() => {
+          // Method 3: JSONP from Apps Script
+          loadViaJSONP()
+            .then(json => handleDataLoaded(json, btn))
+            .catch(err => {
+              btn.disabled = false;
+              btn.textContent = '↻ Refresh';
+              document.getElementById('mainContent').innerHTML =
+                '<div class="error-box">⚠️ Failed to load data.<br><br>' +
+                'Make sure the spreadsheet is shared as "Anyone with the link can view" and try again.</div>';
+            });
         });
     });
 }
@@ -170,7 +177,7 @@ function handleDataLoaded(json, btn) {
 
   if (json.status === 'error') {
     document.getElementById('mainContent').innerHTML =
-      '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message) + '</div>';
+      '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message || 'Unknown error') + '</div>';
     return;
   }
 
@@ -180,7 +187,74 @@ function handleDataLoaded(json, btn) {
   renderDashboard();
 }
 
-// Method 1: fetch with redirect following
+// ==========================================
+// Method 1: Google Sheets Visualization API (JSONP, no CORS issues)
+// ==========================================
+function loadViaGoogleSheets() {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cwis_gviz_' + Date.now();
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      const s = document.getElementById('gvizScript');
+      if (s) s.remove();
+      reject(new Error('Google Sheets timeout'));
+    }, 25000);
+
+    window[cbName] = function(response) {
+      clearTimeout(timeout);
+      delete window[cbName];
+      const s = document.getElementById('gvizScript');
+      if (s) s.remove();
+
+      if (response.status === 'error') {
+        reject(new Error(response.errors && response.errors[0] ? response.errors[0].message : 'Sheet error'));
+        return;
+      }
+
+      try {
+        var table = response.table;
+        var headers = [];
+        for (var i = 0; i < table.cols.length; i++) {
+          headers.push(table.cols[i].label || table.cols[i].id);
+        }
+
+        var rows = [];
+        for (var r = 0; r < table.rows.length; r++) {
+          var obj = {};
+          var cells = table.rows[r].c;
+          for (var c = 0; c < headers.length; c++) {
+            var cell = cells[c];
+            if (!cell) { obj[headers[c]] = ''; continue; }
+            // Use formatted value (f) if available, otherwise raw value (v)
+            var val = cell.f != null ? cell.f : (cell.v != null ? cell.v : '');
+            obj[headers[c]] = val;
+          }
+          rows.push(obj);
+        }
+
+        resolve({ status: 'ok', totalResponses: rows.length, headers: headers, rows: rows });
+      } catch (e) {
+        reject(e);
+      }
+    };
+
+    var script = document.createElement('script');
+    script.id = 'gvizScript';
+    script.src = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID +
+      '/gviz/tq?tqx=responseHandler:' + cbName + '&sheet=' + encodeURIComponent(SHEET_NAME);
+    script.onerror = function() {
+      clearTimeout(timeout);
+      delete window[cbName];
+      script.remove();
+      reject(new Error('Sheet script load failed'));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+// ==========================================
+// Method 2: fetch from Apps Script
+// ==========================================
 function loadViaFetch() {
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('Fetch timeout')), 20000);
@@ -199,7 +273,9 @@ function loadViaFetch() {
   });
 }
 
-// Method 2: JSONP via script tag injection
+// ==========================================
+// Method 3: JSONP from Apps Script
+// ==========================================
 function loadViaJSONP() {
   return new Promise((resolve, reject) => {
     const cbName = '_cwis_cb_' + Date.now();
