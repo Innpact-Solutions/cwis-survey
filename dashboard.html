@@ -140,51 +140,95 @@ const PAGE_SIZE = 25;
 let chartInstances = {};
 
 // ==========================================
-// Load data from Apps Script (JSONP to bypass CORS)
+// Load data — tries fetch first, falls back to JSONP
 // ==========================================
 function loadData() {
   const btn = document.getElementById('btnRefresh');
   btn.disabled = true;
   btn.textContent = '↻ Loading…';
 
-  // Create unique callback name
-  const cbName = '_cwis_cb_' + Date.now();
+  // Try fetch first (works on most mobile browsers after Google's redirect)
+  loadViaFetch()
+    .then(json => handleDataLoaded(json, btn))
+    .catch(() => {
+      // Fallback to JSONP (works on desktop, some mobile)
+      loadViaJSONP()
+        .then(json => handleDataLoaded(json, btn))
+        .catch(err => {
+          btn.disabled = false;
+          btn.textContent = '↻ Refresh';
+          document.getElementById('mainContent').innerHTML =
+            '<div class="error-box">⚠️ Failed to load data: ' + escapeHtml(err.message) +
+            '<br><br>Please try refreshing. If the problem persists, check that the Apps Script is deployed correctly.</div>';
+        });
+    });
+}
 
-  // Define callback
-  window[cbName] = function(json) {
-    // Cleanup
-    delete window[cbName];
-    const oldScript = document.getElementById('jsonpScript');
-    if (oldScript) oldScript.remove();
+function handleDataLoaded(json, btn) {
+  btn.disabled = false;
+  btn.textContent = '↻ Refresh';
 
-    btn.disabled = false;
-    btn.textContent = '↻ Refresh';
-
-    if (json.status === 'error') {
-      document.getElementById('mainContent').innerHTML =
-        '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message) + '</div>';
-      return;
-    }
-
-    allData = json.rows || [];
-    filteredData = [...allData];
-    currentPage = 1;
-    renderDashboard();
-  };
-
-  // Inject script tag (JSONP)
-  const script = document.createElement('script');
-  script.id = 'jsonpScript';
-  script.src = DASHBOARD_SCRIPT_URL + '?callback=' + cbName;
-  script.onerror = function() {
-    delete window[cbName];
-    script.remove();
-    btn.disabled = false;
-    btn.textContent = '↻ Refresh';
+  if (json.status === 'error') {
     document.getElementById('mainContent').innerHTML =
-      '<div class="error-box">⚠️ Failed to load data. Check that the Apps Script is deployed correctly.</div>';
-  };
-  document.body.appendChild(script);
+      '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message) + '</div>';
+    return;
+  }
+
+  allData = json.rows || [];
+  filteredData = [...allData];
+  currentPage = 1;
+  renderDashboard();
+}
+
+// Method 1: fetch with redirect following
+function loadViaFetch() {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => reject(new Error('Fetch timeout')), 20000);
+
+    fetch(DASHBOARD_SCRIPT_URL, { redirect: 'follow' })
+      .then(resp => {
+        clearTimeout(timeout);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return resp.json();
+      })
+      .then(resolve)
+      .catch(err => {
+        clearTimeout(timeout);
+        reject(err);
+      });
+  });
+}
+
+// Method 2: JSONP via script tag injection
+function loadViaJSONP() {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cwis_cb_' + Date.now();
+    const timeout = setTimeout(() => {
+      delete window[cbName];
+      const s = document.getElementById('jsonpScript');
+      if (s) s.remove();
+      reject(new Error('JSONP timeout'));
+    }, 20000);
+
+    window[cbName] = function(json) {
+      clearTimeout(timeout);
+      delete window[cbName];
+      const s = document.getElementById('jsonpScript');
+      if (s) s.remove();
+      resolve(json);
+    };
+
+    const script = document.createElement('script');
+    script.id = 'jsonpScript';
+    script.src = DASHBOARD_SCRIPT_URL + '?callback=' + cbName;
+    script.onerror = function() {
+      clearTimeout(timeout);
+      delete window[cbName];
+      script.remove();
+      reject(new Error('Script load failed'));
+    };
+    document.head.appendChild(script);
+  });
 }
 
 // ==========================================
