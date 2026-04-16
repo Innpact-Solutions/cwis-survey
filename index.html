@@ -1540,18 +1540,7 @@ function validateCurrentSection() {
   // Check photos on Documentation section (section 8)
   // (No photo validation needed)
 
-  // Check GPS on Documentation section — mandatory when "at home" = yes
-  if (currentSection === 8) {
-    const atHome = radioValues['at_home_currently'];
-    if (atHome === 'yes' && !gpsData.lat) {
-      const gpsField = section.querySelector('[data-show-when="at_home_currently=yes"]');
-      if (gpsField && gpsField.classList.contains('show')) {
-        markInvalid(gpsField, T('val_gps'));
-        if (!firstInvalid) firstInvalid = gpsField;
-        valid = false;
-      }
-    }
-  }
+  // GPS on Documentation section — optional (not mandatory)
 
   // Check consent on Documentation section
   if (currentSection === 8) {
