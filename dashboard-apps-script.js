@@ -14,12 +14,14 @@
 const SPREADSHEET_ID = '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw';
 
 function doGet(e) {
+  const callback = e && e.parameter && e.parameter.callback;
+
   try {
     const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     const sheet = ss.getSheetByName('Responses');
 
     if (!sheet || sheet.getLastRow() < 2) {
-      return jsonResponse({ status: 'ok', totalResponses: 0, rows: [], headers: [] });
+      return jsonpResponse({ status: 'ok', totalResponses: 0, rows: [], headers: [] }, callback);
     }
 
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
@@ -35,20 +37,27 @@ function doGet(e) {
       return obj;
     });
 
-    return jsonResponse({
+    return jsonpResponse({
       status: 'ok',
       totalResponses: rows.length,
       headers: headers,
       rows: rows
-    });
+    }, callback);
 
   } catch (err) {
-    return jsonResponse({ status: 'error', message: err.message });
+    return jsonpResponse({ status: 'error', message: err.message }, callback);
   }
 }
 
-function jsonResponse(data) {
+function jsonpResponse(data, callback) {
+  const json = JSON.stringify(data);
+  if (callback) {
+    // JSONP: wrap in callback function to bypass CORS
+    return ContentService
+      .createTextOutput(callback + '(' + json + ')')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
   return ContentService
-    .createTextOutput(JSON.stringify(data))
+    .createTextOutput(json)
     .setMimeType(ContentService.MimeType.JSON);
 }

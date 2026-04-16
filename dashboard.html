@@ -140,31 +140,51 @@ const PAGE_SIZE = 25;
 let chartInstances = {};
 
 // ==========================================
-// Load data from Apps Script
+// Load data from Apps Script (JSONP to bypass CORS)
 // ==========================================
-async function loadData() {
+function loadData() {
   const btn = document.getElementById('btnRefresh');
   btn.disabled = true;
   btn.textContent = '↻ Loading…';
 
-  try {
-    const resp = await fetch(DASHBOARD_SCRIPT_URL);
-    const json = await resp.json();
+  // Create unique callback name
+  const cbName = '_cwis_cb_' + Date.now();
 
-    if (json.status === 'error') throw new Error(json.message);
+  // Define callback
+  window[cbName] = function(json) {
+    // Cleanup
+    delete window[cbName];
+    const oldScript = document.getElementById('jsonpScript');
+    if (oldScript) oldScript.remove();
+
+    btn.disabled = false;
+    btn.textContent = '↻ Refresh';
+
+    if (json.status === 'error') {
+      document.getElementById('mainContent').innerHTML =
+        '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message) + '</div>';
+      return;
+    }
 
     allData = json.rows || [];
     filteredData = [...allData];
     currentPage = 1;
     renderDashboard();
-  } catch (err) {
-    document.getElementById('mainContent').innerHTML =
-      '<div class="error-box">⚠️ Failed to load data: ' + escapeHtml(err.message) +
-      '<br><br>Make sure you have deployed the dashboard Apps Script and updated DASHBOARD_SCRIPT_URL in this file.</div>';
-  } finally {
+  };
+
+  // Inject script tag (JSONP)
+  const script = document.createElement('script');
+  script.id = 'jsonpScript';
+  script.src = DASHBOARD_SCRIPT_URL + '?callback=' + cbName;
+  script.onerror = function() {
+    delete window[cbName];
+    script.remove();
     btn.disabled = false;
     btn.textContent = '↻ Refresh';
-  }
+    document.getElementById('mainContent').innerHTML =
+      '<div class="error-box">⚠️ Failed to load data. Check that the Apps Script is deployed correctly.</div>';
+  };
+  document.body.appendChild(script);
 }
 
 // ==========================================
@@ -427,12 +447,12 @@ function countByMulti(field) {
 }
 
 // ==========================================
-// Table rendering
+// Table rendering — all fields
 // ==========================================
-const TABLE_COLS = [
-  'Timestamp', 'City / Municipality', 'Barangay', 'Respondent Name',
-  'E1. Sanitation Type', 'G1. Ever Desludged', 'J5. Respondent Consent'
-];
+function getTableCols() {
+  if (allData.length === 0) return [];
+  return Object.keys(allData[0]);
+}
 
 function applyFilters() {
   const search = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -441,8 +461,7 @@ function applyFilters() {
   filteredData = allData.filter(r => {
     if (cityFilter && r['City / Municipality'] !== cityFilter) return false;
     if (search) {
-      const haystack = [r['Respondent Name'], r['Barangay'], r['City / Municipality'], r['Contact Number']]
-        .join(' ').toLowerCase();
+      const haystack = Object.values(r).join(' ').toLowerCase();
       if (!haystack.includes(search)) return false;
     }
     return true;
@@ -453,6 +472,7 @@ function applyFilters() {
 }
 
 function renderTable() {
+  const TABLE_COLS = getTableCols();
   const start = (currentPage - 1) * PAGE_SIZE;
   const pageData = filteredData.slice(start, start + PAGE_SIZE);
   const totalPages = Math.ceil(filteredData.length / PAGE_SIZE) || 1;
