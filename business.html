@@ -1,0 +1,2032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CWIS Business Sanitation Survey — Tagbilaran City</title>
+<meta name="description" content="Citywide Inclusive Sanitation (CWIS) business establishment survey for Tagbilaran City, Bohol. Help improve sanitation services for businesses across the city.">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://innpact-solutions.github.io/cwis-survey/business.html">
+<meta property="og:title" content="CWIS Business Sanitation Survey — Tagbilaran City">
+<meta property="og:description" content="Help improve sanitation services for businesses in Tagbilaran City under the Citywide Inclusive Sanitation Plan.">
+<meta property="og:image" content="https://innpact-solutions.github.io/cwis-survey/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<link rel="icon" type="image/png" href="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f4f1ec;--card:#fff;--card-border:#e2ddd5;
+  --accent:#1a6b4e;--accent-light:#e8f5ee;--accent-hover:#145a40;
+  --text:#1a1a1a;--text-dim:#6b6560;--text-label:#4a453f;
+  --danger:#c0392b;--danger-bg:#fdf0ef;
+  --warning:#e67e22;--warning-bg:#fef9f0;
+  --radius:10px;--font:'DM Sans',sans-serif;--font-display:'Instrument Serif',serif;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+html{font-size:15px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100dvh;padding:0 0 2rem}
+
+/* Top bar */
+.topbar{background:var(--accent);color:#fff;padding:1rem 1.25rem;position:sticky;top:0;z-index:100;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+.topbar h1{font-family:var(--font-display);font-size:1.35rem;font-weight:400;letter-spacing:0.01em}
+.topbar .sub{font-size:0.7rem;opacity:0.75;margin-top:0.15rem;letter-spacing:0.04em;text-transform:uppercase}
+
+/* Progress */
+.progress-wrap{background:#fff;border-bottom:1px solid var(--card-border);padding:0.6rem 1.25rem;position:sticky;top:60px;z-index:99}
+.progress-bar{height:5px;background:#e8e4de;border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:10px;transition:width 0.4s ease;width:0%}
+.progress-text{font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;text-align:right}
+
+/* Container */
+.container{max-width:520px;margin:0 auto;padding:0 1rem}
+
+/* Section */
+.section{margin-top:1.25rem;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-header{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;padding:0 0.25rem}
+.section-badge{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
+.section-title{font-size:1rem;font-weight:700;color:var(--text)}
+
+.card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);
+  padding:1.25rem;box-shadow:var(--shadow)}
+
+/* Subsection title (B.1, B.2, etc) */
+.sub-block{border-left:3px solid var(--accent-light);padding:0.5rem 0 0.25rem 0.85rem;margin-bottom:0.85rem}
+.sub-block-title{font-size:0.85rem;font-weight:700;color:var(--accent);margin-bottom:0.35rem}
+.sub-block-hint{font-size:0.72rem;color:var(--text-dim);font-style:italic;line-height:1.4}
+
+/* Fields */
+.field{margin-bottom:1.25rem}
+.field:last-child{margin-bottom:0}
+.field-label{font-size:0.82rem;font-weight:600;color:var(--text-label);margin-bottom:0.4rem;line-height:1.4}
+.field-label .req{color:var(--danger);margin-left:2px}
+.field-hint{font-size:0.72rem;color:var(--text-dim);margin-bottom:0.4rem;font-style:italic;line-height:1.4}
+
+.note-box{background:var(--warning-bg);border:1px solid rgba(230,126,34,0.25);border-radius:8px;
+  padding:0.75rem;font-size:0.75rem;color:#7a5a20;line-height:1.5;margin-bottom:1rem}
+.info-box{background:var(--accent-light);border:1px solid rgba(26,107,78,0.20);border-radius:8px;
+  padding:0.75rem;font-size:0.78rem;color:var(--accent);line-height:1.5;margin-bottom:1rem;font-weight:500}
+
+input[type="text"],input[type="number"],input[type="email"],textarea,select{
+  width:100%;padding:0.7rem 0.85rem;background:var(--bg);border:1.5px solid var(--card-border);
+  border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.9rem;transition:border 0.2s,box-shadow 0.2s}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light)}
+textarea{resize:vertical;min-height:70px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6560' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 0.85rem center;padding-right:2.2rem}
+
+/* Radio/checkbox groups */
+.option-group{display:flex;flex-direction:column;gap:0.4rem}
+.option-item{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0.75rem;background:var(--bg);
+  border:1.5px solid var(--card-border);border-radius:8px;cursor:pointer;transition:all 0.15s;font-size:0.85rem}
+.option-item:hover{border-color:var(--accent);background:var(--accent-light)}
+.option-item.selected{border-color:var(--accent);background:var(--accent-light)}
+.option-item input{display:none}
+.option-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.option-item.selected .option-dot{border-color:var(--accent);background:var(--accent)}
+.option-item.selected .option-dot::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+/* Checkbox variant */
+.option-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--card-border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.65rem;color:#fff}
+.option-item.selected .option-check{border-color:var(--accent);background:var(--accent)}
+
+/* GPS */
+.gps-box{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;padding:0.85rem;text-align:center}
+.gps-box.captured{border-style:solid;border-color:var(--accent);background:var(--accent-light)}
+.gps-coords{font-family:'Courier New',monospace;font-size:0.85rem;color:var(--accent);margin-top:0.2rem}
+.gps-accuracy{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
+.btn-gps{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:var(--accent);
+  border:none;border-radius:100px;color:#fff;font-family:var(--font);font-size:0.8rem;font-weight:600;cursor:pointer}
+.btn-gps:disabled{opacity:0.5;cursor:wait}
+.btn-gps:hover:not(:disabled){background:var(--accent-hover)}
+
+/* GPS Modal */
+.gps-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
+  z-index:3000;justify-content:center;align-items:center;padding:1.25rem}
+.gps-modal-overlay.show{display:flex}
+.gps-modal{background:#fff;border-radius:16px;padding:1.75rem 1.25rem;text-align:center;max-width:340px;width:100%;
+  animation:slideUp 0.3s ease;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
+.gps-ring{width:120px;height:120px;border-radius:50%;margin:0 auto 1rem;position:relative;
+  display:flex;align-items:center;justify-content:center;transition:all 0.5s ease}
+.gps-ring-bg{position:absolute;inset:0;border-radius:50%;border:6px solid #e8e4de}
+.gps-ring-progress{position:absolute;inset:0;border-radius:50%;border:6px solid transparent;
+  border-top-color:var(--danger);animation:spin 1.5s linear infinite;transition:border-color 0.3s}
+.gps-ring.good .gps-ring-progress{border-top-color:var(--accent);animation:none;border-color:var(--accent)}
+.gps-ring.fair .gps-ring-progress{border-top-color:var(--warning)}
+.gps-ring-value{font-size:1.5rem;font-weight:700;z-index:1;line-height:1}
+.gps-ring-unit{font-size:0.65rem;color:var(--text-dim);font-weight:500;z-index:1}
+.gps-modal-status{font-size:0.95rem;font-weight:700;margin-bottom:0.25rem}
+.gps-modal-hint{font-size:0.82rem;color:var(--text-dim);line-height:1.5;margin-bottom:1rem}
+.gps-modal-tips{text-align:left;background:var(--bg);border-radius:10px;padding:0.75rem 1rem;
+  margin-bottom:1.25rem;font-size:0.8rem;color:var(--text-dim);line-height:1.7}
+.gps-modal-tips div{display:flex;align-items:center;gap:0.5rem}
+.btn-gps-accept{width:100%;padding:0.75rem;background:var(--accent);border:none;border-radius:8px;
+  color:#fff;font-family:var(--font);font-size:0.9rem;font-weight:700;cursor:pointer;opacity:0.4;pointer-events:none;transition:all 0.3s}
+.btn-gps-accept.active{opacity:1;pointer-events:auto}
+.btn-gps-accept:hover.active{background:var(--accent-hover)}
+.btn-gps-cancel{width:100%;padding:0.6rem;background:transparent;border:none;color:var(--text-dim);
+  font-family:var(--font);font-size:0.82rem;cursor:pointer;margin-top:0.5rem}
+
+/* Navigation */
+.nav-buttons{display:flex;gap:0.75rem;margin-top:1.25rem;padding:0 0.25rem}
+.btn{flex:1;padding:0.8rem;border-radius:8px;font-family:var(--font);font-size:0.9rem;font-weight:600;
+  cursor:pointer;transition:all 0.15s;text-align:center;border:1.5px solid transparent}
+.btn-prev{background:var(--card);border-color:var(--card-border);color:var(--text)}
+.btn-prev:hover{background:var(--bg)}
+.btn-next{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-next:hover{background:var(--accent-hover)}
+.btn-submit{background:var(--accent);border-color:var(--accent);color:#fff;flex:2}
+.btn-submit:hover{background:var(--accent-hover)}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* Status */
+.status{text-align:center;padding:0.75rem;border-radius:8px;font-size:0.82rem;font-weight:500;margin-top:0.75rem;display:none}
+.status.success{display:block;background:var(--accent-light);border:1px solid rgba(26,107,78,0.3);color:var(--accent)}
+.status.error{display:block;background:var(--danger-bg);border:1px solid rgba(192,57,43,0.25);color:var(--danger)}
+
+/* Hidden sections */
+.hidden{display:none!important}
+
+/* Conditional fields & blocks */
+.conditional{display:none}
+.conditional.show{display:block}
+
+/* Validation errors */
+.field-error .option-group,.field-error select,.field-error input,.field-error textarea,.field-error .gps-box{border-color:var(--danger)!important}
+.field-error .option-item{border-color:rgba(192,57,43,0.3)}
+.error-msg{color:var(--danger);font-size:0.75rem;margin-top:0.35rem;font-weight:500}
+
+/* Phone input */
+.phone-input-wrap{display:flex;align-items:center;gap:0}
+.phone-prefix{padding:0.7rem 0.65rem;background:var(--accent);color:#fff;font-weight:700;font-size:0.9rem;
+  border-radius:8px 0 0 8px;border:1.5px solid var(--accent);white-space:nowrap}
+.phone-input-wrap input{border-radius:0 8px 8px 0;border-left:none}
+
+/* Diagram box */
+.diagram-box{background:var(--bg);border:1px solid var(--card-border);border-radius:8px;padding:0.75rem;
+  display:flex;justify-content:center;margin-bottom:0.75rem}
+
+/* Unit toggle */
+.unit-toggle{display:flex;gap:0;border:1.5px solid var(--card-border);border-radius:8px;overflow:hidden;margin-bottom:0.65rem}
+.unit-option{flex:1;text-align:center;padding:0.5rem;font-size:0.82rem;font-weight:600;cursor:pointer;
+  background:var(--bg);color:var(--text-dim);transition:all 0.15s}
+.unit-option input{display:none}
+.unit-option.selected{background:var(--accent);color:#fff}
+
+/* Dimension inputs */
+.dimension-inputs{display:flex;flex-direction:column;gap:0.5rem}
+.dim-field{display:flex;flex-direction:row;align-items:center;gap:0.5rem}
+.dim-field label{font-size:0.8rem;font-weight:600;color:var(--text-label);min-width:52px}
+.dim-stepper{display:flex;align-items:center;width:100%;border-radius:8px;overflow:hidden;border:1.5px solid var(--card-border);background:var(--bg)}
+.dim-stepper input{flex:1;text-align:center;padding:0.55rem 0.2rem;border:none;background:transparent;font-size:0.95rem;font-weight:600;font-family:var(--font);min-width:0;-moz-appearance:textfield}
+.dim-stepper input::-webkit-inner-spin-button,.dim-stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.dim-btn{display:flex;align-items:center;justify-content:center;width:38px;min-width:38px;padding:0.5rem 0;background:var(--accent);color:#fff;border:none;font-size:1.2rem;font-weight:700;cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:none}
+.dim-btn:active{background:var(--accent-hover)}
+.dim-btn.minus{border-right:1px solid var(--card-border)}
+.dim-btn.plus{border-left:1px solid var(--card-border)}
+
+/* Multi-tank list */
+.tank-list{display:flex;flex-direction:column;gap:0.55rem}
+.tank-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:0.4rem;align-items:center;padding:0.4rem;background:var(--bg);border-radius:8px;border:1px solid var(--card-border)}
+.tank-row label{font-size:0.72rem;font-weight:700;color:var(--accent);min-width:50px}
+.tank-row input{padding:0.4rem 0.5rem;font-size:0.82rem;text-align:center;background:#fff}
+.tank-row .vol-display{grid-column:1 / -1;font-size:0.7rem;color:var(--text-dim);text-align:right;font-weight:600}
+
+/* Signature pad */
+.signature-wrap{position:relative;background:var(--bg);border:1.5px solid var(--card-border);border-radius:8px;overflow:hidden}
+.signature-wrap canvas{display:block;width:100%;height:160px;background:#fff;cursor:crosshair;touch-action:none}
+.btn-sig-clear{position:absolute;top:0.4rem;right:0.4rem;background:var(--card);border:1px solid var(--card-border);border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;font-weight:600;color:var(--text-dim);cursor:pointer;font-family:var(--font)}
+.btn-sig-clear:hover{background:var(--bg);color:var(--accent);border-color:var(--accent)}
+
+.footer{text-align:center;padding:1.5rem 0;color:var(--text-dim);font-size:0.65rem;opacity:0.6}
+
+/* Welcome Page */
+.welcome-page{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-height:100dvh;padding:1.5rem 1rem;background:#fff;color:var(--text);flex-direction:column;justify-content:center;align-items:center;text-align:center;z-index:1000;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.welcome-page.show{display:flex}
+.welcome-container{max-width:480px;width:100%;animation:slideUp 0.6s ease;padding:0 0.5rem}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.welcome-logos{display:flex;justify-content:center;align-items:center;gap:1.25rem;margin-bottom:2rem;flex-wrap:wrap}
+.welcome-logo{height:65px;max-width:100px;object-fit:contain}
+.welcome-content{margin:0.5rem 0}
+.welcome-content h1{font-family:var(--font-display);font-size:1.75rem;margin-bottom:1rem;font-weight:400;letter-spacing:0.02em;line-height:1.3;color:var(--accent)}
+.welcome-content .subtitle{font-size:0.92rem;line-height:1.7;margin-bottom:1rem;font-weight:500;color:var(--text)}
+.welcome-content p{font-size:0.85rem;line-height:1.7;margin-bottom:0.8rem;color:var(--text-dim)}
+.welcome-divider{height:1px;background:linear-gradient(90deg, transparent, var(--card-border), transparent);margin:1.5rem 0}
+.welcome-contact{background:var(--accent-light);padding:1.25rem;border-radius:12px;margin:1.5rem 0;border:1px solid rgba(26,107,78,0.15)}
+.welcome-contact h3{font-size:0.85rem;margin-bottom:0.5rem;font-weight:700;color:var(--text)}
+.welcome-contact p{margin:0.4rem 0;font-size:0.85rem;color:var(--text-dim)}
+.welcome-contact a{color:var(--accent);text-decoration:none;font-weight:700}
+
+@media (min-width: 768px) {
+  .welcome-page{padding:2rem 1.5rem}
+  .welcome-container{max-width:600px}
+  .welcome-logos{gap:2rem;margin-bottom:2.5rem}
+  .welcome-logo{height:80px;max-width:130px}
+  .welcome-content h1{font-size:2.2rem;margin-bottom:1.5rem}
+  .welcome-content .subtitle{font-size:1rem}
+  .welcome-content p{font-size:0.92rem}
+  .welcome-contact{padding:1.5rem}
+  .btn-start-survey{max-width:360px;padding:1.1rem 2.5rem;font-size:1.05rem}
+  .btn-start-survey:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,107,78,0.35)}
+}
+.btn-start-survey{display:block;width:100%;max-width:320px;margin:1.5rem auto 0;padding:1rem 2rem;background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s ease;box-shadow:0 4px 16px rgba(26,107,78,0.3)}
+.btn-start-survey:active{transform:scale(0.97);box-shadow:0 2px 8px rgba(26,107,78,0.2)}
+
+/* Submit modal overlay */
+.submit-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);
+  z-index:3000;justify-content:center;align-items:center;padding:1.5rem}
+.submit-overlay.show{display:flex}
+.submit-modal{background:#fff;border-radius:16px;padding:2rem 1.5rem;text-align:center;max-width:320px;width:100%;
+  animation:slideUp 0.3s ease;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+.submit-spinner{width:48px;height:48px;border:4px solid var(--card-border);border-top-color:var(--accent);
+  border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.submit-modal h3{font-size:1.1rem;font-weight:700;color:var(--text);margin-bottom:0.4rem}
+.submit-modal p{font-size:0.85rem;color:var(--text-dim);line-height:1.5}
+.submit-success-icon{width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.6rem}
+.submit-error-icon{width:56px;height:56px;border-radius:50%;background:var(--danger);color:#fff;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.6rem}
+.btn-modal-close{margin-top:1.25rem;padding:0.7rem 2rem;background:var(--accent);border:none;border-radius:8px;
+  color:#fff;font-family:var(--font);font-size:0.9rem;font-weight:600;cursor:pointer}
+.btn-modal-close:hover{background:var(--accent-hover)}
+
+/* Instructions page */
+.instructions-page{display:none;position:fixed;top:0;left:0;width:100%;height:100%;min-height:100dvh;
+  background:#fff;color:var(--text);flex-direction:column;justify-content:center;align-items:center;
+  text-align:left;z-index:999;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:1.5rem 1rem}
+.instructions-page.show{display:flex}
+.instructions-inner{max-width:480px;width:100%;animation:slideUp 0.4s ease;padding:0 0.5rem}
+.instructions-inner h2{font-family:var(--font-display);font-size:1.5rem;color:var(--accent);text-align:center;
+  margin-bottom:1.25rem;font-weight:400}
+.instructions-item{display:flex;gap:0.75rem;align-items:flex-start;margin-bottom:1rem}
+.instructions-icon{width:36px;height:36px;border-radius:10px;background:var(--accent-light);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.instructions-text{font-size:0.88rem;line-height:1.6;color:var(--text)}
+.instructions-text strong{color:var(--accent)}
+.btn-continue{display:block;width:100%;max-width:320px;margin:1.5rem auto 0;padding:1rem 2rem;
+  background:var(--accent);color:#fff;border:none;border-radius:10px;font-family:var(--font);
+  font-size:1rem;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(26,107,78,0.3)}
+.btn-continue:active{transform:scale(0.97)}
+</style>
+</head>
+<body>
+
+<!-- Submit Modal Overlay -->
+<div class="submit-overlay" id="submitOverlay">
+  <div class="submit-modal" id="submitModal"></div>
+</div>
+
+<!-- GPS Modal -->
+<div class="gps-modal-overlay" id="gpsModalOverlay">
+  <div class="gps-modal">
+    <div class="gps-ring" id="gpsRing">
+      <div class="gps-ring-bg"></div>
+      <div class="gps-ring-progress" id="gpsRingProgress"></div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="gps-ring-value" id="gpsRingValue">--</div>
+        <div class="gps-ring-unit">meters</div>
+      </div>
+    </div>
+    <div class="gps-modal-status" id="gpsModalStatus">Searching for GPS signal...</div>
+    <div class="gps-modal-hint" id="gpsModalHint">Please wait while we lock onto your location.</div>
+    <div class="gps-modal-tips" id="gpsModalTips">
+      <div>📱 Hold your phone upright</div>
+      <div>🌤️ Move to an open area with clear sky</div>
+      <div>🏠 Stay away from buildings & trees</div>
+    </div>
+    <button class="btn-gps-accept" id="btnGpsAccept" onclick="acceptGPS()">✓ Use This Location</button>
+    <button class="btn-gps-cancel" onclick="cancelGPS()">Cancel</button>
+  </div>
+</div>
+
+<div class="topbar" id="topbar" style="display:none">
+  <h1>CWIS Business Sanitation Survey</h1>
+  <div class="sub">Tagbilaran City — Bohol</div>
+</div>
+
+<div class="progress-wrap" id="progressWrap" style="display:none">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">Section 1 of 9</div>
+</div>
+
+<!-- ==================== WELCOME PAGE ==================== -->
+<div class="welcome-page show" id="welcomePage">
+  <div class="welcome-container">
+    <div class="welcome-logos">
+      <img src="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png" alt="Province of Bohol" class="welcome-logo">
+    </div>
+
+    <div class="welcome-content">
+      <h1>CWIS Business Sanitation Survey</h1>
+      <p class="subtitle">Citywide Inclusive Sanitation Plan — Tagbilaran City, Bohol</p>
+      <p>This survey is for <strong>commercial establishments</strong> (hotels, restaurants, malls, schools, hospitals, offices, and other businesses) operating in Tagbilaran City.</p>
+      <p>Your responses will be kept confidential and used only for project assessment and sanitation planning.</p>
+      <p><strong>Supported by the World Bank.</strong></p>
+
+      <div class="welcome-divider"></div>
+
+      <div class="welcome-contact">
+        <h3>For questions, contact:</h3>
+        <p><strong>Mr. Suraj Kumar</strong></p>
+        <p>📞 <a href="tel:+639524609581">09524609581</a></p>
+        <div style="margin-top:0.75rem"></div>
+        <p><strong>Jerome A. Sadudaquil</strong></p>
+        <p style="font-size:0.82rem;color:var(--text-dim)">Personnel — Bohol Provincial Health Office</p>
+        <p>📞 <a href="tel:+639286996468">0928 699 6468</a></p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0.75rem;max-width:320px;margin:1.5rem auto 0">
+        <button class="btn-start-survey" style="margin:0" onclick="showInstructions()">Start Survey →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Instructions Page -->
+<div class="instructions-page" id="instructionsPage">
+  <div class="instructions-inner">
+    <h2>Before You Begin</h2>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">🏢</div>
+      <div class="instructions-text"><strong>Who should answer:</strong> The owner, manager, maintenance head, or any staff member who knows about your water use and wastewater system.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">📋</div>
+      <div class="instructions-text"><strong>What to keep ready:</strong> Your latest water bill (if available), and basic info about any septic tank or treatment plant on the property.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">⏱️</div>
+      <div class="instructions-text">The survey takes about <strong>10–15 minutes</strong>. Many sections are skipped automatically based on your business type and system.</div>
+    </div>
+
+    <div class="instructions-item">
+      <div class="instructions-icon">🔒</div>
+      <div class="instructions-text">All responses are <strong>confidential</strong> and used only for sanitation planning. Individual business data will not be shared.</div>
+    </div>
+
+    <button class="btn-continue" onclick="startSurvey()">I Understand, Continue →</button>
+  </div>
+</div>
+
+<div class="container" id="formContainer" style="display:none">
+
+<!-- ==================== SECTION 0: A. Business Information ==================== -->
+<div class="section" data-section="0">
+  <div class="section-header">
+    <div class="section-badge">A</div>
+    <div class="section-title">Business Information</div>
+  </div>
+  <div class="card">
+    <div class="info-box">Please fill this section for every business. It helps us understand who is taking part in the survey.</div>
+
+    <div class="field">
+      <div class="field-label">A1. Name of the business <span class="req">*</span></div>
+      <input type="text" id="business_name" placeholder="e.g. Sea View Hotel">
+    </div>
+
+    <div class="field">
+      <div class="field-label">A2. Owner / person answering this survey <span class="req">*</span></div>
+      <div class="field-hint">Full name of the respondent.</div>
+      <input type="text" id="respondent_name" placeholder="Full name">
+    </div>
+    <div class="field">
+      <div class="field-label">A2a. Position / Role</div>
+      <div class="field-hint">e.g. Owner, Manager, Maintenance Head, Front Desk Officer.</div>
+      <input type="text" id="respondent_role" placeholder="e.g. Manager">
+    </div>
+
+    <div class="field">
+      <div class="field-label">A3. Mobile Number <span class="req">*</span></div>
+      <div class="field-hint">10-digit mobile number (e.g. 9171234567).</div>
+      <div class="phone-input-wrap">
+        <span class="phone-prefix">+63</span>
+        <input type="text" id="contact_number" inputmode="tel" maxlength="10" placeholder="9171234567" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">A3a. Email (optional)</div>
+      <input type="email" id="contact_email" placeholder="name@example.com">
+    </div>
+
+    <div class="field">
+      <div class="field-label">A4. Barangay <span class="req">*</span></div>
+      <select id="barangay">
+        <option value="">— Select Barangay —</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="field-label">A4a. Street / Landmark <span class="req">*</span></div>
+      <div class="field-hint">Street name or a nearby landmark to locate the business.</div>
+      <input type="text" id="street_landmark" placeholder="e.g. CPG Avenue, near City Hall">
+    </div>
+
+    <div class="field">
+      <div class="field-label">A5. Type of business <span class="req">*</span></div>
+      <div class="field-hint">Select the option that best matches your main activity. We are especially interested in businesses that use a lot of water or produce wastewater.</div>
+      <div class="option-group" data-name="business_type" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="business_type=other">
+      <div class="field-label">A5a. Please specify <span class="req">*</span></div>
+      <input type="text" id="business_type_other">
+    </div>
+
+    <div class="field">
+      <div class="field-label">A6. How long has your business been operating at this location? <span class="req">*</span></div>
+      <div class="option-group" data-name="years_operating" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 1: B. Establishment Size ==================== -->
+<div class="section hidden" data-section="1">
+  <div class="section-header">
+    <div class="section-badge">B</div>
+    <div class="section-title">Size of your Establishment</div>
+  </div>
+  <div class="card">
+    <div class="info-box">Please answer only the part(s) that match the business type you chose in A5. Other sub-blocks will stay hidden.</div>
+
+    <!-- B.1 Hotel / Resort / Rental -->
+    <div class="conditional" data-show-when="business_type=hotel|business_type=resort|business_type=rental">
+      <div class="sub-block">
+        <div class="sub-block-title">B.1 — Hotel / Resort / Rental</div>
+      </div>
+      <div class="field">
+        <div class="field-label">B1. How many guest rooms do you have in total? <span class="req">*</span></div>
+        <div class="option-group" data-name="guest_rooms" data-type="radio"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">B2. Total number of comfort rooms (CRs / toilets) <span class="req">*</span></div>
+        <div class="field-hint">Include both guest CRs and staff / common CRs.</div>
+        <input type="number" id="hotel_cr_count" min="0" max="500" inputmode="numeric" placeholder="e.g. 25">
+      </div>
+      <div class="field">
+        <div class="field-label">B3. Average occupancy rate <span class="req">*</span></div>
+        <div class="option-group" data-name="occupancy_rate" data-type="radio"></div>
+      </div>
+    </div>
+
+    <!-- B.2 Restaurant / Eatery / Canteen -->
+    <div class="conditional" data-show-when="business_type=restaurant">
+      <div class="sub-block">
+        <div class="sub-block-title">B.2 — Restaurant / Eatery / Canteen</div>
+      </div>
+      <div class="field">
+        <div class="field-label">B4. Seating capacity <span class="req">*</span></div>
+        <div class="option-group" data-name="seating_capacity" data-type="radio"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">B5. Average meals served per day <span class="req">*</span></div>
+        <div class="option-group" data-name="meals_per_day" data-type="radio"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">B6. Total number of comfort rooms <span class="req">*</span></div>
+        <input type="number" id="resto_cr_count" min="0" max="100" inputmode="numeric" placeholder="e.g. 4">
+      </div>
+    </div>
+
+    <!-- B.3 Mall / Market / Commercial Building -->
+    <div class="conditional" data-show-when="business_type=mall">
+      <div class="sub-block">
+        <div class="sub-block-title">B.3 — Mall / Market / Commercial Building</div>
+      </div>
+      <div class="field">
+        <div class="field-label">B7. Number of stalls / shops / units in the complex <span class="req">*</span></div>
+        <div class="option-group" data-name="stall_count" data-type="radio"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">B8. Total number of comfort rooms in the complex <span class="req">*</span></div>
+        <input type="number" id="mall_cr_count" min="0" max="500" inputmode="numeric" placeholder="e.g. 12">
+      </div>
+    </div>
+
+    <!-- B.4 Other / generic -->
+    <div class="conditional" data-show-when="business_type=school|business_type=hospital|business_type=laundry|business_type=gas_station|business_type=office|business_type=other">
+      <div class="sub-block">
+        <div class="sub-block-title">B.4 — Other Establishments</div>
+      </div>
+      <div class="field">
+        <div class="field-label">B9. Describe the size of your establishment <span class="req">*</span></div>
+        <div class="field-hint">e.g. number of employees, floor area in m², or daily customers / patients / students.</div>
+        <textarea id="other_size_desc" rows="3" placeholder="e.g. 80 employees, 3-storey building, ~600 students"></textarea>
+      </div>
+      <div class="field">
+        <div class="field-label">B9a. Total number of comfort rooms</div>
+        <input type="number" id="other_cr_count" min="0" max="500" inputmode="numeric" placeholder="e.g. 8">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: C. Water Use ==================== -->
+<div class="section hidden" data-section="2">
+  <div class="section-header">
+    <div class="section-badge">C</div>
+    <div class="section-title">Water Use</div>
+  </div>
+  <div class="card">
+    <div class="info-box">This helps us estimate how much wastewater your business may produce. Please check your latest water bill if possible.</div>
+
+    <div class="field">
+      <div class="field-label">C1. Where do you get water for your business? <span class="req">*</span></div>
+      <div class="field-hint">You may select more than one.</div>
+      <div class="option-group" data-name="water_sources" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="water_sources=other">
+      <div class="field-label">C1a. Please specify other water source</div>
+      <input type="text" id="water_source_other">
+    </div>
+
+    <div class="field">
+      <div class="field-label">C2. About how much water does your business use per month? <span class="req">*</span></div>
+      <div class="field-hint">Based on your water bill. If unsure, pick the closest range. <strong>1 cubic meter (m³) = 1,000 liters.</strong></div>
+      <div class="option-group" data-name="monthly_water_use" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: D. Wastewater System Type ==================== -->
+<div class="section hidden" data-section="3">
+  <div class="section-header">
+    <div class="section-badge">D</div>
+    <div class="section-title">Wastewater Management System</div>
+  </div>
+  <div class="card">
+    <div class="info-box">These questions are about where your toilet water and kitchen / bath water finally go.</div>
+
+    <div class="field">
+      <div class="field-label">D1. Do you have your own wastewater management system, or do you share one? <span class="req">*</span></div>
+      <div class="option-group" data-name="own_or_shared" data-type="radio"></div>
+    </div>
+
+    <div class="field conditional" data-show-when="own_or_shared=own">
+      <div class="field-label">D2. What type of system do you have? <span class="req">*</span></div>
+      <div class="field-hint">A <strong>septic tank</strong> is a simple underground tank. A <strong>Sewage Treatment Plant (STP)</strong> is a more advanced system with pumps, aeration, or chemicals that treats the wastewater before discharge.</div>
+      <div class="option-group" data-name="system_type" data-type="radio"></div>
+    </div>
+
+    <div class="conditional info-box" data-show-when="own_or_shared=shared|system_type=direct">
+      <strong>ℹ️ Note:</strong> Based on your answer, the next sections about septic tank and STP details will be skipped. You will go straight to the regulatory questions.
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: E. Septic Tank Details ==================== -->
+<div class="section hidden" data-section="4">
+  <div class="section-header">
+    <div class="section-badge">E</div>
+    <div class="section-title">Septic Tank Details</div>
+  </div>
+  <div class="card">
+    <div class="info-box">Answer this section if you use a septic tank (with or without an STP).</div>
+
+    <div class="field">
+      <div class="field-label">E1. How many septic tanks do you have on the property? <span class="req">*</span></div>
+      <input type="number" id="tank_count" min="1" max="20" inputmode="numeric" placeholder="e.g. 2" oninput="rebuildTankList()">
+    </div>
+
+    <div class="field">
+      <div class="field-label">E2. Approximate dimensions of each tank <span class="req">*</span></div>
+      <div class="field-hint">If you don't know, estimate Length × Width × Depth. <strong>1 m × 1 m × 1 m = 1 m³.</strong></div>
+
+      <div class="diagram-box" style="flex-direction:column;align-items:center">
+        <canvas id="tankCanvas" width="320" height="200" style="max-width:320px;width:100%"></canvas>
+        <div id="tankVolume" style="font-size:0.78rem;font-weight:600;color:var(--accent);margin-top:0.35rem;min-height:1.2em">Enter dimensions for the first tank to see the diagram</div>
+      </div>
+
+      <div class="unit-toggle">
+        <label class="unit-option selected" data-unit="meter" onclick="setUnit('meter')">
+          <input type="radio" name="tank_unit" value="meter" checked> Meters
+        </label>
+        <label class="unit-option" data-unit="feet" onclick="setUnit('feet')">
+          <input type="radio" name="tank_unit" value="feet"> Feet
+        </label>
+      </div>
+
+      <div class="tank-list" id="tankList">
+        <!-- rows generated by rebuildTankList() -->
+      </div>
+      <div id="tankUnitLabel" style="font-size:0.72rem;color:var(--text-dim);margin-top:0.3rem;text-align:right">Unit: Meters</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E3. How many chambers does each tank have? <span class="req">*</span></div>
+      <div class="field-hint">A chamber is an inside section separated by a wall. Most tanks have 1, 2, or 3 chambers.</div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 360 130" width="100%" style="max-width:360px">
+          <!-- 1 chamber - 3D tank -->
+          <polygon points="10,35 70,35 80,25 20,25" fill="#d0ead8" stroke="#1a6b4e" stroke-width="1.2"/>
+          <rect x="10" y="35" width="60" height="40" rx="2" fill="#e8f5ee" stroke="#1a6b4e" stroke-width="1.2"/>
+          <polygon points="70,35 80,25 80,65 70,75" fill="#b8dfc4" stroke="#1a6b4e" stroke-width="1.2"/>
+          <text x="45" y="95" text-anchor="middle" font-size="9" fill="#4a453f" font-weight="600" font-family="DM Sans,sans-serif">1 chamber</text>
+
+          <!-- 2 chambers - 3D tank -->
+          <polygon points="125,35 195,35 205,25 135,25" fill="#d0ead8" stroke="#1a6b4e" stroke-width="1.2"/>
+          <rect x="125" y="35" width="70" height="40" rx="2" fill="#e8f5ee" stroke="#1a6b4e" stroke-width="1.2"/>
+          <polygon points="195,35 205,25 205,65 195,75" fill="#b8dfc4" stroke="#1a6b4e" stroke-width="1.2"/>
+          <line x1="160" y1="25" x2="160" y2="75" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <line x1="160" y1="25" x2="170" y2="17" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <text x="160" y="95" text-anchor="middle" font-size="9" fill="#4a453f" font-weight="600" font-family="DM Sans,sans-serif">2 chambers</text>
+
+          <!-- 3 chambers - 3D tank -->
+          <polygon points="245,35 335,35 345,25 255,25" fill="#d0ead8" stroke="#1a6b4e" stroke-width="1.2"/>
+          <rect x="245" y="35" width="90" height="40" rx="2" fill="#e8f5ee" stroke="#1a6b4e" stroke-width="1.2"/>
+          <polygon points="335,35 345,25 345,65 335,75" fill="#b8dfc4" stroke="#1a6b4e" stroke-width="1.2"/>
+          <line x1="275" y1="25" x2="275" y2="75" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <line x1="275" y1="25" x2="285" y2="17" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <line x1="305" y1="25" x2="305" y2="75" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <line x1="305" y1="25" x2="315" y2="17" stroke="#1a6b4e" stroke-width="1.3" stroke-dasharray="4,2"/>
+          <text x="290" y="95" text-anchor="middle" font-size="9" fill="#4a453f" font-weight="600" font-family="DM Sans,sans-serif">3 chambers</text>
+        </svg>
+      </div>
+      <div class="option-group" data-name="chamber_count" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E4. When was the septic tank built? <span class="req">*</span></div>
+      <div class="option-group" data-name="tank_built" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E5. How is the BOTTOM of the tank constructed? <span class="req">*</span></div>
+      <div class="field-hint">Cemented / sealed bottoms keep wastewater inside. Open / unsealed bottoms let it soak into the ground.</div>
+      <div class="option-group" data-name="tank_bottom" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E6. How are the WALLS of the tank constructed? <span class="req">*</span></div>
+      <div class="option-group" data-name="tank_walls" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E7. Do you have a grease trap for kitchen water? <span class="req">*</span></div>
+      <div class="field-hint">A grease trap is a small box / tank that catches oil and grease before wastewater reaches the septic tank.</div>
+      <div class="option-group" data-name="has_grease_trap" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="has_grease_trap=yes">
+      <div class="field-label">E7a. How many grease traps?</div>
+      <input type="number" id="grease_trap_count" min="1" max="20" inputmode="numeric" placeholder="e.g. 1">
+    </div>
+
+    <div class="field">
+      <div class="field-label">E8. Do you have SEPARATE tanks for black water and grey water? <span class="req">*</span></div>
+      <div class="field-hint"><strong>Black water</strong> = water from toilets. <strong>Grey water</strong> = water from kitchen sinks, showers, handwashing, and laundry.</div>
+      <div class="option-group" data-name="separate_tanks" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="separate_tanks=partial">
+      <div class="field-label">E8a. Please describe the partial separation</div>
+      <textarea id="separate_tanks_desc" rows="2"></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E9. Where does the water from the septic tank flow out (outfall)? <span class="req">*</span></div>
+      <div class="option-group" data-name="outfall" data-type="radio"></div>
+    </div>
+
+    <!-- Desludging History -->
+    <div class="sub-block" style="margin-top:1.25rem">
+      <div class="sub-block-title">Desludging History</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E10. When was the septic tank last desludged (emptied / cleaned)? <span class="req">*</span></div>
+      <div class="option-group" data-name="last_desludged" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E11. In the PAST 12 MONTHS, how many times did you call a desludging service? <span class="req">*</span></div>
+      <div class="option-group" data-name="desludge_calls_12m" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E12. Who did you contact for desludging?</div>
+      <div class="field-hint">Name of the operator or company.</div>
+      <input type="text" id="desludge_operator" placeholder="e.g. ABC Vacuum Services">
+    </div>
+
+    <div class="field">
+      <div class="field-label">E13. How much did you pay PER desludging trip?</div>
+      <div class="option-group" data-name="cost_per_trip" data-type="radio"></div>
+    </div>
+
+    <!-- Past Issues -->
+    <div class="sub-block" style="margin-top:1.25rem">
+      <div class="sub-block-title">Past Issues</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">E14. Have you had any problems with your septic tank in the past? <span class="req">*</span></div>
+      <div class="field-hint">You may select more than one.</div>
+      <div class="option-group" data-name="tank_problems" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="tank_problems=other">
+      <div class="field-label">E14a. Please specify other problems</div>
+      <input type="text" id="tank_problems_other">
+    </div>
+
+    <div class="field">
+      <div class="field-label">E15. Does the area around your business experience water logging / flooding during heavy rain? <span class="req">*</span></div>
+      <div class="option-group" data-name="flooding_around" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="flooding_around=yes|flooding_around=sometimes">
+      <div class="field-label">E16. How high does the floodwater usually reach? <span class="req">*</span></div>
+      <div class="option-group" data-name="flood_level" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="flooding_around=yes|flooding_around=sometimes">
+      <div class="field-label">E17. During flooding, does rainwater enter your septic tank? <span class="req">*</span></div>
+      <div class="option-group" data-name="rain_enters_tank" data-type="radio"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: F. STP Details ==================== -->
+<div class="section hidden" data-section="5">
+  <div class="section-header">
+    <div class="section-badge">F</div>
+    <div class="section-title">Sewage Treatment Plant (STP) Details</div>
+  </div>
+  <div class="card">
+    <div class="info-box">Answer this section if you operate a Sewage Treatment Plant (STP).</div>
+
+    <div class="field">
+      <div class="field-label">F1. What is the capacity of your STP? <span class="req">*</span></div>
+      <div class="field-hint">Capacity is usually measured in cubic meters per day (m³/day).</div>
+      <div class="option-group" data-name="stp_capacity" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F2. What technology does your STP use? <span class="req">*</span></div>
+      <div class="field-hint">If you are not sure, ask your maintenance staff or check the nameplate on the equipment.</div>
+      <div class="option-group" data-name="stp_technology" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="stp_technology=other">
+      <div class="field-label">F2a. Please specify</div>
+      <input type="text" id="stp_technology_other">
+    </div>
+
+    <div class="field">
+      <div class="field-label">F3. In which year was the STP built? <span class="req">*</span></div>
+      <div class="option-group" data-name="stp_built" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F4. Total operational cost of the STP per YEAR <span class="req">*</span></div>
+      <div class="field-hint">Include electricity, chemicals, staff, and regular maintenance.</div>
+      <div class="option-group" data-name="stp_op_cost" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F5. Do you send wastewater samples to an external laboratory for testing? <span class="req">*</span></div>
+      <div class="option-group" data-name="lab_testing" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="lab_testing=yes">
+      <div class="field-label">F6. How many times per year do you do lab testing? <span class="req">*</span></div>
+      <div class="option-group" data-name="lab_test_freq" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="lab_testing=yes">
+      <div class="field-label">F7. About how much do you spend on external lab testing per YEAR? <span class="req">*</span></div>
+      <div class="option-group" data-name="lab_test_cost" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F8. Have you had any problems with the STP in the past? <span class="req">*</span></div>
+      <div class="field-hint">You may select more than one.</div>
+      <div class="option-group" data-name="stp_problems" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="stp_problems=other">
+      <div class="field-label">F8a. Please specify other problems</div>
+      <input type="text" id="stp_problems_other">
+    </div>
+
+    <!-- Sludge Disposal & Reuse -->
+    <div class="sub-block" style="margin-top:1.25rem">
+      <div class="sub-block-title">Sludge Disposal &amp; Reuse</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F9. How do you dispose of the sludge (solid waste) from your STP? <span class="req">*</span></div>
+      <div class="option-group" data-name="sludge_disposal" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="sludge_disposal=other">
+      <div class="field-label">F9a. Please specify</div>
+      <input type="text" id="sludge_disposal_other">
+    </div>
+    <div class="field conditional" data-show-when="sludge_disposal=hauled">
+      <div class="field-label">F10. How many times PER YEAR do accredited operators haul the sludge?</div>
+      <input type="number" id="haul_per_year" min="0" max="100" inputmode="numeric" placeholder="e.g. 4">
+    </div>
+    <div class="field conditional" data-show-when="sludge_disposal=hauled">
+      <div class="field-label">F11. How much do you pay per trip?</div>
+      <div class="option-group" data-name="haul_cost_per_trip" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">F12. Do you RE-USE the treated water from the STP? <span class="req">*</span></div>
+      <div class="option-group" data-name="reuse_water" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="reuse_water=yes">
+      <div class="field-label">F12a. For what purposes? (select all that apply) <span class="req">*</span></div>
+      <div class="option-group" data-name="reuse_water_purpose" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="reuse_water_purpose=other">
+      <div class="field-label">F12b. Please specify other purpose</div>
+      <input type="text" id="reuse_water_other">
+    </div>
+
+    <div class="field">
+      <div class="field-label">F13. Do you RE-USE the treated sludge / biosolids? <span class="req">*</span></div>
+      <div class="option-group" data-name="reuse_sludge" data-type="radio"></div>
+    </div>
+    <div class="field conditional" data-show-when="reuse_sludge=yes">
+      <div class="field-label">F13a. For what purposes? (select all that apply) <span class="req">*</span></div>
+      <div class="option-group" data-name="reuse_sludge_purpose" data-type="checkbox"></div>
+    </div>
+    <div class="field conditional" data-show-when="reuse_sludge_purpose=other">
+      <div class="field-label">F13b. Please specify other purpose</div>
+      <input type="text" id="reuse_sludge_other">
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: G. Regulatory & Sanitation Fee ==================== -->
+<div class="section hidden" data-section="6">
+  <div class="section-header">
+    <div class="section-badge">G</div>
+    <div class="section-title">Regulatory Compliance &amp; Sanitation Fee</div>
+  </div>
+  <div class="card">
+    <div class="info-box">This section is for ALL businesses, no matter the system you use.</div>
+
+    <!-- G.1 Regulatory Compliance -->
+    <div class="sub-block">
+      <div class="sub-block-title">G.1 — Regulatory Compliance</div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">G1. Is your business required to comply with the DENR Discharge Permit? <span class="req">*</span></div>
+      <div class="field-hint">The DENR Discharge Permit is an environmental clearance needed by businesses that discharge wastewater. Hospitals, hotels, large restaurants, and industrial facilities are usually required.</div>
+      <div class="option-group" data-name="denr_required" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">G2. Do you currently hold a DENR discharge permit / certificate? <span class="req">*</span></div>
+      <div class="option-group" data-name="denr_held" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">G3. Should it be MANDATORY to present a desludging certificate when renewing a business permit? <span class="req">*</span></div>
+      <div class="field-hint">This would mean the LGU only renews your permit if you can show proof of regular desludging.</div>
+      <div class="option-group" data-name="mandatory_cert" data-type="radio"></div>
+    </div>
+
+    <!-- G.2 Septic Tank Sanitation Fee -->
+    <div class="conditional" data-show-when="system_type=septic|system_type=both">
+      <div class="sub-block" style="margin-top:1.25rem">
+        <div class="sub-block-title">G.2 — Sanitation Fee (Septic Tank Users)</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">G4. Would you agree if a SANITATION FEE is added to your yearly business permit, and in return the LGU (through accredited operators) provides desludging services for you? <span class="req">*</span></div>
+        <div class="option-group" data-name="agree_septic_fee" data-type="radio"></div>
+      </div>
+      <div class="field conditional" data-show-when="agree_septic_fee=yes">
+        <div class="field-label">G5. How much are you WILLING TO PAY per desludging TRIP if this service is bundled in the business permit? <span class="req">*</span></div>
+        <div class="option-group" data-name="wtp_septic_per_trip" data-type="radio"></div>
+      </div>
+    </div>
+
+    <!-- G.3 STP Sanitation Fee -->
+    <div class="conditional" data-show-when="system_type=stp|system_type=both">
+      <div class="sub-block" style="margin-top:1.25rem">
+        <div class="sub-block-title">G.3 — Sanitation Fee (STP Users)</div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">G6. Would you agree if the LGU handles ONE-TIME desludging of the sludge produced by your STP, with the fee added to the yearly business permit? <span class="req">*</span></div>
+        <div class="option-group" data-name="agree_stp_fee" data-type="radio"></div>
+      </div>
+      <div class="field conditional" data-show-when="agree_stp_fee=yes">
+        <div class="field-label">G7. How much are you WILLING TO PAY for this one-time desludging service per year? <span class="req">*</span></div>
+        <div class="option-group" data-name="wtp_stp_per_year" data-type="radio"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: H. Closure ==================== -->
+<div class="section hidden" data-section="7">
+  <div class="section-header">
+    <div class="section-badge">H</div>
+    <div class="section-title">Final Comments &amp; Closure</div>
+  </div>
+  <div class="card">
+
+    <div class="field">
+      <div class="field-label">H1. GPS Location of the Business</div>
+      <div class="field-hint">Capture the GPS coordinates of the business. Best done while standing outside the establishment with a clear view of the sky.</div>
+      <div class="gps-box" id="gpsBox">
+        <button class="btn-gps" onclick="captureGPS()">📍 Capture GPS</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">H2. Any other comments or suggestions?</div>
+      <div class="field-hint">Is there anything else you would like the City to know about sanitation or wastewater in your business or in your area?</div>
+      <textarea id="other_comments" rows="4" placeholder="Your thoughts and suggestions..."></textarea>
+    </div>
+
+    <div class="field">
+      <div class="field-label">H3. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="field-hint">By selecting "Yes", you agree that your responses can be used for the CWIS sanitation planning project.</div>
+      <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
+    </div>
+
+    <div class="field">
+      <div class="field-label">H4. Signature of respondent</div>
+      <div class="field-hint">Sign with your finger (on phone) or mouse (on laptop) inside the box below. Optional — but appreciated for our records.</div>
+      <div class="signature-wrap">
+        <canvas id="signaturePad" width="500" height="160"></canvas>
+        <button type="button" class="btn-sig-clear" onclick="clearSignature()">Clear</button>
+      </div>
+      <div id="signatureStatus" style="font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;text-align:right">Not signed</div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-buttons" id="navButtons">
+  <button class="btn btn-prev hidden" id="btnPrev" onclick="navigate(-1)">← Back</button>
+  <button class="btn btn-next" id="btnNext" onclick="navigate(1)">Next →</button>
+</div>
+<div class="status" id="statusMsg"></div>
+<div class="footer">Tagbilaran City — Citywide Inclusive Sanitation</div>
+</div>
+
+
+<script>
+// ==================== CONFIGURATION ====================
+// IMPORTANT: Replace this URL with the deployment URL of your *business survey* Google Apps Script
+// (deploy a separate Web App pointing to a separate Google Sheet for business responses).
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZSaVquYcq3bhDIRF8-NX5_vygJusagkGpz71ggoQzk9BquBpmwRPGW_kaNcifgmxH/exec';
+
+// ==================== STATE ====================
+const TOTAL_SECTIONS = 8; // 0..7 (A, B, C, D, E, F, G, H)
+let currentSection = 0;
+let visitedHistory = [0];
+let gpsData = { lat: null, lng: null, accuracy: null };
+let radioValues = {};
+
+// ==================== BARANGAYS (Tagbilaran City) ====================
+const TAGBILARAN_BARANGAYS = [
+  'Bool','Booy','Cabawan','Cogon','Dampas','Dao','Manga','Mansasa',
+  'Poblacion I','Poblacion II','Poblacion III','San Isidro','Taloto','Tiptip','Ubujan'
+];
+
+// ==================== CHOICE LISTS ====================
+const CHOICE_LISTS = {
+  yn:        [{v:'yes',l:'Yes'},{v:'no',l:'No'}],
+  yn_dk:     [{v:'yes',l:'Yes'},{v:'no',l:'No'},{v:'dont_know',l:"Don't know"}],
+  yn_some:   [{v:'yes',l:'Yes'},{v:'no',l:'No'},{v:'sometimes',l:'Sometimes'}],
+
+  business_type: [
+    {v:'hotel',l:'Hotel'},
+    {v:'resort',l:'Resort'},
+    {v:'restaurant',l:'Restaurant / Eatery / Canteen'},
+    {v:'rental',l:'Rental (apartment / dormitory / boarding house)'},
+    {v:'mall',l:'Mall / Market complex / Commercial building'},
+    {v:'school',l:'School / University'},
+    {v:'hospital',l:'Hospital / Clinic / Laboratory'},
+    {v:'laundry',l:'Laundry / Carwash'},
+    {v:'gas_station',l:'Gasoline station'},
+    {v:'office',l:'Office building'},
+    {v:'other',l:'Others (specify)'}
+  ],
+  years_operating: [
+    {v:'lt_1',l:'Less than 1 year'},
+    {v:'1_5',l:'1 – 5 years'},
+    {v:'6_10',l:'6 – 10 years'},
+    {v:'11_20',l:'11 – 20 years'},
+    {v:'gt_20',l:'More than 20 years'}
+  ],
+
+  // Section B
+  guest_rooms: [
+    {v:'1_10',l:'1 – 10'},{v:'11_25',l:'11 – 25'},{v:'26_50',l:'26 – 50'},
+    {v:'51_100',l:'51 – 100'},{v:'gt_100',l:'More than 100'}
+  ],
+  occupancy_rate: [
+    {v:'lt_25',l:'Less than 25%'},{v:'25_50',l:'25 – 50%'},
+    {v:'51_75',l:'51 – 75%'},{v:'gt_75',l:'More than 75%'}
+  ],
+  seating_capacity: [
+    {v:'lt_20',l:'Less than 20'},{v:'20_50',l:'20 – 50'},{v:'51_100',l:'51 – 100'},
+    {v:'101_200',l:'101 – 200'},{v:'gt_200',l:'More than 200'}
+  ],
+  meals_per_day: [
+    {v:'lt_50',l:'Less than 50'},{v:'50_150',l:'50 – 150'},
+    {v:'151_300',l:'151 – 300'},{v:'gt_300',l:'More than 300'}
+  ],
+  stall_count: [
+    {v:'lt_10',l:'Less than 10'},{v:'10_30',l:'10 – 30'},
+    {v:'31_60',l:'31 – 60'},{v:'gt_60',l:'More than 60'}
+  ],
+
+  // Section C
+  water_sources: [
+    {v:'water_district',l:'City / Water district connection'},
+    {v:'borehole',l:'Own deep well / borehole'},
+    {v:'refilling',l:'Water refilling station / delivery'},
+    {v:'rainwater',l:'Rainwater harvesting'},
+    {v:'other',l:'Others (specify)'}
+  ],
+  monthly_water_use: [
+    {v:'lt_10',l:'Less than 10 m³ per month'},
+    {v:'10_50',l:'10 – 50 m³ per month'},
+    {v:'51_200',l:'51 – 200 m³ per month'},
+    {v:'201_500',l:'201 – 500 m³ per month'},
+    {v:'gt_500',l:'More than 500 m³ per month'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+
+  // Section D
+  own_or_shared: [
+    {v:'own',l:'Own, independent system'},
+    {v:'shared',l:'Shared with a common / nearby facility'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  system_type: [
+    {v:'septic',l:'Septic tank only'},
+    {v:'stp',l:'Sewage Treatment Plant (STP) only'},
+    {v:'both',l:'Both septic tank AND STP'},
+    {v:'direct',l:'Direct discharge (no tank / no STP)'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+
+  // Section E
+  chamber_count: [
+    {v:'1',l:'1 chamber'},{v:'2',l:'2 chambers'},{v:'3',l:'3 chambers'},
+    {v:'gt_3',l:'More than 3'},{v:'dont_know',l:"Don't know"}
+  ],
+  tank_built: [
+    {v:'before_2000',l:'Before 2000'},
+    {v:'2000_2010',l:'2000 – 2010'},
+    {v:'2011_2020',l:'2011 – 2020'},
+    {v:'after_2020',l:'2021 or later'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  tank_bottom: [
+    {v:'sealed',l:'Fully cemented / sealed'},
+    {v:'open',l:'Not cemented (open to the soil)'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  tank_walls: [
+    {v:'sealed',l:'Cemented / sealed walls'},
+    {v:'porous',l:'Porous / hollow block without sealing'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  separate_tanks: [
+    {v:'yes',l:'Yes – separate tanks for black AND grey water'},
+    {v:'no',l:'No – all wastewater goes to the same tank'},
+    {v:'partial',l:'Partially (please describe)'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  outfall: [
+    {v:'soak_pit',l:'Soak pit (a separate pit that absorbs into soil)'},
+    {v:'open_drain',l:'Open drain / canal'},
+    {v:'water_body',l:'Creek, river, or the sea'},
+    {v:'soil',l:'Directly into the soil (no pit)'},
+    {v:'another_tank',l:'Back to another tank'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  last_desludged: [
+    {v:'never',l:'Never'},
+    {v:'within_1y',l:'Within the past year'},
+    {v:'1_2y',l:'1 – 2 years ago'},
+    {v:'3_5y',l:'3 – 5 years ago'},
+    {v:'gt_5y',l:'More than 5 years ago'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  desludge_calls_12m: [
+    {v:'0',l:'0'},{v:'1',l:'1'},{v:'2',l:'2'},{v:'3',l:'3'},{v:'gt_3',l:'More than 3'}
+  ],
+  cost_per_trip: [
+    {v:'lt_2k',l:'Less than ₱2,000'},
+    {v:'2k_5k',l:'₱2,000 – ₱5,000'},
+    {v:'5k_10k',l:'₱5,001 – ₱10,000'},
+    {v:'10k_20k',l:'₱10,001 – ₱20,000'},
+    {v:'gt_20k',l:'More than ₱20,000'},
+    {v:'dont_know',l:"Don't know / not sure"}
+  ],
+  tank_problems: [
+    {v:'overflow',l:'Overflow / backup into toilets or drains'},
+    {v:'smell',l:'Bad smell'},
+    {v:'cracks',l:'Cracks / leakage'},
+    {v:'slow',l:'Slow draining'},
+    {v:'flooded',l:'Flooded during heavy rain'},
+    {v:'none',l:'No problems'},
+    {v:'other',l:'Others (specify)'}
+  ],
+  flood_level: [
+    {v:'ankle',l:'Ankle level'},{v:'knee',l:'Knee level'},{v:'waist',l:'Waist level'},
+    {v:'above_waist',l:'Above waist'},{v:'dont_know',l:"Don't know"}
+  ],
+
+  // Section F
+  stp_capacity: [
+    {v:'lt_10',l:'Less than 10 m³/day'},
+    {v:'10_50',l:'10 – 50 m³/day'},
+    {v:'51_100',l:'51 – 100 m³/day'},
+    {v:'101_500',l:'101 – 500 m³/day'},
+    {v:'gt_500',l:'More than 500 m³/day'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  stp_technology: [
+    {v:'sbr',l:'SBR (Sequencing Batch Reactor)'},
+    {v:'mbbr',l:'MBBR (Moving Bed Biofilm Reactor)'},
+    {v:'mbr',l:'MBR (Membrane Bioreactor)'},
+    {v:'activated_sludge',l:'Activated Sludge / Extended Aeration'},
+    {v:'wetland',l:'Constructed Wetland'},
+    {v:'other',l:'Others (specify)'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  stp_built: [
+    {v:'before_2000',l:'Before 2000'},
+    {v:'2000_2010',l:'2000 – 2010'},
+    {v:'2011_2020',l:'2011 – 2020'},
+    {v:'after_2020',l:'2021 or later'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  stp_op_cost: [
+    {v:'lt_50k',l:'Less than ₱50,000'},
+    {v:'50k_200k',l:'₱50,000 – ₱200,000'},
+    {v:'201k_500k',l:'₱200,001 – ₱500,000'},
+    {v:'501k_1m',l:'₱500,001 – ₱1,000,000'},
+    {v:'gt_1m',l:'More than ₱1,000,000'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  lab_test_freq: [
+    {v:'yearly',l:'Once a year'},
+    {v:'quarterly',l:'2 – 4 times (quarterly)'},
+    {v:'monthly',l:'Monthly'},
+    {v:'gt_monthly',l:'More than monthly'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  lab_test_cost: [
+    {v:'lt_10k',l:'Less than ₱10,000'},
+    {v:'10k_30k',l:'₱10,000 – ₱30,000'},
+    {v:'30k_60k',l:'₱30,001 – ₱60,000'},
+    {v:'gt_60k',l:'More than ₱60,000'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  stp_problems: [
+    {v:'none',l:'None'},
+    {v:'breakdown',l:'Breakdown / equipment failure'},
+    {v:'smell',l:'Bad smell'},
+    {v:'noncompliance',l:'Non-compliance with discharge standards'},
+    {v:'high_cost',l:'High operating cost'},
+    {v:'other',l:'Others (specify)'}
+  ],
+  sludge_disposal: [
+    {v:'none',l:'No sludge is produced'},
+    {v:'on_site',l:'Treated / re-used on-site'},
+    {v:'hauled',l:'Hauled away by accredited desludging operators'},
+    {v:'other',l:'Other (specify)'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  haul_cost_per_trip: [
+    {v:'lt_5k',l:'Less than ₱5,000'},
+    {v:'5k_15k',l:'₱5,000 – ₱15,000'},
+    {v:'15k_30k',l:'₱15,001 – ₱30,000'},
+    {v:'gt_30k',l:'More than ₱30,000'},
+    {v:'dont_know',l:"Don't know"}
+  ],
+  reuse_water_purpose: [
+    {v:'gardening',l:'Gardening / landscaping'},
+    {v:'flushing',l:'Toilet flushing'},
+    {v:'cleaning',l:'Cleaning / washing floors'},
+    {v:'cooling',l:'Cooling tower / industrial'},
+    {v:'other',l:'Others (specify)'}
+  ],
+  reuse_sludge_purpose: [
+    {v:'fertilizer',l:'Fertilizer for plants'},
+    {v:'compost',l:'Compost'},
+    {v:'other',l:'Others (specify)'}
+  ],
+
+  // Section G
+  denr_held: [
+    {v:'valid',l:'Yes — valid'},
+    {v:'expired',l:'Yes — expired'},
+    {v:'in_process',l:'In process'},
+    {v:'no',l:'No'},
+    {v:'na',l:'Not applicable'}
+  ],
+  mandatory_cert: [
+    {v:'yes',l:'Yes, it is a good idea'},
+    {v:'no',l:'No, not needed'},
+    {v:'unsure',l:'Unsure / need more info'}
+  ],
+  ok_unsure: [
+    {v:'yes',l:'Yes, OK'},
+    {v:'no',l:'No, not OK'},
+    {v:'unsure',l:'Unsure'}
+  ],
+  wtp_septic_per_trip: [
+    {v:'lt_1k',l:'Less than ₱1,000 per trip'},
+    {v:'1k_2_5k',l:'₱1,000 – ₱2,500 per trip'},
+    {v:'2_5k_5k',l:'₱2,501 – ₱5,000 per trip'},
+    {v:'5k_10k',l:'₱5,001 – ₱10,000 per trip'},
+    {v:'gt_10k',l:'More than ₱10,000 per trip'},
+    {v:'unsure',l:'Unsure'}
+  ],
+  wtp_stp_per_year: [
+    {v:'lt_5k',l:'Less than ₱5,000 per year'},
+    {v:'5k_15k',l:'₱5,000 – ₱15,000 per year'},
+    {v:'15k_30k',l:'₱15,001 – ₱30,000 per year'},
+    {v:'30k_60k',l:'₱30,001 – ₱60,000 per year'},
+    {v:'gt_60k',l:'More than ₱60,000 per year'},
+    {v:'unsure',l:'Unsure'}
+  ]
+};
+
+// Map field names → choice list keys
+const FIELD_CHOICES = {
+  business_type:'business_type', years_operating:'years_operating',
+  guest_rooms:'guest_rooms', occupancy_rate:'occupancy_rate',
+  seating_capacity:'seating_capacity', meals_per_day:'meals_per_day',
+  stall_count:'stall_count',
+  water_sources:'water_sources', monthly_water_use:'monthly_water_use',
+  own_or_shared:'own_or_shared', system_type:'system_type',
+  chamber_count:'chamber_count', tank_built:'tank_built', tank_bottom:'tank_bottom',
+  tank_walls:'tank_walls', has_grease_trap:'yn_dk', separate_tanks:'separate_tanks',
+  outfall:'outfall', last_desludged:'last_desludged', desludge_calls_12m:'desludge_calls_12m',
+  cost_per_trip:'cost_per_trip', tank_problems:'tank_problems',
+  flooding_around:'yn_some', flood_level:'flood_level', rain_enters_tank:'yn_dk',
+  stp_capacity:'stp_capacity', stp_technology:'stp_technology', stp_built:'stp_built',
+  stp_op_cost:'stp_op_cost', lab_testing:'yn_dk', lab_test_freq:'lab_test_freq',
+  lab_test_cost:'lab_test_cost', stp_problems:'stp_problems',
+  sludge_disposal:'sludge_disposal', haul_cost_per_trip:'haul_cost_per_trip',
+  reuse_water:'yn', reuse_water_purpose:'reuse_water_purpose',
+  reuse_sludge:'yn', reuse_sludge_purpose:'reuse_sludge_purpose',
+  denr_required:'yn_dk', denr_held:'denr_held', mandatory_cert:'mandatory_cert',
+  agree_septic_fee:'ok_unsure', wtp_septic_per_trip:'wtp_septic_per_trip',
+  agree_stp_fee:'ok_unsure', wtp_stp_per_year:'wtp_stp_per_year',
+  respondent_consent:'yn'
+};
+
+// ==================== RENDER OPTION GROUPS ====================
+function buildOptionGroups() {
+  document.querySelectorAll('.option-group').forEach(group => {
+    group.innerHTML = '';
+    const name = group.dataset.name;
+    const type = group.dataset.type;
+    const listKey = FIELD_CHOICES[name];
+    if (!listKey) return;
+    const choices = CHOICE_LISTS[listKey];
+    if (!choices) return;
+
+    choices.forEach(c => {
+      const item = document.createElement('div');
+      item.className = 'option-item';
+      item.dataset.value = c.v;
+      // Restore selection state
+      if (type === 'checkbox') {
+        if ((radioValues[name] || '').split(' ').includes(c.v)) item.classList.add('selected');
+      } else {
+        if (radioValues[name] === c.v) item.classList.add('selected');
+      }
+      const dot = document.createElement('div');
+      dot.className = type === 'checkbox' ? 'option-check' : 'option-dot';
+      if (type === 'checkbox' && item.classList.contains('selected')) dot.textContent = '✓';
+      const label = document.createElement('span');
+      label.textContent = c.l;
+      item.appendChild(dot);
+      item.appendChild(label);
+
+      item.addEventListener('click', () => {
+        if (type === 'checkbox') {
+          item.classList.toggle('selected');
+          const d = item.querySelector('.option-check');
+          d.textContent = item.classList.contains('selected') ? '✓' : '';
+          const selected = [...group.querySelectorAll('.option-item.selected')].map(i => i.dataset.value);
+          radioValues[name] = selected.join(' ');
+        } else {
+          group.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+          item.classList.add('selected');
+          radioValues[name] = c.v;
+        }
+        updateConditionals();
+      });
+      group.appendChild(item);
+    });
+  });
+}
+
+// ==================== BARANGAY DROPDOWN ====================
+function populateBarangays() {
+  const sel = document.getElementById('barangay');
+  if (!sel) return;
+  TAGBILARAN_BARANGAYS.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b.toLowerCase().replace(/\s+/g,'_');
+    opt.textContent = b;
+    sel.appendChild(opt);
+  });
+}
+
+// ==================== TANK LIST (multi-tank) ====================
+function rebuildTankList() {
+  const n = parseInt(document.getElementById('tank_count').value) || 0;
+  const list = document.getElementById('tankList');
+  list.innerHTML = '';
+  if (n <= 0) return;
+  for (let i = 1; i <= Math.min(n, 20); i++) {
+    const row = document.createElement('div');
+    row.className = 'tank-row';
+    row.innerHTML = `
+      <label>Tank ${i}</label>
+      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="L" id="tank_${i}_L" oninput="updateTankDiagram(${i})">
+      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="W" id="tank_${i}_W" oninput="updateTankDiagram(${i})">
+      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="D" id="tank_${i}_D" oninput="updateTankDiagram(${i})">
+      <div class="vol-display" id="tank_${i}_vol"></div>
+    `;
+    list.appendChild(row);
+  }
+  updateTankDiagram(1);
+}
+
+function setUnit(unit) {
+  document.querySelectorAll('.unit-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.unit === unit);
+    el.querySelector('input').checked = el.dataset.unit === unit;
+  });
+  document.getElementById('tankUnitLabel').textContent = 'Unit: ' + (unit === 'meter' ? 'Meters' : 'Feet');
+  // Re-render volumes
+  const n = parseInt(document.getElementById('tank_count').value) || 0;
+  for (let i = 1; i <= n; i++) updateTankVolumeText(i);
+  updateTankDiagram(1);
+}
+
+function updateTankVolumeText(i) {
+  const L = parseFloat((document.getElementById(`tank_${i}_L`)||{}).value) || 0;
+  const W = parseFloat((document.getElementById(`tank_${i}_W`)||{}).value) || 0;
+  const D = parseFloat((document.getElementById(`tank_${i}_D`)||{}).value) || 0;
+  const unit = document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter';
+  const out = document.getElementById(`tank_${i}_vol`);
+  if (!out) return;
+  if (L>0 && W>0 && D>0) {
+    const vol = L*W*D;
+    const unitLabel = unit==='meter' ? 'm³' : 'ft³';
+    const liters = unit==='meter' ? vol*1000 : vol*28.3168;
+    out.textContent = `Volume: ${vol.toFixed(2)} ${unitLabel} (${liters.toFixed(0)} L)`;
+  } else {
+    out.textContent = '';
+  }
+}
+
+function updateTankDiagram(i) {
+  if (i) updateTankVolumeText(i);
+  // The big diagram always shows tank 1 (or whichever the user is editing)
+  const showI = i || 1;
+  const canvas = document.getElementById('tankCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+
+  const L = parseFloat((document.getElementById(`tank_${showI}_L`)||{}).value) || 0;
+  const Wid = parseFloat((document.getElementById(`tank_${showI}_W`)||{}).value) || 0;
+  const D = parseFloat((document.getElementById(`tank_${showI}_D`)||{}).value) || 0;
+  const unit = document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter';
+  const unitLabel = unit === 'meter' ? 'm' : 'ft';
+
+  // Default proportions for empty diagram
+  const dL = L || (unit === 'meter' ? 2 : 6);
+  const dW = Wid || (unit === 'meter' ? 1.2 : 4);
+  const dD = D || (unit === 'meter' ? 1.5 : 5);
+
+  const maxDim = Math.max(dL, dW, dD);
+  const scale = 70 / maxDim;
+  const isoX = 0.85, isoY = 0.45;
+  const bw = dL * scale;
+  const bh = dD * scale;
+  const bd = dW * scale;
+  const totalW = bw + bd * isoX + 30;
+  const totalH = bh + bd * isoY + 45;
+  const ox = (W - totalW) / 2 + 20;
+  const oy = (H - totalH) / 2 + bd * isoY + 10;
+
+  // Front face
+  ctx.fillStyle = '#e8f5ee'; ctx.strokeStyle = '#1a6b4e'; ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(ox, oy); ctx.lineTo(ox + bw, oy); ctx.lineTo(ox + bw, oy + bh); ctx.lineTo(ox, oy + bh);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  // Top face
+  ctx.fillStyle = '#d0ead8';
+  ctx.beginPath();
+  ctx.moveTo(ox, oy); ctx.lineTo(ox + bd * isoX, oy - bd * isoY);
+  ctx.lineTo(ox + bw + bd * isoX, oy - bd * isoY); ctx.lineTo(ox + bw, oy);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  // Right face
+  ctx.fillStyle = '#b8dfc4';
+  ctx.beginPath();
+  ctx.moveTo(ox + bw, oy); ctx.lineTo(ox + bw + bd * isoX, oy - bd * isoY);
+  ctx.lineTo(ox + bw + bd * isoX, oy + bh - bd * isoY); ctx.lineTo(ox + bw, oy + bh);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+
+  // Dimension labels
+  ctx.font = '600 10px "DM Sans", sans-serif';
+  ctx.fillStyle = '#1a6b4e';
+  ctx.textAlign = 'center';
+  const ly = oy + bh + 16;
+  ctx.fillText(L ? `${L} ${unitLabel}` : 'Length', ox + bw / 2, ly);
+  if (L) {
+    ctx.beginPath(); ctx.moveTo(ox + 2, ly - 8); ctx.lineTo(ox + bw - 2, ly - 8); ctx.strokeStyle = '#1a6b4e'; ctx.lineWidth = 0.8; ctx.stroke();
+    drawArrow(ctx, ox + 2, ly - 8, 'left'); drawArrow(ctx, ox + bw - 2, ly - 8, 'right');
+  }
+  ctx.save(); ctx.translate(ox - 14, oy + bh / 2); ctx.rotate(-Math.PI / 2);
+  ctx.fillText(D ? `${D} ${unitLabel}` : 'Depth', 0, 0); ctx.restore();
+  if (D) {
+    ctx.beginPath(); ctx.moveTo(ox - 8, oy + 2); ctx.lineTo(ox - 8, oy + bh - 2); ctx.strokeStyle = '#1a6b4e'; ctx.lineWidth = 0.8; ctx.stroke();
+    drawArrow(ctx, ox - 8, oy + 2, 'up'); drawArrow(ctx, ox - 8, oy + bh - 2, 'down');
+  }
+  const wmx = ox + bw + bd * isoX / 2 + 6, wmy = oy - bd * isoY / 2 - 6;
+  ctx.fillText(Wid ? `${Wid} ${unitLabel}` : 'Width', wmx, wmy);
+
+  const volEl = document.getElementById('tankVolume');
+  if (L > 0 && Wid > 0 && D > 0) {
+    const vol = L * Wid * D;
+    let volText = `Tank ${showI} volume: ${vol.toFixed(1)} ${unit === 'meter' ? 'm³' : 'ft³'}`;
+    volText += unit === 'meter' ? ` (${(vol * 1000).toFixed(0)} L)` : ` (${(vol * 28.3168).toFixed(0)} L)`;
+    volEl.textContent = volText;
+  } else {
+    volEl.textContent = `Enter dimensions for Tank ${showI} to see the diagram`;
+  }
+}
+
+function drawArrow(ctx, x, y, dir) {
+  ctx.fillStyle = '#1a6b4e';
+  ctx.beginPath();
+  const s = 3;
+  if (dir === 'right') { ctx.moveTo(x, y - s); ctx.lineTo(x + s * 2, y); ctx.lineTo(x, y + s); }
+  else if (dir === 'left') { ctx.moveTo(x, y - s); ctx.lineTo(x - s * 2, y); ctx.lineTo(x, y + s); }
+  else if (dir === 'up') { ctx.moveTo(x - s, y); ctx.lineTo(x, y - s * 2); ctx.lineTo(x + s, y); }
+  else { ctx.moveTo(x - s, y); ctx.lineTo(x, y + s * 2); ctx.lineTo(x + s, y); }
+  ctx.fill();
+}
+
+// ==================== SIGNATURE PAD ====================
+let sigPadCtx = null, sigDrawing = false, sigHasInk = false, sigLastX = 0, sigLastY = 0;
+let sigDataUrl = '';
+
+function initSignaturePad() {
+  const canvas = document.getElementById('signaturePad');
+  if (!canvas) return;
+  // Make canvas resolution match its CSS size for crisp lines
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.max(rect.width, 300) * dpr;
+  canvas.height = 160 * dpr;
+  sigPadCtx = canvas.getContext('2d');
+  sigPadCtx.scale(dpr, dpr);
+  sigPadCtx.lineWidth = 2;
+  sigPadCtx.lineCap = 'round';
+  sigPadCtx.lineJoin = 'round';
+  sigPadCtx.strokeStyle = '#1a1a1a';
+
+  function getPos(evt) {
+    const r = canvas.getBoundingClientRect();
+    const t = evt.touches ? evt.touches[0] : evt;
+    return { x: t.clientX - r.left, y: t.clientY - r.top };
+  }
+  function start(evt) { evt.preventDefault(); sigDrawing = true; const p = getPos(evt); sigLastX = p.x; sigLastY = p.y; }
+  function move(evt) {
+    if (!sigDrawing) return;
+    evt.preventDefault();
+    const p = getPos(evt);
+    sigPadCtx.beginPath();
+    sigPadCtx.moveTo(sigLastX, sigLastY);
+    sigPadCtx.lineTo(p.x, p.y);
+    sigPadCtx.stroke();
+    sigLastX = p.x; sigLastY = p.y;
+    if (!sigHasInk) {
+      sigHasInk = true;
+      const s = document.getElementById('signatureStatus');
+      if (s) { s.textContent = '✓ Signed'; s.style.color = 'var(--accent)'; s.style.fontWeight = '600'; }
+    }
+  }
+  function end() {
+    if (!sigDrawing) return;
+    sigDrawing = false;
+    sigDataUrl = canvas.toDataURL('image/png');
+  }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('mouseleave', end);
+  canvas.addEventListener('touchstart', start, { passive: false });
+  canvas.addEventListener('touchmove', move, { passive: false });
+  canvas.addEventListener('touchend', end);
+}
+
+function clearSignature() {
+  const canvas = document.getElementById('signaturePad');
+  if (!canvas || !sigPadCtx) return;
+  const dpr = window.devicePixelRatio || 1;
+  sigPadCtx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+  sigHasInk = false;
+  sigDataUrl = '';
+  const s = document.getElementById('signatureStatus');
+  if (s) { s.textContent = 'Not signed'; s.style.color = 'var(--text-dim)'; s.style.fontWeight = ''; }
+}
+
+// ==================== GPS ====================
+let gpsWatchId = null, bestGpsAccuracy = null, bestGpsData = null;
+
+function captureGPS() {
+  if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
+  document.getElementById('gpsModalOverlay').classList.add('show');
+  document.getElementById('gpsRingValue').textContent = '--';
+  document.getElementById('gpsModalStatus').textContent = 'Searching for GPS signal...';
+  document.getElementById('gpsModalHint').textContent = 'Please wait while we lock onto your location.';
+  document.getElementById('gpsRing').className = 'gps-ring';
+  document.getElementById('btnGpsAccept').classList.remove('active');
+  document.getElementById('gpsModalTips').style.display = '';
+
+  const ACCURACY_THRESHOLD = 10;
+  const maxWaitTime = 120000;
+  const startTime = Date.now();
+  bestGpsAccuracy = null; bestGpsData = null;
+
+  gpsWatchId = navigator.geolocation.watchPosition(
+    pos => {
+      const accuracy = pos.coords.accuracy;
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      const accStr = accuracy.toFixed(1);
+      const remaining = Math.max(0, Math.ceil((maxWaitTime - (Date.now() - startTime)) / 1000));
+
+      if (bestGpsAccuracy === null || accuracy < bestGpsAccuracy) {
+        bestGpsAccuracy = accuracy;
+        bestGpsData = { lat, lng, accStr };
+      }
+      document.getElementById('gpsRingValue').textContent = `±${accStr}`;
+      const ring = document.getElementById('gpsRing');
+      const status = document.getElementById('gpsModalStatus');
+      const hint = document.getElementById('gpsModalHint');
+      const acceptBtn = document.getElementById('btnGpsAccept');
+      const tips = document.getElementById('gpsModalTips');
+      const timedOut = Date.now() - startTime >= maxWaitTime;
+
+      if (accuracy <= ACCURACY_THRESHOLD) {
+        ring.className = 'gps-ring good';
+        status.textContent = '✓ Excellent Signal!';
+        status.style.color = 'var(--accent)';
+        hint.textContent = 'Accuracy is great. You can capture now.';
+        acceptBtn.classList.add('active');
+        acceptBtn.textContent = `✓ Use This Location (±${accStr}m)`;
+        tips.style.display = 'none';
+      } else if (timedOut) {
+        ring.className = 'gps-ring fair';
+        status.textContent = 'Time-out reached';
+        status.style.color = 'var(--warning)';
+        hint.textContent = `Best accuracy: ±${bestGpsData.accStr}m.`;
+        acceptBtn.classList.add('active');
+        acceptBtn.textContent = `✓ Use This Location (±${bestGpsData.accStr}m)`;
+        tips.style.display = 'none';
+      } else if (accuracy <= 20) {
+        ring.className = 'gps-ring fair';
+        status.textContent = '⚠️ Improving...';
+        status.style.color = 'var(--warning)';
+        hint.textContent = `Signal getting better. Auto-unlocks in ${remaining}s.`;
+        acceptBtn.classList.remove('active');
+        tips.style.display = '';
+      } else {
+        ring.className = 'gps-ring';
+        status.textContent = 'Weak signal';
+        status.style.color = 'var(--danger)';
+        hint.textContent = `Move to open area. Auto-unlocks in ${remaining}s.`;
+        acceptBtn.classList.remove('active');
+        tips.style.display = '';
+      }
+    },
+    err => {
+      if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+      gpsWatchId = null;
+      document.getElementById('gpsModalOverlay').classList.remove('show');
+      alert('GPS error: ' + err.message + '\n\nPlease enable location permissions and try again.');
+    },
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+  );
+}
+
+function acceptGPS() {
+  if (!bestGpsData) return;
+  if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+  gpsWatchId = null;
+  gpsData.lat = bestGpsData.lat;
+  gpsData.lng = bestGpsData.lng;
+  gpsData.accuracy = bestGpsData.accStr;
+
+  const box = document.getElementById('gpsBox');
+  box.classList.add('captured');
+  box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
+    <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
+    <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m</div>
+    <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
+  document.getElementById('gpsModalOverlay').classList.remove('show');
+}
+
+function cancelGPS() {
+  if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+  gpsWatchId = null;
+  document.getElementById('gpsModalOverlay').classList.remove('show');
+}
+
+// ==================== CONDITIONAL LOGIC ====================
+function updateConditionals() {
+  document.querySelectorAll('.conditional').forEach(field => {
+    const rule = field.dataset.showWhen;
+    if (!rule) return;
+    // Rules can be "field=val" or "field=val|field2=val2" (OR logic)
+    const conditions = rule.split('|');
+    const show = conditions.some(cond => {
+      const [key, val] = cond.split('=');
+      const current = radioValues[key] || '';
+      if (current.includes(' ')) return current.split(' ').includes(val);
+      return current === val;
+    });
+    field.classList.toggle('show', show);
+  });
+}
+
+// ==================== SECTION SKIP LOGIC ====================
+// Decide whether a given section should be visited based on radioValues so far.
+function shouldVisitSection(idx) {
+  if (idx === 4) {
+    // Section E (Septic): only if own + (septic OR both)
+    return radioValues.own_or_shared === 'own' &&
+           (radioValues.system_type === 'septic' || radioValues.system_type === 'both');
+  }
+  if (idx === 5) {
+    // Section F (STP): only if own + (stp OR both)
+    return radioValues.own_or_shared === 'own' &&
+           (radioValues.system_type === 'stp' || radioValues.system_type === 'both');
+  }
+  return true; // all other sections always visited
+}
+
+function nextSectionIndex(from, dir) {
+  let i = from + dir;
+  while (i >= 0 && i < TOTAL_SECTIONS && !shouldVisitSection(i)) i += dir;
+  return i;
+}
+
+// ==================== VALIDATION ====================
+function validateCurrentSection() {
+  const section = document.querySelector(`[data-section="${currentSection}"]`);
+  let firstInvalid = null;
+  let valid = true;
+  section.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+  section.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+  // Selects
+  section.querySelectorAll('select').forEach(sel => {
+    const field = sel.closest('.field'); if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!sel.value) { markInvalid(field, 'Please make a selection'); if (!firstInvalid) firstInvalid = field; valid = false; }
+  });
+
+  // Text/number/email inputs
+  section.querySelectorAll('input[type="text"],input[type="number"],input[type="email"]').forEach(inp => {
+    const field = inp.closest('.field'); if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!inp.value.trim()) { markInvalid(field, 'This field is required'); if (!firstInvalid) firstInvalid = field; valid = false; return; }
+    if (inp.id === 'contact_number' && !/^\d{10}$/.test(inp.value.trim())) {
+      markInvalid(field, 'Please enter a valid 10-digit mobile number'); if (!firstInvalid) firstInvalid = field; valid = false;
+    }
+    if (inp.type === 'email' && inp.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value.trim())) {
+      markInvalid(field, 'Please enter a valid email'); if (!firstInvalid) firstInvalid = field; valid = false;
+    }
+  });
+
+  // Textareas
+  section.querySelectorAll('textarea').forEach(ta => {
+    const field = ta.closest('.field'); if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!ta.value.trim()) { markInvalid(field, 'This field is required'); if (!firstInvalid) firstInvalid = field; valid = false; }
+  });
+
+  // Radios
+  section.querySelectorAll('.option-group[data-type="radio"]').forEach(group => {
+    const field = group.closest('.field'); if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!group.querySelector('.option-item.selected')) {
+      markInvalid(field, 'Please make a selection'); if (!firstInvalid) firstInvalid = field; valid = false;
+    }
+  });
+
+  // Checkboxes
+  section.querySelectorAll('.option-group[data-type="checkbox"]').forEach(group => {
+    const field = group.closest('.field'); if (!field) return;
+    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    const label = field.querySelector('.field-label');
+    if (!label || !label.querySelector('.req')) return;
+    if (!group.querySelector('.option-item.selected')) {
+      markInvalid(field, 'Please select at least one option'); if (!firstInvalid) firstInvalid = field; valid = false;
+    }
+  });
+
+  // Consent gate on the last section
+  if (currentSection === 7) {
+    const consentSel = document.querySelector('[data-name="respondent_consent"] .option-item.selected');
+    if (consentSel && consentSel.dataset.value === 'no') {
+      const field = document.querySelector('[data-name="respondent_consent"]').closest('.field');
+      markInvalid(field, 'Consent must be "Yes" to submit the survey.');
+      if (!firstInvalid) firstInvalid = field; valid = false;
+    }
+  }
+
+  // Tank dimensions on Section E (4) — make sure all tank rows are filled
+  if (currentSection === 4) {
+    const n = parseInt(v('tank_count')) || 0;
+    if (n > 0) {
+      const dimField = document.getElementById('tankList').closest('.field');
+      let dimMissing = false;
+      for (let i = 1; i <= n; i++) {
+        const L = (document.getElementById(`tank_${i}_L`)||{}).value;
+        const W = (document.getElementById(`tank_${i}_W`)||{}).value;
+        const D = (document.getElementById(`tank_${i}_D`)||{}).value;
+        if (!L || !W || !D || parseFloat(L)<=0 || parseFloat(W)<=0 || parseFloat(D)<=0) {
+          dimMissing = true; break;
+        }
+      }
+      if (dimMissing) {
+        markInvalid(dimField, 'Please enter Length, Width and Depth for each tank.');
+        if (!firstInvalid) firstInvalid = dimField; valid = false;
+      }
+    }
+  }
+
+  if (firstInvalid) firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
+  return valid;
+}
+
+function markInvalid(field, msg) {
+  field.classList.add('field-error');
+  const err = document.createElement('div');
+  err.className = 'error-msg';
+  err.textContent = msg;
+  field.appendChild(err);
+}
+
+// ==================== NAVIGATION ====================
+function navigate(dir) {
+  if (dir > 0 && !validateCurrentSection()) return;
+  const next = nextSectionIndex(currentSection, dir);
+  if (next < 0 || next >= TOTAL_SECTIONS) return;
+
+  document.querySelector(`[data-section="${currentSection}"]`).classList.add('hidden');
+  if (dir > 0) visitedHistory.push(next);
+  else visitedHistory.pop();
+  currentSection = next;
+  document.querySelector(`[data-section="${currentSection}"]`).classList.remove('hidden');
+
+  document.getElementById('btnPrev').classList.toggle('hidden', currentSection === 0);
+  const btnNext = document.getElementById('btnNext');
+  if (currentSection === TOTAL_SECTIONS - 1) {
+    btnNext.textContent = '✓ Submit Survey';
+    btnNext.className = 'btn btn-submit';
+    btnNext.onclick = submitSurvey;
+    // Initialize signature pad now that the canvas is visible (only once)
+    if (!sigPadCtx) initSignaturePad();
+  } else {
+    btnNext.textContent = 'Next →';
+    btnNext.className = 'btn btn-next';
+    btnNext.onclick = () => navigate(1);
+  }
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  // Compute total visit-able sections from current state for an honest progress bar
+  let total = 0, current = 0;
+  for (let i = 0; i < TOTAL_SECTIONS; i++) {
+    if (shouldVisitSection(i)) {
+      total++;
+      if (i <= currentSection) current++;
+    }
+  }
+  const pct = total ? (current / total * 100).toFixed(0) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  const labels = ['A','B','C','D','E','F','G','H'];
+  document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${current} of ${total}`;
+}
+
+// ==================== SUBMIT ====================
+async function submitSurvey() {
+  if (!validateCurrentSection()) return;
+  const btnNext = document.getElementById('btnNext');
+
+  // Gather tank dimensions
+  const nTanks = parseInt(v('tank_count')) || 0;
+  const tanks = [];
+  for (let i = 1; i <= nTanks; i++) {
+    tanks.push({
+      tank: i,
+      length: v(`tank_${i}_L`),
+      width: v(`tank_${i}_W`),
+      depth: v(`tank_${i}_D`)
+    });
+  }
+
+  const data = {
+    timestamp: new Date().toISOString(),
+
+    // Section A
+    business_name: v('business_name'),
+    respondent_name: v('respondent_name'),
+    respondent_role: v('respondent_role'),
+    contact_number: v('contact_number') ? '+63' + v('contact_number') : '',
+    contact_email: v('contact_email'),
+    barangay: v('barangay'),
+    street_landmark: v('street_landmark'),
+    business_type_other: v('business_type_other'),
+
+    // All radio + checkbox values
+    ...radioValues,
+
+    // Section B numeric / text
+    hotel_cr_count: v('hotel_cr_count'),
+    resto_cr_count: v('resto_cr_count'),
+    mall_cr_count: v('mall_cr_count'),
+    other_cr_count: v('other_cr_count'),
+    other_size_desc: v('other_size_desc'),
+
+    // Section C
+    water_source_other: v('water_source_other'),
+
+    // Section E
+    tank_count: nTanks,
+    tank_unit: document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter',
+    tank_dimensions: JSON.stringify(tanks),
+    grease_trap_count: v('grease_trap_count'),
+    separate_tanks_desc: v('separate_tanks_desc'),
+    desludge_operator: v('desludge_operator'),
+    tank_problems_other: v('tank_problems_other'),
+
+    // Section F
+    stp_technology_other: v('stp_technology_other'),
+    stp_problems_other: v('stp_problems_other'),
+    sludge_disposal_other: v('sludge_disposal_other'),
+    haul_per_year: v('haul_per_year'),
+    reuse_water_other: v('reuse_water_other'),
+    reuse_sludge_other: v('reuse_sludge_other'),
+
+    // Section H
+    other_comments: v('other_comments'),
+    latitude: gpsData.lat || '',
+    longitude: gpsData.lng || '',
+    gps_accuracy: gpsData.accuracy || '',
+    respondent_signature: sigDataUrl || ''
+  };
+
+  // Quick required-field check
+  if (!data.business_name) { showStatus('Please enter Business Name (Section A)', 'error'); return; }
+  if (!data.respondent_name) { showStatus('Please enter Respondent Name (Section A)', 'error'); return; }
+  if (!data.barangay) { showStatus('Please select Barangay (Section A)', 'error'); return; }
+  if (!data.contact_number) { showStatus('Please enter Contact Number (Section A)', 'error'); return; }
+  if (radioValues.respondent_consent !== 'yes') {
+    showStatus('Respondent consent (H3) must be "Yes" to submit', 'error'); return;
+  }
+
+  btnNext.disabled = true;
+  showSubmitModal('loading');
+
+  try {
+    if (SCRIPT_URL.startsWith('REPLACE_')) {
+      // No backend wired up yet — show a local "preview" and store JSON
+      console.log('SURVEY DATA (no backend configured):', data);
+      setTimeout(() => {
+        showSubmitModal('success');
+        btnNext.textContent = '✓ Submitted (preview)';
+      }, 800);
+      return;
+    }
+    await fetch(SCRIPT_URL, {
+      method:'POST', mode:'no-cors',
+      headers: { 'Content-Type':'text/plain' },
+      body: JSON.stringify(data)
+    });
+    showSubmitModal('success');
+    btnNext.textContent = '✓ Submitted';
+  } catch (err) {
+    showSubmitModal('error', err.message);
+    btnNext.disabled = false;
+    btnNext.textContent = '✓ Submit Survey';
+  }
+}
+
+function showSubmitModal(state, errorMsg) {
+  const overlay = document.getElementById('submitOverlay');
+  const modal = document.getElementById('submitModal');
+  overlay.classList.add('show');
+  if (state === 'loading') {
+    modal.innerHTML = `<div class="submit-spinner"></div>
+      <h3>Submitting...</h3><p>Please wait, sending your response.</p>`;
+  } else if (state === 'success') {
+    modal.innerHTML = `<div class="submit-success-icon">✓</div>
+      <h3>Thank You!</h3>
+      <p>Your survey has been submitted successfully. Your responses will help improve sanitation services for businesses across Tagbilaran City.</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">Done</button>`;
+  } else if (state === 'error') {
+    modal.innerHTML = `<div class="submit-error-icon">✕</div>
+      <h3>Submission Failed</h3>
+      <p>${errorMsg || 'Could not submit. Please check your internet connection and try again.'}</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">Close</button>`;
+  }
+}
+
+function closeSubmitModal() {
+  document.getElementById('submitOverlay').classList.remove('show');
+}
+
+function v(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function showStatus(msg, type) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.className = 'status ' + type;
+  if (type === 'success') setTimeout(() => { el.style.display = 'none'; }, 8000);
+}
+
+// ==================== WELCOME → INSTRUCTIONS → SURVEY ====================
+function showInstructions() {
+  document.getElementById('welcomePage').classList.remove('show');
+  document.getElementById('instructionsPage').classList.add('show');
+}
+
+function startSurvey() {
+  document.getElementById('instructionsPage').classList.remove('show');
+  document.getElementById('welcomePage').classList.remove('show');
+  document.getElementById('topbar').style.display = '';
+  document.getElementById('progressWrap').style.display = '';
+  document.getElementById('formContainer').style.display = '';
+
+  currentSection = 0;
+  visitedHistory = [0];
+  document.querySelector(`[data-section="0"]`).classList.remove('hidden');
+  document.getElementById('btnPrev').classList.add('hidden');
+  const btnNext = document.getElementById('btnNext');
+  btnNext.textContent = 'Next →';
+  btnNext.className = 'btn btn-next';
+  btnNext.onclick = () => navigate(1);
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== INIT ====================
+function init() {
+  document.getElementById('welcomePage').classList.add('show');
+  document.getElementById('topbar').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('formContainer').style.display = 'none';
+
+  populateBarangays();
+  buildOptionGroups();
+  updateConditionals();
+  updateProgress();
+  updateTankDiagram(1);
+}
+
+init();
+</script>
+</body>
+</html>
