@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CWIS Survey Dashboard — Internal</title>
+<title>CWIS Combined Dashboard — Internal</title>
 <link rel="icon" type="image/png" href="https://bohol.gov.ph/wp-content/uploads/2022/12/bohol-seal-3d-1-e1674697639577.png">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
@@ -32,6 +32,20 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-refresh:hover{background:rgba(255,255,255,0.25)}
 .btn-refresh:disabled{opacity:0.5;cursor:wait}
 
+/* Tab bar */
+.tab-bar{background:#fff;border-bottom:1px solid var(--card-border);position:sticky;top:73px;z-index:99;
+  box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.tab-bar-inner{max-width:1100px;margin:0 auto;display:flex;padding:0 1rem;gap:0.25rem}
+.tab-btn{flex:1;max-width:240px;padding:0.95rem 1.25rem;background:transparent;border:none;
+  font-family:var(--font);font-size:0.92rem;font-weight:600;color:var(--text-dim);cursor:pointer;
+  border-bottom:3px solid transparent;transition:all 0.18s;letter-spacing:0.02em;
+  display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.tab-btn:hover{color:var(--text);background:var(--accent-light)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);background:#fff}
+.tab-btn .tab-count{display:inline-block;background:var(--accent-light);color:var(--accent);
+  font-size:0.7rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:100px;min-width:24px;text-align:center}
+.tab-btn.active .tab-count{background:var(--accent);color:#fff}
+
 /* Layout */
 .container{max-width:1100px;margin:0 auto;padding:1rem}
 
@@ -44,6 +58,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* Error */
 .error-box{background:#fdf0ef;border:1px solid rgba(192,57,43,0.25);color:var(--danger);
   padding:1rem 1.25rem;border-radius:var(--radius);text-align:center;margin:1rem 0}
+.empty-box{background:var(--accent-light);border:1px solid rgba(26,107,78,0.2);color:var(--accent);
+  padding:2rem 1.25rem;border-radius:var(--radius);text-align:center;margin:1rem 0;font-weight:500}
 
 /* KPI Cards */
 .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem;margin-bottom:1.25rem}
@@ -80,32 +96,30 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .btn-export{padding:0.5rem 1rem;background:var(--accent);color:#fff;border:none;border-radius:8px;
   font-family:var(--font);font-size:0.8rem;font-weight:600;cursor:pointer}
 .btn-export:hover{background:var(--accent-hover)}
-
-table{width:100%;border-collapse:collapse;font-size:0.8rem}
-thead th{background:var(--accent);color:#fff;padding:0.6rem 0.5rem;text-align:left;font-weight:600;
-  white-space:nowrap;position:sticky;top:0}
-tbody td{padding:0.5rem;border-bottom:1px solid var(--card-border);white-space:nowrap;max-width:200px;
-  overflow:hidden;text-overflow:ellipsis}
+.table-scroll{max-height:520px;overflow:auto;border:1px solid var(--card-border);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:0.78rem}
+thead{position:sticky;top:0;background:var(--accent);color:#fff;z-index:1}
+th{padding:0.65rem 0.5rem;text-align:left;font-weight:600;white-space:nowrap;font-size:0.72rem;
+  text-transform:uppercase;letter-spacing:0.03em}
+td{padding:0.55rem 0.5rem;border-bottom:1px solid var(--card-border);max-width:200px;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
 tbody tr:hover{background:var(--accent-light)}
-.table-scroll{max-height:400px;overflow-y:auto}
-.table-footer{display:flex;justify-content:space-between;align-items:center;margin-top:0.75rem;
-  font-size:0.78rem;color:var(--text-dim);flex-wrap:wrap;gap:0.5rem}
+.table-footer{display:flex;justify-content:space-between;align-items:center;margin-top:0.65rem;flex-wrap:wrap;gap:0.5rem;font-size:0.78rem;color:var(--text-dim)}
 .pagination{display:flex;gap:0.25rem}
-.page-btn{padding:0.35rem 0.65rem;border:1px solid var(--card-border);border-radius:6px;background:var(--card);
-  font-family:var(--font);font-size:0.78rem;cursor:pointer}
+.page-btn{padding:0.35rem 0.65rem;border:1px solid var(--card-border);background:#fff;
+  border-radius:6px;cursor:pointer;font-size:0.78rem;font-family:var(--font);font-weight:600;color:var(--text-dim)}
+.page-btn:hover{border-color:var(--accent);color:var(--accent)}
 .page-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.page-btn:hover:not(.active){background:var(--accent-light)}
 
-/* Last updated */
-.last-updated{text-align:center;padding:1rem;color:var(--text-dim);font-size:0.72rem;opacity:0.6}
+.last-updated{text-align:center;font-size:0.72rem;color:var(--text-dim);margin:1rem 0;font-style:italic}
 
-/* Responsive */
-@media(max-width:500px){
-  .header h1{font-size:1.05rem}
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .kpi-value{font-size:1.5rem}
-  .container{padding:0.75rem}
-}
+/* Tab content */
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* Section divider chip inside header */
+.scope-chip{display:inline-block;padding:0.2rem 0.6rem;background:rgba(255,255,255,0.18);
+  border-radius:100px;font-size:0.65rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-left:0.5rem;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -113,175 +127,244 @@ tbody tr:hover{background:var(--accent-light)}
 <div class="header">
   <div class="header-row">
     <div>
-      <h1>📊 CWIS Survey Dashboard</h1>
-      <div class="sub">Bohol — Internal Assessment</div>
+      <h1>CWIS Survey Dashboard <span class="scope-chip" id="scopeChip">Residential</span></h1>
+      <div class="sub">Bohol — Citywide Inclusive Sanitation Plan</div>
     </div>
-    <button class="btn-refresh" id="btnRefresh" onclick="loadData()">↻ Refresh</button>
+    <button class="btn-refresh" id="btnRefresh" onclick="reloadActiveTab()">↻ Refresh</button>
   </div>
 </div>
 
-<div class="container" id="mainContent">
-  <div class="loading" id="loadingState">
-    <div class="loading-spinner"></div>
-    <div>Loading survey data…</div>
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" data-tab="residential" onclick="switchTab('residential')">
+      🏠 Residential <span class="tab-count" id="countResidential">—</span>
+    </button>
+    <button class="tab-btn" data-tab="business" onclick="switchTab('business')">
+      🏢 Business <span class="tab-count" id="countBusiness">—</span>
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Residential tab -->
+  <div class="tab-pane active" id="paneResidential">
+    <div id="contentResidential">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>Loading residential data…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Business tab -->
+  <div class="tab-pane" id="paneBusiness">
+    <div id="contentBusiness">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <div>Loading business data…</div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-// ==========================================
-// CONFIG
-// ==========================================
-const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwa5ME3Cf4g4O0Ihh0OGRJs9zYla89XcgAiXFc22bESG59AgNGuhZCDLRNPQf6Jxknf/exec';
-const SPREADSHEET_ID = '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw';
-const SHEET_NAME = 'Responses';
+// ==========================================================================
+// CONFIG — Two tabs, two backends
+// ==========================================================================
+const TABS = {
+  residential: {
+    // Existing residential backend (already deployed)
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwa5ME3Cf4g4O0Ihh0OGRJs9zYla89XcgAiXFc22bESG59AgNGuhZCDLRNPQf6Jxknf/exec',
+    spreadsheetId: '1UqSr8X56m2vQwBS2B6P9-mfy1T-BwOP2a7aQqgtLHXw',
+    sheetName: 'Responses',
+    cityColumn: 'City / Municipality'
+  },
+  business: {
+    // Business backend — paste your business dashboard Apps Script URL after deploying it
+    appsScriptUrl: 'https://script.google.com/macros/s/AKfycbwQn-oq0mq_xd1uZf8TdYLqXKjtNKCiDkEH_dkr2qBPbCiAM_NV70qfQHyUnSTjbBEMJQ/exec',
+    spreadsheetId: '1dsopwHtngNY8GfGshqIw4mjn04JeFMNWs3GvK0q74qk',
+    sheetName: 'Responses',
+    cityColumn: 'A4. Barangay' // business survey is Tagbilaran-only, filter by barangay instead
+  }
+};
 
-let allData = [];
-let filteredData = [];
-let currentPage = 1;
+// Per-tab state
+const tabState = {
+  residential: { allData: [], filteredData: [], currentPage: 1, chartInstances: {}, loaded: false },
+  business:    { allData: [], filteredData: [], currentPage: 1, chartInstances: {}, loaded: false }
+};
 const PAGE_SIZE = 25;
-let chartInstances = {};
+const PALETTE = ['#1a6b4e','#2980b9','#e67e22','#8e44ad','#c0392b','#16a085','#d35400','#2c3e50','#27ae60','#f39c12','#7f8c8d','#1abc9c'];
 
-// ==========================================
-// Load data — tries 3 methods in sequence
-// ==========================================
-function loadData() {
+let activeTab = 'residential';
+
+// ==========================================================================
+// Tab switching
+// ==========================================================================
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'pane' + capitalize(tab)));
+  document.getElementById('scopeChip').textContent = capitalize(tab);
+
+  // Lazy-load the tab on first activation
+  if (!tabState[tab].loaded) loadTab(tab);
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function reloadActiveTab() {
+  tabState[activeTab].loaded = false;
+  loadTab(activeTab);
+}
+
+// ==========================================================================
+// Data loading — 3 fallback methods per tab
+// ==========================================================================
+function loadTab(tab) {
+  const cfg = TABS[tab];
+  const contentEl = document.getElementById('content' + capitalize(tab));
   const btn = document.getElementById('btnRefresh');
   btn.disabled = true;
   btn.textContent = '↻ Loading…';
 
-  // Method 1: Google Sheets Visualization API (most reliable on mobile)
-  loadViaGoogleSheets()
-    .then(json => handleDataLoaded(json, btn))
+  contentEl.innerHTML = `<div class="loading"><div class="loading-spinner"></div><div>Loading ${tab} data…</div></div>`;
+
+  // Method 1: Google Sheets gviz API (no Apps Script needed if sheet is publicly viewable)
+  loadViaGviz(cfg)
+    .then(json => handleDataLoaded(tab, json, btn))
     .catch(() => {
-      // Method 2: fetch from Apps Script
-      loadViaFetch()
-        .then(json => handleDataLoaded(json, btn))
+      // Method 2: Apps Script via fetch
+      loadViaFetch(cfg)
+        .then(json => handleDataLoaded(tab, json, btn))
         .catch(() => {
-          // Method 3: JSONP from Apps Script
-          loadViaJSONP()
-            .then(json => handleDataLoaded(json, btn))
+          // Method 3: Apps Script via JSONP
+          loadViaJSONP(cfg)
+            .then(json => handleDataLoaded(tab, json, btn))
             .catch(err => {
               btn.disabled = false;
               btn.textContent = '↻ Refresh';
-              document.getElementById('mainContent').innerHTML =
-                '<div class="error-box">⚠️ Failed to load data.<br><br>' +
-                'Make sure the spreadsheet is shared as "Anyone with the link can view" and try again.</div>';
+              contentEl.innerHTML =
+                '<div class="error-box">⚠️ Failed to load ' + tab + ' data.<br><br>' +
+                'Make sure the spreadsheet is shared as "Anyone with the link can view" ' +
+                'and the Apps Script is deployed.<br><small>' + escapeHtml(err.message || '') + '</small></div>';
             });
         });
     });
 }
 
-function handleDataLoaded(json, btn) {
+function handleDataLoaded(tab, json, btn) {
   btn.disabled = false;
   btn.textContent = '↻ Refresh';
 
   if (json.status === 'error') {
-    document.getElementById('mainContent').innerHTML =
+    document.getElementById('content' + capitalize(tab)).innerHTML =
       '<div class="error-box">⚠️ Error: ' + escapeHtml(json.message || 'Unknown error') + '</div>';
     return;
   }
 
-  allData = json.rows || [];
-  filteredData = [...allData];
-  currentPage = 1;
-  renderDashboard();
+  const state = tabState[tab];
+  state.allData = json.rows || [];
+  state.filteredData = [...state.allData];
+  state.currentPage = 1;
+  state.loaded = true;
+
+  // Update count badge in tab
+  document.getElementById('count' + capitalize(tab)).textContent = state.allData.length;
+
+  if (tab === 'residential') renderResidential();
+  else renderBusiness();
 }
 
-// ==========================================
-// Method 1: Google Sheets Visualization API (JSONP, no CORS issues)
-// ==========================================
-function loadViaGoogleSheets() {
+// ==========================================================================
+// Method 1: gviz (Google Sheets visualization API)
+// ==========================================================================
+function loadViaGviz(cfg) {
   return new Promise((resolve, reject) => {
-    const cbName = '_cwis_gviz_' + Date.now();
+    const cbName = '_cwis_gviz_' + Date.now() + '_' + Math.floor(Math.random() * 9999);
     const timeout = setTimeout(() => {
       delete window[cbName];
-      const s = document.getElementById('gvizScript');
+      const s = document.getElementById(cbName);
       if (s) s.remove();
-      reject(new Error('Google Sheets timeout'));
+      reject(new Error('Sheets gviz timeout'));
     }, 25000);
 
     window[cbName] = function(response) {
       clearTimeout(timeout);
       delete window[cbName];
-      const s = document.getElementById('gvizScript');
+      const s = document.getElementById(cbName);
       if (s) s.remove();
 
       if (response.status === 'error') {
         reject(new Error(response.errors && response.errors[0] ? response.errors[0].message : 'Sheet error'));
         return;
       }
-
       try {
-        var table = response.table;
-        var headers = [];
-        for (var i = 0; i < table.cols.length; i++) {
-          headers.push(table.cols[i].label || table.cols[i].id);
-        }
-
-        var rows = [];
-        for (var r = 0; r < table.rows.length; r++) {
-          var obj = {};
-          var cells = table.rows[r].c;
-          for (var c = 0; c < headers.length; c++) {
-            var cell = cells[c];
-            if (!cell) { obj[headers[c]] = ''; continue; }
-            // Use formatted value (f) if available, otherwise raw value (v)
-            var val = cell.f != null ? cell.f : (cell.v != null ? cell.v : '');
-            obj[headers[c]] = val;
+        const table = response.table;
+        const headers = table.cols.map(c => c.label || c.id);
+        const rows = table.rows.map(r => {
+          const obj = {};
+          for (let i = 0; i < headers.length; i++) {
+            const cell = r.c[i];
+            if (!cell) { obj[headers[i]] = ''; continue; }
+            obj[headers[i]] = cell.f != null ? cell.f : (cell.v != null ? cell.v : '');
           }
-          rows.push(obj);
-        }
-
-        resolve({ status: 'ok', totalResponses: rows.length, headers: headers, rows: rows });
-      } catch (e) {
-        reject(e);
-      }
+          return obj;
+        });
+        resolve({ status: 'ok', rows });
+      } catch (e) { reject(e); }
     };
 
-    var script = document.createElement('script');
-    script.id = 'gvizScript';
-    script.src = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID +
-      '/gviz/tq?tqx=responseHandler:' + cbName + '&sheet=' + encodeURIComponent(SHEET_NAME);
-    script.onerror = function() {
+    const url = 'https://docs.google.com/spreadsheets/d/' + cfg.spreadsheetId +
+                '/gviz/tq?sheet=' + encodeURIComponent(cfg.sheetName) +
+                '&tqx=responseHandler:' + cbName;
+    const script = document.createElement('script');
+    script.id = cbName;
+    script.src = url;
+    script.onerror = () => {
       clearTimeout(timeout);
       delete window[cbName];
       script.remove();
-      reject(new Error('Sheet script load failed'));
+      reject(new Error('gviz script load failed'));
     };
     document.head.appendChild(script);
   });
 }
 
-// ==========================================
+// ==========================================================================
 // Method 2: fetch from Apps Script
-// ==========================================
-function loadViaFetch() {
+// ==========================================================================
+function loadViaFetch(cfg) {
   return new Promise((resolve, reject) => {
+    if (!cfg.appsScriptUrl || cfg.appsScriptUrl.startsWith('REPLACE_')) {
+      reject(new Error('No Apps Script URL configured'));
+      return;
+    }
     const timeout = setTimeout(() => reject(new Error('Fetch timeout')), 20000);
-
-    fetch(DASHBOARD_SCRIPT_URL, { redirect: 'follow' })
+    fetch(cfg.appsScriptUrl, { redirect: 'follow' })
       .then(resp => {
         clearTimeout(timeout);
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         return resp.json();
       })
       .then(resolve)
-      .catch(err => {
-        clearTimeout(timeout);
-        reject(err);
-      });
+      .catch(err => { clearTimeout(timeout); reject(err); });
   });
 }
 
-// ==========================================
+// ==========================================================================
 // Method 3: JSONP from Apps Script
-// ==========================================
-function loadViaJSONP() {
+// ==========================================================================
+function loadViaJSONP(cfg) {
   return new Promise((resolve, reject) => {
-    const cbName = '_cwis_cb_' + Date.now();
+    if (!cfg.appsScriptUrl || cfg.appsScriptUrl.startsWith('REPLACE_')) {
+      reject(new Error('No Apps Script URL configured'));
+      return;
+    }
+    const cbName = '_cwis_cb_' + Date.now() + '_' + Math.floor(Math.random() * 9999);
     const timeout = setTimeout(() => {
       delete window[cbName];
-      const s = document.getElementById('jsonpScript');
+      const s = document.getElementById(cbName);
       if (s) s.remove();
       reject(new Error('JSONP timeout'));
     }, 20000);
@@ -289,165 +372,230 @@ function loadViaJSONP() {
     window[cbName] = function(json) {
       clearTimeout(timeout);
       delete window[cbName];
-      const s = document.getElementById('jsonpScript');
+      const s = document.getElementById(cbName);
       if (s) s.remove();
       resolve(json);
     };
 
     const script = document.createElement('script');
-    script.id = 'jsonpScript';
-    script.src = DASHBOARD_SCRIPT_URL + '?callback=' + cbName;
-    script.onerror = function() {
+    script.id = cbName;
+    script.src = cfg.appsScriptUrl + '?callback=' + cbName;
+    script.onerror = () => {
       clearTimeout(timeout);
       delete window[cbName];
       script.remove();
-      reject(new Error('Script load failed'));
+      reject(new Error('JSONP script load failed'));
     };
     document.head.appendChild(script);
   });
 }
 
-// ==========================================
-// Render all dashboard sections
-// ==========================================
-function renderDashboard() {
-  const mc = document.getElementById('mainContent');
+// ==========================================================================
+// RESIDENTIAL — render
+// ==========================================================================
+function renderResidential() {
+  const state = tabState.residential;
+  const allData = state.allData;
+  const mc = document.getElementById('contentResidential');
 
   // Destroy previous chart instances
-  Object.values(chartInstances).forEach(c => c.destroy());
-  chartInstances = {};
+  Object.values(state.chartInstances).forEach(c => c.destroy());
+  state.chartInstances = {};
 
-  const cities = countBy('City / Municipality');
-  const sanitationTypes = countBy('E1. Sanitation Type');
-  const desludged = countBy('G1. Ever Desludged');
-  const floodEntered = countBy('B1. Flood Entered Containment');
+  if (allData.length === 0) {
+    mc.innerHTML = '<div class="empty-box">No residential responses yet.</div>';
+    return;
+  }
+
+  const cities = countBy(allData, 'City / Municipality');
+  const sanitationTypes = countBy(allData, 'E1. Sanitation Type');
+  const desludged = countBy(allData, 'G1. Ever Desludged');
+  const floodEntered = countBy(allData, 'B1. Flood Entered Containment');
   const consentCount = allData.filter(r => r['J5. Respondent Consent'] === 'Yes' || r['J5. Respondent Consent'] === 'Oo').length;
   const withGPS = allData.filter(r => r['J2. Latitude'] && r['J2. Longitude']).length;
 
   mc.innerHTML = `
-    <!-- KPIs -->
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-value">${allData.length}</div>
-        <div class="kpi-label">Total Responses</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-value">${Object.keys(cities).length}</div>
-        <div class="kpi-label">Cities Covered</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-value">${withGPS}</div>
-        <div class="kpi-label">GPS Tagged</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-value">${consentCount}</div>
-        <div class="kpi-label">Consented</div>
-      </div>
+      <div class="kpi-card"><div class="kpi-value">${allData.length}</div><div class="kpi-label">Total Responses</div></div>
+      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities Covered</div></div>
+      <div class="kpi-card"><div class="kpi-value">${withGPS}</div><div class="kpi-label">GPS Tagged</div></div>
+      <div class="kpi-card"><div class="kpi-value">${consentCount}</div><div class="kpi-label">Consented</div></div>
     </div>
 
-    <!-- Charts Row 1 -->
     <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Responses by City / Municipality</h3>
-        <div class="chart-wrap"><canvas id="chartCity"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Sanitation Type (E1)</h3>
-        <div class="chart-wrap"><canvas id="chartSanitation"></canvas></div>
-      </div>
+      <div class="chart-card"><h3>Responses by City / Municipality</h3><div class="chart-wrap"><canvas id="r_chartCity"></canvas></div></div>
+      <div class="chart-card"><h3>Sanitation Type (E1)</h3><div class="chart-wrap"><canvas id="r_chartSanitation"></canvas></div></div>
     </div>
-
-    <!-- Charts Row 2 -->
     <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Flood Entered Containment (B1)</h3>
-        <div class="chart-wrap"><canvas id="chartFlood"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Ever Desludged (G1)</h3>
-        <div class="chart-wrap"><canvas id="chartDesludge"></canvas></div>
-      </div>
+      <div class="chart-card"><h3>Flood Entered Containment (B1)</h3><div class="chart-wrap"><canvas id="r_chartFlood"></canvas></div></div>
+      <div class="chart-card"><h3>Ever Desludged (G1)</h3><div class="chart-wrap"><canvas id="r_chartDesludge"></canvas></div></div>
     </div>
-
-    <!-- Charts Row 3 -->
     <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Dwelling Type (D2)</h3>
-        <div class="chart-wrap"><canvas id="chartDwelling"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Greywater Destination (F3)</h3>
-        <div class="chart-wrap"><canvas id="chartGreywater"></canvas></div>
-      </div>
+      <div class="chart-card"><h3>Dwelling Type (D2)</h3><div class="chart-wrap"><canvas id="r_chartDwelling"></canvas></div></div>
+      <div class="chart-card"><h3>Greywater Destination (F3)</h3><div class="chart-wrap"><canvas id="r_chartGreywater"></canvas></div></div>
     </div>
-
-    <!-- Charts Row 4 -->
     <div class="chart-grid">
-      <div class="chart-card">
-        <h3>Water Supply Sources (H1)</h3>
-        <div class="chart-wrap"><canvas id="chartWater"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <h3>Responses Over Time</h3>
-        <div class="chart-wrap"><canvas id="chartTimeline"></canvas></div>
-      </div>
+      <div class="chart-card"><h3>Water Supply Sources (H1)</h3><div class="chart-wrap"><canvas id="r_chartWater"></canvas></div></div>
+      <div class="chart-card"><h3>Responses Over Time</h3><div class="chart-wrap"><canvas id="r_chartTimeline"></canvas></div></div>
     </div>
 
-    <!-- Data Table -->
     <div class="table-card">
-      <h3>All Responses</h3>
+      <h3>All Residential Responses</h3>
       <div class="table-controls">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search by name, barangay, city…" oninput="applyFilters()">
-        <select class="filter-select" id="filterCity" onchange="applyFilters()">
+        <input type="text" class="search-input" id="r_searchInput" placeholder="Search by name, barangay, city…" oninput="applyFilters('residential')">
+        <select class="filter-select" id="r_filterCity" onchange="applyFilters('residential')">
           <option value="">All Cities</option>
           ${Object.keys(cities).sort().map(c => '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>').join('')}
         </select>
-        <button class="btn-export" onclick="exportCSV()">⬇ Export CSV</button>
+        <button class="btn-export" onclick="exportCSV('residential', 'cwis-residential')">⬇ Export CSV</button>
       </div>
-      <div class="table-scroll" id="tableScroll"></div>
+      <div class="table-scroll" id="r_tableScroll"></div>
       <div class="table-footer">
-        <div id="tableInfo"></div>
-        <div class="pagination" id="pagination"></div>
+        <div id="r_tableInfo"></div>
+        <div class="pagination" id="r_pagination"></div>
       </div>
     </div>
 
     <div class="last-updated">Last refreshed: ${new Date().toLocaleString()}</div>
   `;
 
-  // Render all charts
-  renderBarChart('chartCity', cities, PALETTE);
-  renderDoughnutChart('chartSanitation', sanitationTypes);
-  renderDoughnutChart('chartFlood', floodEntered);
-  renderDoughnutChart('chartDesludge', desludged);
-  renderBarChart('chartDwelling', countBy('D2. Dwelling Type'), PALETTE);
-  renderBarChart('chartGreywater', countBy('F3. Greywater Destination'), PALETTE);
-  renderBarChart('chartWater', countByMulti('H1. Water Supply Sources'), PALETTE);
-  renderTimelineChart('chartTimeline');
+  // Charts
+  renderBarChart('residential', 'r_chartCity', cities);
+  renderDoughnutChart('residential', 'r_chartSanitation', sanitationTypes);
+  renderDoughnutChart('residential', 'r_chartFlood', floodEntered);
+  renderDoughnutChart('residential', 'r_chartDesludge', desludged);
+  renderBarChart('residential', 'r_chartDwelling', countBy(allData, 'D2. Dwelling Type'));
+  renderBarChart('residential', 'r_chartGreywater', countBy(allData, 'F3. Greywater Destination'));
+  renderBarChart('residential', 'r_chartWater', countByMulti(allData, 'H1. Water Supply Sources'));
+  renderTimelineChart('residential', 'r_chartTimeline');
 
-  // Render table
-  renderTable();
+  renderTable('residential');
 }
 
-// ==========================================
-// Chart helpers
-// ==========================================
-const PALETTE = [
-  '#1a6b4e','#2980b9','#e67e22','#8e44ad','#c0392b','#16a085',
-  '#d35400','#2c3e50','#27ae60','#f39c12','#7f8c8d','#1abc9c'
-];
+// ==========================================================================
+// BUSINESS — render
+// ==========================================================================
+function renderBusiness() {
+  const state = tabState.business;
+  const allData = state.allData;
+  const mc = document.getElementById('contentBusiness');
 
-function renderBarChart(id, data, colors) {
+  Object.values(state.chartInstances).forEach(c => c.destroy());
+  state.chartInstances = {};
+
+  if (allData.length === 0) {
+    mc.innerHTML = '<div class="empty-box">No business responses yet. Once businesses start submitting, charts and a data table will appear here.</div>';
+    return;
+  }
+
+  const barangays = countBy(allData, 'A4. Barangay');
+  const businessTypes = countBy(allData, 'A5. Business Type');
+  const yearsOperating = countBy(allData, 'A6. Years Operating');
+  const monthlyWater = countBy(allData, 'C2. Monthly Water Use');
+  const ownOrShared = countBy(allData, 'D1. Own or Shared System');
+  const systemType = countBy(allData, 'D2. System Type');
+  const lastDesludged = countBy(allData, 'E10. Last Desludged');
+  const denrHeld = countBy(allData, 'G2. DENR Held');
+  const agreeSepticFee = countBy(allData, 'G4. Agree Septic Sanitation Fee');
+  const agreeStpFee = countBy(allData, 'G6. Agree STP Sanitation Fee');
+  const consentCount = allData.filter(r => r['H2. Respondent Consent'] === 'Yes' || r['H2. Respondent Consent'] === 'Oo').length;
+  const stpUsers = allData.filter(r => {
+    const t = String(r['D2. System Type'] || '').toLowerCase();
+    return t.includes('stp') || t.includes('both');
+  }).length;
+  const septicUsers = allData.filter(r => {
+    const t = String(r['D2. System Type'] || '').toLowerCase();
+    return t.includes('septic') || t.includes('both');
+  }).length;
+
+  mc.innerHTML = `
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-value">${allData.length}</div><div class="kpi-label">Total Responses</div></div>
+      <div class="kpi-card"><div class="kpi-value">${Object.keys(barangays).length}</div><div class="kpi-label">Barangays Covered</div></div>
+      <div class="kpi-card"><div class="kpi-value">${septicUsers}</div><div class="kpi-label">Septic Tank Users</div></div>
+      <div class="kpi-card"><div class="kpi-value">${stpUsers}</div><div class="kpi-label">STP Users</div></div>
+      <div class="kpi-card"><div class="kpi-value">${consentCount}</div><div class="kpi-label">Consented</div></div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Business Type (A5)</h3><div class="chart-wrap"><canvas id="b_chartType"></canvas></div></div>
+      <div class="chart-card"><h3>Responses by Barangay (A4)</h3><div class="chart-wrap"><canvas id="b_chartBarangay"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Years Operating (A6)</h3><div class="chart-wrap"><canvas id="b_chartYears"></canvas></div></div>
+      <div class="chart-card"><h3>Monthly Water Use (C2)</h3><div class="chart-wrap"><canvas id="b_chartWater"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Own or Shared System (D1)</h3><div class="chart-wrap"><canvas id="b_chartOwnShared"></canvas></div></div>
+      <div class="chart-card"><h3>System Type (D2)</h3><div class="chart-wrap"><canvas id="b_chartSystem"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Last Desludged (E10)</h3><div class="chart-wrap"><canvas id="b_chartDesludged"></canvas></div></div>
+      <div class="chart-card"><h3>DENR Permit Held (G2)</h3><div class="chart-wrap"><canvas id="b_chartDenr"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Willing: Septic Sanitation Fee (G4)</h3><div class="chart-wrap"><canvas id="b_chartFeeSeptic"></canvas></div></div>
+      <div class="chart-card"><h3>Willing: STP Sanitation Fee (G6)</h3><div class="chart-wrap"><canvas id="b_chartFeeStp"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full-width"><h3>Responses Over Time</h3><div class="chart-wrap"><canvas id="b_chartTimeline"></canvas></div></div>
+    </div>
+
+    <div class="table-card">
+      <h3>All Business Responses</h3>
+      <div class="table-controls">
+        <input type="text" class="search-input" id="b_searchInput" placeholder="Search by business, barangay, type…" oninput="applyFilters('business')">
+        <select class="filter-select" id="b_filterCity" onchange="applyFilters('business')">
+          <option value="">All Barangays</option>
+          ${Object.keys(barangays).sort().map(c => '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>').join('')}
+        </select>
+        <select class="filter-select" id="b_filterType" onchange="applyFilters('business')">
+          <option value="">All Business Types</option>
+          ${Object.keys(businessTypes).sort().map(c => '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>').join('')}
+        </select>
+        <button class="btn-export" onclick="exportCSV('business', 'cwis-business')">⬇ Export CSV</button>
+      </div>
+      <div class="table-scroll" id="b_tableScroll"></div>
+      <div class="table-footer">
+        <div id="b_tableInfo"></div>
+        <div class="pagination" id="b_pagination"></div>
+      </div>
+    </div>
+
+    <div class="last-updated">Last refreshed: ${new Date().toLocaleString()}</div>
+  `;
+
+  // Charts
+  renderBarChart('business', 'b_chartType', businessTypes);
+  renderBarChart('business', 'b_chartBarangay', barangays);
+  renderBarChart('business', 'b_chartYears', yearsOperating);
+  renderBarChart('business', 'b_chartWater', monthlyWater);
+  renderDoughnutChart('business', 'b_chartOwnShared', ownOrShared);
+  renderDoughnutChart('business', 'b_chartSystem', systemType);
+  renderBarChart('business', 'b_chartDesludged', lastDesludged);
+  renderDoughnutChart('business', 'b_chartDenr', denrHeld);
+  renderDoughnutChart('business', 'b_chartFeeSeptic', agreeSepticFee);
+  renderDoughnutChart('business', 'b_chartFeeStp', agreeStpFee);
+  renderTimelineChart('business', 'b_chartTimeline');
+
+  renderTable('business');
+}
+
+// ==========================================================================
+// Chart helpers
+// ==========================================================================
+function renderBarChart(tab, id, data) {
   const ctx = document.getElementById(id);
   if (!ctx) return;
   const labels = Object.keys(data).map(l => l || '(blank)');
   const values = Object.values(data);
-  chartInstances[id] = new Chart(ctx, {
+  tabState[tab].chartInstances[id] = new Chart(ctx, {
     type: 'bar',
     data: {
       labels,
       datasets: [{
         data: values,
-        backgroundColor: labels.map((_, i) => colors[i % colors.length]),
+        backgroundColor: labels.map((_, i) => PALETTE[i % PALETTE.length]),
         borderRadius: 6,
         maxBarThickness: 50
       }]
@@ -464,12 +612,12 @@ function renderBarChart(id, data, colors) {
   });
 }
 
-function renderDoughnutChart(id, data) {
+function renderDoughnutChart(tab, id, data) {
   const ctx = document.getElementById(id);
   if (!ctx) return;
   const labels = Object.keys(data).map(l => l || '(blank)');
   const values = Object.values(data);
-  chartInstances[id] = new Chart(ctx, {
+  tabState[tab].chartInstances[id] = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels,
@@ -483,21 +631,15 @@ function renderDoughnutChart(id, data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'bottom',
-          labels: { font: { size: 11 }, padding: 12, usePointStyle: true, pointStyleWidth: 10 }
-        }
-      }
+      plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, padding: 12, usePointStyle: true, pointStyleWidth: 10 } } }
     }
   });
 }
 
-function renderTimelineChart(id) {
+function renderTimelineChart(tab, id) {
   const ctx = document.getElementById(id);
   if (!ctx) return;
-
-  // Group by date
+  const allData = tabState[tab].allData;
   const dateCounts = {};
   allData.forEach(r => {
     const ts = r['Timestamp'];
@@ -507,13 +649,11 @@ function renderTimelineChart(id) {
     const key = d.toISOString().slice(0, 10);
     dateCounts[key] = (dateCounts[key] || 0) + 1;
   });
-
   const sorted = Object.keys(dateCounts).sort();
-  // Cumulative
   let cum = 0;
   const cumulative = sorted.map(k => { cum += dateCounts[k]; return cum; });
 
-  chartInstances[id] = new Chart(ctx, {
+  tabState[tab].chartInstances[id] = new Chart(ctx, {
     type: 'line',
     data: {
       labels: sorted.map(d => { const p = d.split('-'); return p[1] + '/' + p[2]; }),
@@ -540,25 +680,25 @@ function renderTimelineChart(id) {
   });
 }
 
-// ==========================================
-// Data utilities
-// ==========================================
-function countBy(field) {
+// ==========================================================================
+// Data utilities (per-tab)
+// ==========================================================================
+function countBy(data, field) {
   const counts = {};
-  allData.forEach(r => {
+  data.forEach(r => {
     const v = String(r[field] || '').trim();
     if (v) counts[v] = (counts[v] || 0) + 1;
   });
   return counts;
 }
 
-function countByMulti(field) {
-  // For comma-separated multi-select fields
+function countByMulti(data, field) {
   const counts = {};
-  allData.forEach(r => {
+  data.forEach(r => {
     const v = String(r[field] || '').trim();
     if (!v) return;
-    v.split(',').forEach(item => {
+    // Survey writes multi-selects as space-separated values; also handle commas
+    v.split(/[,\s]+/).forEach(item => {
       const t = item.trim();
       if (t) counts[t] = (counts[t] || 0) + 1;
     });
@@ -566,48 +706,49 @@ function countByMulti(field) {
   return counts;
 }
 
-// ==========================================
-// Table rendering — all fields
-// ==========================================
-function getTableCols() {
-  if (allData.length === 0) return [];
-  return Object.keys(allData[0]);
-}
+// ==========================================================================
+// Table
+// ==========================================================================
+function applyFilters(tab) {
+  const state = tabState[tab];
+  const prefix = tab === 'residential' ? 'r_' : 'b_';
+  const search = document.getElementById(prefix + 'searchInput').value.toLowerCase().trim();
+  const cityFilter = document.getElementById(prefix + 'filterCity').value;
+  const typeFilterEl = document.getElementById('b_filterType');
+  const typeFilter = (tab === 'business' && typeFilterEl) ? typeFilterEl.value : '';
+  const cityCol = TABS[tab].cityColumn;
 
-function applyFilters() {
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
-  const cityFilter = document.getElementById('filterCity').value;
-
-  filteredData = allData.filter(r => {
-    if (cityFilter && r['City / Municipality'] !== cityFilter) return false;
+  state.filteredData = state.allData.filter(r => {
+    if (cityFilter && r[cityCol] !== cityFilter) return false;
+    if (typeFilter && r['A5. Business Type'] !== typeFilter) return false;
     if (search) {
-      const haystack = Object.values(r).join(' ').toLowerCase();
-      if (!haystack.includes(search)) return false;
+      const hay = Object.values(r).join(' ').toLowerCase();
+      if (!hay.includes(search)) return false;
     }
     return true;
   });
-
-  currentPage = 1;
-  renderTable();
+  state.currentPage = 1;
+  renderTable(tab);
 }
 
-function renderTable() {
-  const TABLE_COLS = getTableCols();
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageData = filteredData.slice(start, start + PAGE_SIZE);
-  const totalPages = Math.ceil(filteredData.length / PAGE_SIZE) || 1;
+function renderTable(tab) {
+  const state = tabState[tab];
+  const prefix = tab === 'residential' ? 'r_' : 'b_';
+  const cols = state.allData.length ? Object.keys(state.allData[0]) : [];
+  const start = (state.currentPage - 1) * PAGE_SIZE;
+  const pageData = state.filteredData.slice(start, start + PAGE_SIZE);
+  const totalPages = Math.ceil(state.filteredData.length / PAGE_SIZE) || 1;
 
-  let html = '<table><thead><tr>';
-  html += '<th>#</th>';
-  TABLE_COLS.forEach(c => { html += '<th>' + escapeHtml(c) + '</th>'; });
+  let html = '<table><thead><tr><th>#</th>';
+  cols.forEach(c => { html += '<th>' + escapeHtml(c) + '</th>'; });
   html += '</tr></thead><tbody>';
 
   if (pageData.length === 0) {
-    html += '<tr><td colspan="' + (TABLE_COLS.length + 1) + '" style="text-align:center;padding:2rem;color:var(--text-dim)">No responses found</td></tr>';
+    html += '<tr><td colspan="' + (cols.length + 1) + '" style="text-align:center;padding:2rem;color:var(--text-dim)">No responses found</td></tr>';
   } else {
     pageData.forEach((r, i) => {
       html += '<tr><td>' + (start + i + 1) + '</td>';
-      TABLE_COLS.forEach(c => {
+      cols.forEach(c => {
         let val = r[c] || '';
         if (c === 'Timestamp' && val) {
           const d = new Date(val);
@@ -620,67 +761,67 @@ function renderTable() {
   }
   html += '</tbody></table>';
 
-  document.getElementById('tableScroll').innerHTML = html;
-  document.getElementById('tableInfo').textContent =
-    'Showing ' + (filteredData.length ? start + 1 : 0) + '–' + Math.min(start + PAGE_SIZE, filteredData.length) +
-    ' of ' + filteredData.length + ' responses';
+  document.getElementById(prefix + 'tableScroll').innerHTML = html;
+  document.getElementById(prefix + 'tableInfo').textContent =
+    'Showing ' + (state.filteredData.length ? start + 1 : 0) + '–' + Math.min(start + PAGE_SIZE, state.filteredData.length) +
+    ' of ' + state.filteredData.length + ' responses';
 
-  // Pagination
   let pagHtml = '';
-  if (currentPage > 1) pagHtml += '<button class="page-btn" onclick="goPage(' + (currentPage - 1) + ')">‹</button>';
+  if (state.currentPage > 1) pagHtml += '<button class="page-btn" onclick="goPage(\'' + tab + '\', ' + (state.currentPage - 1) + ')">‹</button>';
   for (let p = 1; p <= totalPages; p++) {
-    if (totalPages > 7 && p > 2 && p < totalPages - 1 && Math.abs(p - currentPage) > 1) {
+    if (totalPages > 7 && p > 2 && p < totalPages - 1 && Math.abs(p - state.currentPage) > 1) {
       if (p === 3 || p === totalPages - 2) pagHtml += '<span style="padding:0 0.3rem;color:var(--text-dim)">…</span>';
       continue;
     }
-    pagHtml += '<button class="page-btn' + (p === currentPage ? ' active' : '') + '" onclick="goPage(' + p + ')">' + p + '</button>';
+    pagHtml += '<button class="page-btn' + (p === state.currentPage ? ' active' : '') + '" onclick="goPage(\'' + tab + '\', ' + p + ')">' + p + '</button>';
   }
-  if (currentPage < totalPages) pagHtml += '<button class="page-btn" onclick="goPage(' + (currentPage + 1) + ')">›</button>';
-  document.getElementById('pagination').innerHTML = pagHtml;
+  if (state.currentPage < totalPages) pagHtml += '<button class="page-btn" onclick="goPage(\'' + tab + '\', ' + (state.currentPage + 1) + ')">›</button>';
+  document.getElementById(prefix + 'pagination').innerHTML = pagHtml;
 }
 
-function goPage(p) {
-  currentPage = p;
-  renderTable();
-  document.getElementById('tableScroll').scrollTop = 0;
+function goPage(tab, p) {
+  tabState[tab].currentPage = p;
+  renderTable(tab);
+  const prefix = tab === 'residential' ? 'r_' : 'b_';
+  document.getElementById(prefix + 'tableScroll').scrollTop = 0;
 }
 
-// ==========================================
+// ==========================================================================
 // Export CSV
-// ==========================================
-function exportCSV() {
-  if (filteredData.length === 0) return;
-  const headers = Object.keys(filteredData[0]);
+// ==========================================================================
+function exportCSV(tab, fileBase) {
+  const data = tabState[tab].filteredData;
+  if (data.length === 0) return;
+  const headers = Object.keys(data[0]);
   let csv = headers.map(h => '"' + h.replace(/"/g, '""') + '"').join(',') + '\n';
-  filteredData.forEach(r => {
+  data.forEach(r => {
     csv += headers.map(h => {
-      let v = String(r[h] || '').replace(/"/g, '""');
+      const v = String(r[h] || '').replace(/"/g, '""');
       return '"' + v + '"';
     }).join(',') + '\n';
   });
-
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'cwis-survey-export-' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.download = fileBase + '-export-' + new Date().toISOString().slice(0, 10) + '.csv';
   a.click();
   URL.revokeObjectURL(url);
 }
 
-// ==========================================
+// ==========================================================================
 // Helpers
-// ==========================================
+// ==========================================================================
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
 }
 
-// ==========================================
-// Auto-load on page open
-// ==========================================
-window.addEventListener('DOMContentLoaded', loadData);
+// ==========================================================================
+// Auto-load residential on page open (business loads when tab is clicked)
+// ==========================================================================
+window.addEventListener('DOMContentLoaded', () => loadTab('residential'));
 </script>
 </body>
 </html>
