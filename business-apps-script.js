@@ -56,26 +56,29 @@ const HEADERS = [
 
   // Section E. Septic Tank Details
   'E1. Number of Septic Tanks',
-  'E2. Tank Unit',
-  'E2. Tank Dimensions (JSON)',
-  'E3. Chamber Count',
-  'E4. Tank Built',
-  'E5. Tank Bottom',
-  'E6. Tank Walls',
-  'E7. Has Grease Trap',
-  'E7a. Grease Trap Count',
-  'E8. Separate Black/Grey Tanks',
-  'E8a. Separate Tanks — Description',
-  'E9. Outfall',
-  'E10. Last Desludged',
-  'E11. Desludge Calls (12m)',
-  'E12. Desludge Operator',
-  'E13. Cost per Trip',
-  'E14. Tank Problems',
-  'E14a. Tank Problems — Other',
-  'E15. Flooding Around Business',
-  'E16. Flood Level',
-  'E17. Rain Enters Tank',
+  'E2. Tank Size Known',
+  'E3. Tank Length',
+  'E3. Tank Width',
+  'E3. Tank Depth',
+  'E3. Tank Unit',
+  'E4. Chamber Count',
+  'E5. Tank Built',
+  'E6. Tank Bottom',
+  'E7. Tank Walls',
+  'E8. Has Grease Trap',
+  'E8a. Grease Trap Count',
+  'E9. Separate Black/Grey Tanks',
+  'E9a. Separate Tanks — Description',
+  'E10. Outfall',
+  'E11. Last Desludged',
+  'E12. Desludge Calls (12m)',
+  'E13. Desludge Operator',
+  'E14. Cost per Trip',
+  'E15. Tank Problems',
+  'E15a. Tank Problems — Other',
+  'E16. Flooding Around Business',
+  'E17. Flood Level',
+  'E18. Rain Enters Tank',
 
   // Section F. STP Details
   'F1. STP Capacity',
@@ -109,12 +112,8 @@ const HEADERS = [
   'G7. WTP STP per Year',
 
   // Section H. Closure
-  'H1. Latitude',
-  'H1. Longitude',
-  'H1. GPS Accuracy (m)',
-  'H2. Other Comments',
-  'H3. Respondent Consent',
-  'H4. Respondent Signature (PNG data URL)',
+  'H1. Other Comments',
+  'H2. Respondent Consent',
 ];
 
 // =====================================================================
@@ -211,8 +210,11 @@ function doPost(e) {
 
       // Section E
       data.tank_count || '',
+      data.tank_size_known || '',
+      data.tank_length || '',
+      data.tank_width || '',
+      data.tank_depth || '',
       data.tank_unit || '',
-      data.tank_dimensions || '',
       data.chamber_count || '',
       data.tank_built || '',
       data.tank_bottom || '',
@@ -264,12 +266,8 @@ function doPost(e) {
       data.wtp_stp_per_year || '',
 
       // Section H
-      data.latitude || '',
-      data.longitude || '',
-      data.gps_accuracy || '',
       data.other_comments || '',
       data.respondent_consent || '',
-      data.respondent_signature || '',
     ];
 
     sheet.appendRow(row);

@@ -98,43 +98,6 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-size:0.65rem;color:#fff}
 .option-item.selected .option-check{border-color:var(--accent);background:var(--accent)}
 
-/* GPS */
-.gps-box{background:var(--bg);border:1.5px dashed var(--card-border);border-radius:8px;padding:0.85rem;text-align:center}
-.gps-box.captured{border-style:solid;border-color:var(--accent);background:var(--accent-light)}
-.gps-coords{font-family:'Courier New',monospace;font-size:0.85rem;color:var(--accent);margin-top:0.2rem}
-.gps-accuracy{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
-.btn-gps{display:inline-flex;align-items:center;gap:0.4rem;padding:0.5rem 1rem;background:var(--accent);
-  border:none;border-radius:100px;color:#fff;font-family:var(--font);font-size:0.8rem;font-weight:600;cursor:pointer}
-.btn-gps:disabled{opacity:0.5;cursor:wait}
-.btn-gps:hover:not(:disabled){background:var(--accent-hover)}
-
-/* GPS Modal */
-.gps-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);
-  z-index:3000;justify-content:center;align-items:center;padding:1.25rem}
-.gps-modal-overlay.show{display:flex}
-.gps-modal{background:#fff;border-radius:16px;padding:1.75rem 1.25rem;text-align:center;max-width:340px;width:100%;
-  animation:slideUp 0.3s ease;box-shadow:0 8px 32px rgba(0,0,0,0.25)}
-.gps-ring{width:120px;height:120px;border-radius:50%;margin:0 auto 1rem;position:relative;
-  display:flex;align-items:center;justify-content:center;transition:all 0.5s ease}
-.gps-ring-bg{position:absolute;inset:0;border-radius:50%;border:6px solid #e8e4de}
-.gps-ring-progress{position:absolute;inset:0;border-radius:50%;border:6px solid transparent;
-  border-top-color:var(--danger);animation:spin 1.5s linear infinite;transition:border-color 0.3s}
-.gps-ring.good .gps-ring-progress{border-top-color:var(--accent);animation:none;border-color:var(--accent)}
-.gps-ring.fair .gps-ring-progress{border-top-color:var(--warning)}
-.gps-ring-value{font-size:1.5rem;font-weight:700;z-index:1;line-height:1}
-.gps-ring-unit{font-size:0.65rem;color:var(--text-dim);font-weight:500;z-index:1}
-.gps-modal-status{font-size:0.95rem;font-weight:700;margin-bottom:0.25rem}
-.gps-modal-hint{font-size:0.82rem;color:var(--text-dim);line-height:1.5;margin-bottom:1rem}
-.gps-modal-tips{text-align:left;background:var(--bg);border-radius:10px;padding:0.75rem 1rem;
-  margin-bottom:1.25rem;font-size:0.8rem;color:var(--text-dim);line-height:1.7}
-.gps-modal-tips div{display:flex;align-items:center;gap:0.5rem}
-.btn-gps-accept{width:100%;padding:0.75rem;background:var(--accent);border:none;border-radius:8px;
-  color:#fff;font-family:var(--font);font-size:0.9rem;font-weight:700;cursor:pointer;opacity:0.4;pointer-events:none;transition:all 0.3s}
-.btn-gps-accept.active{opacity:1;pointer-events:auto}
-.btn-gps-accept:hover.active{background:var(--accent-hover)}
-.btn-gps-cancel{width:100%;padding:0.6rem;background:transparent;border:none;color:var(--text-dim);
-  font-family:var(--font);font-size:0.82rem;cursor:pointer;margin-top:0.5rem}
-
 /* Navigation */
 .nav-buttons{display:flex;gap:0.75rem;margin-top:1.25rem;padding:0 0.25rem}
 .btn{flex:1;padding:0.8rem;border-radius:8px;font-family:var(--font);font-size:0.9rem;font-weight:600;
@@ -160,7 +123,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .conditional.show{display:block}
 
 /* Validation errors */
-.field-error .option-group,.field-error select,.field-error input,.field-error textarea,.field-error .gps-box{border-color:var(--danger)!important}
+.field-error .option-group,.field-error select,.field-error input,.field-error textarea{border-color:var(--danger)!important}
 .field-error .option-item{border-color:rgba(192,57,43,0.3)}
 .error-msg{color:var(--danger);font-size:0.75rem;margin-top:0.35rem;font-weight:500}
 
@@ -192,19 +155,6 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 .dim-btn:active{background:var(--accent-hover)}
 .dim-btn.minus{border-right:1px solid var(--card-border)}
 .dim-btn.plus{border-left:1px solid var(--card-border)}
-
-/* Multi-tank list */
-.tank-list{display:flex;flex-direction:column;gap:0.55rem}
-.tank-row{display:grid;grid-template-columns:auto 1fr 1fr 1fr;gap:0.4rem;align-items:center;padding:0.4rem;background:var(--bg);border-radius:8px;border:1px solid var(--card-border)}
-.tank-row label{font-size:0.72rem;font-weight:700;color:var(--accent);min-width:50px}
-.tank-row input{padding:0.4rem 0.5rem;font-size:0.82rem;text-align:center;background:#fff}
-.tank-row .vol-display{grid-column:1 / -1;font-size:0.7rem;color:var(--text-dim);text-align:right;font-weight:600}
-
-/* Signature pad */
-.signature-wrap{position:relative;background:var(--bg);border:1.5px solid var(--card-border);border-radius:8px;overflow:hidden}
-.signature-wrap canvas{display:block;width:100%;height:160px;background:#fff;cursor:crosshair;touch-action:none}
-.btn-sig-clear{position:absolute;top:0.4rem;right:0.4rem;background:var(--card);border:1px solid var(--card-border);border-radius:6px;padding:0.3rem 0.6rem;font-size:0.7rem;font-weight:600;color:var(--text-dim);cursor:pointer;font-family:var(--font)}
-.btn-sig-clear:hover{background:var(--bg);color:var(--accent);border-color:var(--accent)}
 
 .footer{text-align:center;padding:1.5rem 0;color:var(--text-dim);font-size:0.65rem;opacity:0.6}
 
@@ -285,29 +235,6 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <div class="submit-modal" id="submitModal"></div>
 </div>
 
-<!-- GPS Modal -->
-<div class="gps-modal-overlay" id="gpsModalOverlay">
-  <div class="gps-modal">
-    <div class="gps-ring" id="gpsRing">
-      <div class="gps-ring-bg"></div>
-      <div class="gps-ring-progress" id="gpsRingProgress"></div>
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <div class="gps-ring-value" id="gpsRingValue">--</div>
-        <div class="gps-ring-unit">meters</div>
-      </div>
-    </div>
-    <div class="gps-modal-status" id="gpsModalStatus">Searching for GPS signal...</div>
-    <div class="gps-modal-hint" id="gpsModalHint">Please wait while we lock onto your location.</div>
-    <div class="gps-modal-tips" id="gpsModalTips">
-      <div>📱 Hold your phone upright</div>
-      <div>🌤️ Move to an open area with clear sky</div>
-      <div>🏠 Stay away from buildings & trees</div>
-    </div>
-    <button class="btn-gps-accept" id="btnGpsAccept" onclick="acceptGPS()">✓ Use This Location</button>
-    <button class="btn-gps-cancel" onclick="cancelGPS()">Cancel</button>
-  </div>
-</div>
-
 <div class="topbar" id="topbar" style="display:none">
   <h1>CWIS Business Sanitation Survey</h1>
   <div class="sub">Tagbilaran City — Bohol</div>
@@ -345,7 +272,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
       </div>
 
       <div style="display:flex;flex-direction:column;gap:0.75rem;max-width:320px;margin:1.5rem auto 0">
-        <button class="btn-start-survey" style="margin:0" onclick="showInstructions()">Start Survey →</button>
+        <button class="btn-start-survey" style="margin:0" onclick="selectLanguage('en')">Start Survey in English →</button>
+        <button class="btn-start-survey" style="margin:0;background:#2d7d5f" onclick="selectLanguage('ceb')">Sugdi ang Survey sa Cebuano →</button>
       </div>
     </div>
   </div>
@@ -594,16 +522,22 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
     <div class="field">
       <div class="field-label">E1. How many septic tanks do you have on the property? <span class="req">*</span></div>
-      <input type="number" id="tank_count" min="1" max="20" inputmode="numeric" placeholder="e.g. 2" oninput="rebuildTankList()">
+      <input type="number" id="tank_count" min="1" max="20" inputmode="numeric" placeholder="e.g. 2">
     </div>
 
     <div class="field">
-      <div class="field-label">E2. Approximate dimensions of each tank <span class="req">*</span></div>
-      <div class="field-hint">If you don't know, estimate Length × Width × Depth. <strong>1 m × 1 m × 1 m = 1 m³.</strong></div>
+      <div class="field-label">E2. Do you know the approximate size of the tank? <span class="req">*</span></div>
+      <div class="field-hint">If you have multiple tanks, answer for the main / largest one.</div>
+      <div class="option-group" data-name="tank_size_known" data-type="radio"></div>
+    </div>
+
+    <div class="field conditional" data-show-when="tank_size_known=yes">
+      <div class="field-label">E3. Enter the dimensions <span class="req">*</span></div>
+      <div class="field-hint">Estimate Length × Width × Depth. <strong>1 m × 1 m × 1 m = 1 m³.</strong></div>
 
       <div class="diagram-box" style="flex-direction:column;align-items:center">
         <canvas id="tankCanvas" width="320" height="200" style="max-width:320px;width:100%"></canvas>
-        <div id="tankVolume" style="font-size:0.78rem;font-weight:600;color:var(--accent);margin-top:0.35rem;min-height:1.2em">Enter dimensions for the first tank to see the diagram</div>
+        <div id="tankVolume" style="font-size:0.78rem;font-weight:600;color:var(--accent);margin-top:0.35rem;min-height:1.2em">Enter dimensions to see volume</div>
       </div>
 
       <div class="unit-toggle">
@@ -615,14 +549,37 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
         </label>
       </div>
 
-      <div class="tank-list" id="tankList">
-        <!-- rows generated by rebuildTankList() -->
+      <div class="dimension-inputs">
+        <div class="dim-field">
+          <label>Length</label>
+          <div class="dim-stepper">
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_length',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
+            <input type="number" id="tank_length" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_length',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
+          </div>
+        </div>
+        <div class="dim-field">
+          <label>Width</label>
+          <div class="dim-stepper">
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_width',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
+            <input type="number" id="tank_width" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_width',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
+          </div>
+        </div>
+        <div class="dim-field">
+          <label>Depth</label>
+          <div class="dim-stepper">
+            <button type="button" class="dim-btn minus" onpointerdown="startDimHold('tank_depth',-1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">−</button>
+            <input type="number" id="tank_depth" step="0.1" min="0" inputmode="decimal" placeholder="0.0" oninput="updateTankDiagram()">
+            <button type="button" class="dim-btn plus" onpointerdown="startDimHold('tank_depth',1)" onpointerup="stopDimHold()" onpointerleave="stopDimHold()">+</button>
+          </div>
+        </div>
       </div>
       <div id="tankUnitLabel" style="font-size:0.72rem;color:var(--text-dim);margin-top:0.3rem;text-align:right">Unit: Meters</div>
     </div>
 
     <div class="field">
-      <div class="field-label">E3. How many chambers does each tank have? <span class="req">*</span></div>
+      <div class="field-label">E4. How many chambers does each tank have? <span class="req">*</span></div>
       <div class="field-hint">A chamber is an inside section separated by a wall. Most tanks have 1, 2, or 3 chambers.</div>
       <div class="diagram-box">
         <svg viewBox="0 0 360 130" width="100%" style="max-width:360px">
@@ -655,43 +612,43 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     </div>
 
     <div class="field">
-      <div class="field-label">E4. When was the septic tank built? <span class="req">*</span></div>
+      <div class="field-label">E5. When was the septic tank built? <span class="req">*</span></div>
       <div class="option-group" data-name="tank_built" data-type="radio"></div>
     </div>
 
     <div class="field">
-      <div class="field-label">E5. How is the BOTTOM of the tank constructed? <span class="req">*</span></div>
+      <div class="field-label">E6. How is the BOTTOM of the tank constructed? <span class="req">*</span></div>
       <div class="field-hint">Cemented / sealed bottoms keep wastewater inside. Open / unsealed bottoms let it soak into the ground.</div>
       <div class="option-group" data-name="tank_bottom" data-type="radio"></div>
     </div>
 
     <div class="field">
-      <div class="field-label">E6. How are the WALLS of the tank constructed? <span class="req">*</span></div>
+      <div class="field-label">E7. How are the WALLS of the tank constructed? <span class="req">*</span></div>
       <div class="option-group" data-name="tank_walls" data-type="radio"></div>
     </div>
 
     <div class="field">
-      <div class="field-label">E7. Do you have a grease trap for kitchen water? <span class="req">*</span></div>
+      <div class="field-label">E8. Do you have a grease trap for kitchen water? <span class="req">*</span></div>
       <div class="field-hint">A grease trap is a small box / tank that catches oil and grease before wastewater reaches the septic tank.</div>
       <div class="option-group" data-name="has_grease_trap" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="has_grease_trap=yes">
-      <div class="field-label">E7a. How many grease traps?</div>
+      <div class="field-label">E8a. How many grease traps?</div>
       <input type="number" id="grease_trap_count" min="1" max="20" inputmode="numeric" placeholder="e.g. 1">
     </div>
 
     <div class="field">
-      <div class="field-label">E8. Do you have SEPARATE tanks for black water and grey water? <span class="req">*</span></div>
+      <div class="field-label">E9. Do you have SEPARATE tanks for black water and grey water? <span class="req">*</span></div>
       <div class="field-hint"><strong>Black water</strong> = water from toilets. <strong>Grey water</strong> = water from kitchen sinks, showers, handwashing, and laundry.</div>
       <div class="option-group" data-name="separate_tanks" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="separate_tanks=partial">
-      <div class="field-label">E8a. Please describe the partial separation</div>
+      <div class="field-label">E9a. Please describe the partial separation</div>
       <textarea id="separate_tanks_desc" rows="2"></textarea>
     </div>
 
     <div class="field">
-      <div class="field-label">E9. Where does the water from the septic tank flow out (outfall)? <span class="req">*</span></div>
+      <div class="field-label">E10. Where does the water from the septic tank flow out (outfall)? <span class="req">*</span></div>
       <div class="option-group" data-name="outfall" data-type="radio"></div>
     </div>
 
@@ -701,23 +658,23 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     </div>
 
     <div class="field">
-      <div class="field-label">E10. When was the septic tank last desludged (emptied / cleaned)? <span class="req">*</span></div>
+      <div class="field-label">E11. When was the septic tank last desludged (emptied / cleaned)? <span class="req">*</span></div>
       <div class="option-group" data-name="last_desludged" data-type="radio"></div>
     </div>
 
     <div class="field">
-      <div class="field-label">E11. In the PAST 12 MONTHS, how many times did you call a desludging service? <span class="req">*</span></div>
+      <div class="field-label">E12. In the PAST 12 MONTHS, how many times did you call a desludging service? <span class="req">*</span></div>
       <div class="option-group" data-name="desludge_calls_12m" data-type="radio"></div>
     </div>
 
     <div class="field">
-      <div class="field-label">E12. Who did you contact for desludging?</div>
+      <div class="field-label">E13. Who did you contact for desludging?</div>
       <div class="field-hint">Name of the operator or company.</div>
       <input type="text" id="desludge_operator" placeholder="e.g. ABC Vacuum Services">
     </div>
 
     <div class="field">
-      <div class="field-label">E13. How much did you pay PER desludging trip?</div>
+      <div class="field-label">E14. How much did you pay PER desludging trip?</div>
       <div class="option-group" data-name="cost_per_trip" data-type="radio"></div>
     </div>
 
@@ -727,25 +684,25 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     </div>
 
     <div class="field">
-      <div class="field-label">E14. Have you had any problems with your septic tank in the past? <span class="req">*</span></div>
+      <div class="field-label">E15. Have you had any problems with your septic tank in the past? <span class="req">*</span></div>
       <div class="field-hint">You may select more than one.</div>
       <div class="option-group" data-name="tank_problems" data-type="checkbox"></div>
     </div>
     <div class="field conditional" data-show-when="tank_problems=other">
-      <div class="field-label">E14a. Please specify other problems</div>
+      <div class="field-label">E15a. Please specify other problems</div>
       <input type="text" id="tank_problems_other">
     </div>
 
     <div class="field">
-      <div class="field-label">E15. Does the area around your business experience water logging / flooding during heavy rain? <span class="req">*</span></div>
+      <div class="field-label">E16. Does the area around your business experience water logging / flooding during heavy rain? <span class="req">*</span></div>
       <div class="option-group" data-name="flooding_around" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flooding_around=yes|flooding_around=sometimes">
-      <div class="field-label">E16. How high does the floodwater usually reach? <span class="req">*</span></div>
+      <div class="field-label">E17. How high does the floodwater usually reach? <span class="req">*</span></div>
       <div class="option-group" data-name="flood_level" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="flooding_around=yes|flooding_around=sometimes">
-      <div class="field-label">E17. During flooding, does rainwater enter your septic tank? <span class="req">*</span></div>
+      <div class="field-label">E18. During flooding, does rainwater enter your septic tank? <span class="req">*</span></div>
       <div class="option-group" data-name="rain_enters_tank" data-type="radio"></div>
     </div>
   </div>
@@ -934,33 +891,15 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <div class="card">
 
     <div class="field">
-      <div class="field-label">H1. GPS Location of the Business</div>
-      <div class="field-hint">Capture the GPS coordinates of the business. Best done while standing outside the establishment with a clear view of the sky.</div>
-      <div class="gps-box" id="gpsBox">
-        <button class="btn-gps" onclick="captureGPS()">📍 Capture GPS</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <div class="field-label">H2. Any other comments or suggestions?</div>
+      <div class="field-label">H1. Any other comments or suggestions?</div>
       <div class="field-hint">Is there anything else you would like the City to know about sanitation or wastewater in your business or in your area?</div>
       <textarea id="other_comments" rows="4" placeholder="Your thoughts and suggestions..."></textarea>
     </div>
 
     <div class="field">
-      <div class="field-label">H3. Respondent consent for data use confirmed? <span class="req">*</span></div>
+      <div class="field-label">H2. Respondent consent for data use confirmed? <span class="req">*</span></div>
       <div class="field-hint">By selecting "Yes", you agree that your responses can be used for the CWIS sanitation planning project.</div>
       <div class="option-group" data-name="respondent_consent" data-type="radio"></div>
-    </div>
-
-    <div class="field">
-      <div class="field-label">H4. Signature of respondent</div>
-      <div class="field-hint">Sign with your finger (on phone) or mouse (on laptop) inside the box below. Optional — but appreciated for our records.</div>
-      <div class="signature-wrap">
-        <canvas id="signaturePad" width="500" height="160"></canvas>
-        <button type="button" class="btn-sig-clear" onclick="clearSignature()">Clear</button>
-      </div>
-      <div id="signatureStatus" style="font-size:0.7rem;color:var(--text-dim);margin-top:0.3rem;text-align:right">Not signed</div>
     </div>
   </div>
 </div>
@@ -985,8 +924,8 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZSaVquYcq3bhDIRF8-
 const TOTAL_SECTIONS = 8; // 0..7 (A, B, C, D, E, F, G, H)
 let currentSection = 0;
 let visitedHistory = [0];
-let gpsData = { lat: null, lng: null, accuracy: null };
 let radioValues = {};
+let currentLang = 'en';
 
 // ==================== BARANGAYS (Tagbilaran City) ====================
 const TAGBILARAN_BARANGAYS = [
@@ -1075,6 +1014,10 @@ const CHOICE_LISTS = {
   ],
 
   // Section E
+  tank_size_known: [
+    {v:'yes',l:'Yes, I know the size'},
+    {v:'no',l:"Don't know"}
+  ],
   chamber_count: [
     {v:'1',l:'1 chamber'},{v:'2',l:'2 chambers'},{v:'3',l:'3 chambers'},
     {v:'gt_3',l:'More than 3'},{v:'dont_know',l:"Don't know"}
@@ -1270,6 +1213,7 @@ const FIELD_CHOICES = {
   water_sources:'water_sources', monthly_water_use:'monthly_water_use',
   own_or_shared:'own_or_shared', system_type:'system_type',
   chamber_count:'chamber_count', tank_built:'tank_built', tank_bottom:'tank_bottom',
+  tank_size_known:'tank_size_known',
   tank_walls:'tank_walls', has_grease_trap:'yn_dk', separate_tanks:'separate_tanks',
   outfall:'outfall', last_desludged:'last_desludged', desludge_calls_12m:'desludge_calls_12m',
   cost_per_trip:'cost_per_trip', tank_problems:'tank_problems',
@@ -1286,6 +1230,466 @@ const FIELD_CHOICES = {
   respondent_consent:'yn'
 };
 
+// ==================== CEBUANO TRANSLATIONS ====================
+const CHOICE_LISTS_CEB = {
+  yn:        [{v:'yes',l:'Oo'},{v:'no',l:'Dili'}],
+  yn_dk:     [{v:'yes',l:'Oo'},{v:'no',l:'Dili'},{v:'dont_know',l:'Wala ko kabalo'}],
+  yn_some:   [{v:'yes',l:'Oo'},{v:'no',l:'Dili'},{v:'sometimes',l:'Usahay'}],
+
+  business_type: [
+    {v:'hotel',l:'Hotel'},
+    {v:'resort',l:'Resort'},
+    {v:'restaurant',l:'Restaurant / Karinderya / Canteen'},
+    {v:'rental',l:'Pa-arkila (apartment / dormitory / boarding house)'},
+    {v:'mall',l:'Mall / Merkado / Commercial building'},
+    {v:'school',l:'Eskwelahan / Unibersidad'},
+    {v:'hospital',l:'Ospital / Klinika / Laboratoryo'},
+    {v:'laundry',l:'Laundry / Carwash'},
+    {v:'gas_station',l:'Gas station'},
+    {v:'office',l:'Opisina nga building'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+  years_operating: [
+    {v:'lt_1',l:'Wala pa moabot og 1 ka tuig'},
+    {v:'1_5',l:'1 – 5 ka tuig'},
+    {v:'6_10',l:'6 – 10 ka tuig'},
+    {v:'11_20',l:'11 – 20 ka tuig'},
+    {v:'gt_20',l:'Kapin sa 20 ka tuig'}
+  ],
+
+  // Section B
+  guest_rooms: [
+    {v:'1_10',l:'1 – 10'},{v:'11_25',l:'11 – 25'},{v:'26_50',l:'26 – 50'},
+    {v:'51_100',l:'51 – 100'},{v:'gt_100',l:'Kapin sa 100'}
+  ],
+  occupancy_rate: [
+    {v:'lt_25',l:'Ubos sa 25%'},{v:'25_50',l:'25 – 50%'},
+    {v:'51_75',l:'51 – 75%'},{v:'gt_75',l:'Kapin sa 75%'}
+  ],
+  seating_capacity: [
+    {v:'lt_20',l:'Ubos sa 20'},{v:'20_50',l:'20 – 50'},{v:'51_100',l:'51 – 100'},
+    {v:'101_200',l:'101 – 200'},{v:'gt_200',l:'Kapin sa 200'}
+  ],
+  meals_per_day: [
+    {v:'lt_50',l:'Ubos sa 50'},{v:'50_150',l:'50 – 150'},
+    {v:'151_300',l:'151 – 300'},{v:'gt_300',l:'Kapin sa 300'}
+  ],
+  stall_count: [
+    {v:'lt_10',l:'Ubos sa 10'},{v:'10_30',l:'10 – 30'},
+    {v:'31_60',l:'31 – 60'},{v:'gt_60',l:'Kapin sa 60'}
+  ],
+
+  // Section C
+  water_sources: [
+    {v:'water_district',l:'Koneksyon sa siyudad / water district'},
+    {v:'borehole',l:'Kaugalingong deep well / borehole'},
+    {v:'refilling',l:'Water refilling station / delivery'},
+    {v:'rainwater',l:'Rainwater harvesting'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+  monthly_water_use: [
+    {v:'lt_10',l:'Ubos sa 10 m³ kada bulan'},
+    {v:'10_50',l:'10 – 50 m³ kada bulan'},
+    {v:'51_200',l:'51 – 200 m³ kada bulan'},
+    {v:'201_500',l:'201 – 500 m³ kada bulan'},
+    {v:'gt_500',l:'Kapin sa 500 m³ kada bulan'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+
+  // Section D
+  own_or_shared: [
+    {v:'own',l:'Kaugalingon, independent nga sistema'},
+    {v:'shared',l:'Gibahin sa duol nga pasilidad'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  system_type: [
+    {v:'septic',l:'Septic tank lang'},
+    {v:'stp',l:'Sewage Treatment Plant (STP) lang'},
+    {v:'both',l:'Septic tank UG STP'},
+    {v:'direct',l:'Direkta nga discharge (walay tangke / walay STP)'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+
+  // Section E
+  tank_size_known: [
+    {v:'yes',l:'Oo, kabalo ko sa gidak-on'},
+    {v:'no',l:'Wala ko kabalo'}
+  ],
+  chamber_count: [
+    {v:'1',l:'1 ka chamber'},{v:'2',l:'2 ka chambers'},{v:'3',l:'3 ka chambers'},
+    {v:'gt_3',l:'Kapin sa 3'},{v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  tank_built: [
+    {v:'before_2000',l:'Sa wala pa ang 2000'},
+    {v:'2000_2010',l:'2000 – 2010'},
+    {v:'2011_2020',l:'2011 – 2020'},
+    {v:'after_2020',l:'2021 o sa human'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  tank_bottom: [
+    {v:'sealed',l:'Hingpit nga sementado / selyado'},
+    {v:'open',l:'Walay semento (bukas sa yuta)'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  tank_walls: [
+    {v:'sealed',l:'Sementado / selyado nga bungbong'},
+    {v:'porous',l:'Porous / hollow block nga walay seal'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  separate_tanks: [
+    {v:'yes',l:'Oo – lain nga tangke para sa black UG grey water'},
+    {v:'no',l:'Dili – tanan nga tubig moadto sa parehas nga tangke'},
+    {v:'partial',l:'Tunga-tunga (palihog ihulagway)'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  outfall: [
+    {v:'soak_pit',l:'Soak pit (lain nga lungag nga mosuyop sa tubig)'},
+    {v:'open_drain',l:'Bukas nga kanal'},
+    {v:'water_body',l:'Sapa, suba, o dagat'},
+    {v:'soil',l:'Direkta sa yuta (walay pit)'},
+    {v:'another_tank',l:'Balik sa lain nga tangke'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  last_desludged: [
+    {v:'never',l:'Wala pa gayud'},
+    {v:'within_1y',l:'Sulod sa miaging tuig'},
+    {v:'1_2y',l:'1 – 2 ka tuig na ang milabay'},
+    {v:'3_5y',l:'3 – 5 ka tuig na ang milabay'},
+    {v:'gt_5y',l:'Kapin sa 5 ka tuig na ang milabay'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  desludge_calls_12m: [
+    {v:'0',l:'0'},{v:'1',l:'1'},{v:'2',l:'2'},{v:'3',l:'3'},{v:'gt_3',l:'Kapin sa 3'}
+  ],
+  cost_per_trip: [
+    {v:'lt_2k',l:'Ubos sa ₱2,000'},
+    {v:'2k_5k',l:'₱2,000 – ₱5,000'},
+    {v:'5k_10k',l:'₱5,001 – ₱10,000'},
+    {v:'10k_20k',l:'₱10,001 – ₱20,000'},
+    {v:'gt_20k',l:'Kapin sa ₱20,000'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  tank_problems: [
+    {v:'overflow',l:'Pag-awas / pagbalik sa kasilyas o kanal'},
+    {v:'smell',l:'Baho'},
+    {v:'cracks',l:'Mga liki / pagbuhi'},
+    {v:'slow',l:'Hinay nga pagdagayday'},
+    {v:'flooded',l:'Nabaha sa kusog nga ulan'},
+    {v:'none',l:'Walay problema'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+  flood_level: [
+    {v:'ankle',l:'Buol-buol'},{v:'knee',l:'Tuhod'},{v:'waist',l:'Hawak'},
+    {v:'above_waist',l:'Ibabaw sa hawak'},{v:'dont_know',l:'Wala ko kabalo'}
+  ],
+
+  // Section F
+  stp_capacity: [
+    {v:'lt_10',l:'Ubos sa 10 m³/adlaw'},
+    {v:'10_50',l:'10 – 50 m³/adlaw'},
+    {v:'51_100',l:'51 – 100 m³/adlaw'},
+    {v:'101_500',l:'101 – 500 m³/adlaw'},
+    {v:'gt_500',l:'Kapin sa 500 m³/adlaw'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  stp_technology: [
+    {v:'sbr',l:'SBR (Sequencing Batch Reactor)'},
+    {v:'mbbr',l:'MBBR (Moving Bed Biofilm Reactor)'},
+    {v:'mbr',l:'MBR (Membrane Bioreactor)'},
+    {v:'activated_sludge',l:'Activated Sludge / Extended Aeration'},
+    {v:'wetland',l:'Constructed Wetland'},
+    {v:'other',l:'Uban (isulat)'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  stp_built: [
+    {v:'before_2000',l:'Sa wala pa ang 2000'},
+    {v:'2000_2010',l:'2000 – 2010'},
+    {v:'2011_2020',l:'2011 – 2020'},
+    {v:'after_2020',l:'2021 o sa human'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  stp_op_cost: [
+    {v:'lt_50k',l:'Ubos sa ₱50,000'},
+    {v:'50k_200k',l:'₱50,000 – ₱200,000'},
+    {v:'201k_500k',l:'₱200,001 – ₱500,000'},
+    {v:'501k_1m',l:'₱500,001 – ₱1,000,000'},
+    {v:'gt_1m',l:'Kapin sa ₱1,000,000'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  lab_test_freq: [
+    {v:'yearly',l:'Kausa kada tuig'},
+    {v:'quarterly',l:'2 – 4 ka beses (quarterly)'},
+    {v:'monthly',l:'Kada bulan'},
+    {v:'gt_monthly',l:'Kapin sa kada bulan'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  lab_test_cost: [
+    {v:'lt_10k',l:'Ubos sa ₱10,000'},
+    {v:'10k_30k',l:'₱10,000 – ₱30,000'},
+    {v:'30k_60k',l:'₱30,001 – ₱60,000'},
+    {v:'gt_60k',l:'Kapin sa ₱60,000'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  stp_problems: [
+    {v:'none',l:'Wala'},
+    {v:'breakdown',l:'Pagkadaot / pagkaguba sa equipment'},
+    {v:'smell',l:'Baho'},
+    {v:'noncompliance',l:'Wala mosunod sa discharge standards'},
+    {v:'high_cost',l:'Taas nga gasto sa pag-operate'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+  sludge_disposal: [
+    {v:'none',l:'Walay sludge nga mahimo'},
+    {v:'on_site',l:'Gi-treat / gigamit-usab sa lugar'},
+    {v:'hauled',l:'Gihakot sa accredited nga desludging operators'},
+    {v:'other',l:'Uban (isulat)'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  haul_cost_per_trip: [
+    {v:'lt_5k',l:'Ubos sa ₱5,000'},
+    {v:'5k_15k',l:'₱5,000 – ₱15,000'},
+    {v:'15k_30k',l:'₱15,001 – ₱30,000'},
+    {v:'gt_30k',l:'Kapin sa ₱30,000'},
+    {v:'dont_know',l:'Wala ko kabalo'}
+  ],
+  reuse_water_purpose: [
+    {v:'gardening',l:'Hardin / landscaping'},
+    {v:'flushing',l:'Pag-flush sa kasilyas'},
+    {v:'cleaning',l:'Paghugas / paglinis sa salog'},
+    {v:'cooling',l:'Cooling tower / industrial'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+  reuse_sludge_purpose: [
+    {v:'fertilizer',l:'Abono sa tanom'},
+    {v:'compost',l:'Compost'},
+    {v:'other',l:'Uban (isulat)'}
+  ],
+
+  // Section G
+  denr_held: [
+    {v:'valid',l:'Oo — balido'},
+    {v:'expired',l:'Oo — expired na'},
+    {v:'in_process',l:'Gipangayo pa'},
+    {v:'no',l:'Wala'},
+    {v:'na',l:'Dili angay'}
+  ],
+  mandatory_cert: [
+    {v:'yes',l:'Oo, maayo nga ideya'},
+    {v:'no',l:'Dili, dili kinahanglan'},
+    {v:'unsure',l:'Dili sigurado / kinahanglan og dugang impormasyon'}
+  ],
+  ok_unsure: [
+    {v:'yes',l:'Oo, OK'},
+    {v:'no',l:'Dili, dili OK'},
+    {v:'unsure',l:'Dili sigurado'}
+  ],
+  wtp_septic_per_trip: [
+    {v:'lt_1k',l:'Ubos sa ₱1,000 kada biyahe'},
+    {v:'1k_2_5k',l:'₱1,000 – ₱2,500 kada biyahe'},
+    {v:'2_5k_5k',l:'₱2,501 – ₱5,000 kada biyahe'},
+    {v:'5k_10k',l:'₱5,001 – ₱10,000 kada biyahe'},
+    {v:'gt_10k',l:'Kapin sa ₱10,000 kada biyahe'},
+    {v:'unsure',l:'Dili sigurado'}
+  ],
+  wtp_stp_per_year: [
+    {v:'lt_5k',l:'Ubos sa ₱5,000 kada tuig'},
+    {v:'5k_15k',l:'₱5,000 – ₱15,000 kada tuig'},
+    {v:'15k_30k',l:'₱15,001 – ₱30,000 kada tuig'},
+    {v:'30k_60k',l:'₱30,001 – ₱60,000 kada tuig'},
+    {v:'gt_60k',l:'Kapin sa ₱60,000 kada tuig'},
+    {v:'unsure',l:'Dili sigurado'}
+  ]
+};
+
+const UI_TEXT = {
+  en: {
+    topbar_title: 'CWIS Business Sanitation Survey',
+    topbar_sub: 'Tagbilaran City — Bohol',
+    progress_section: 'Section', progress_of: 'of',
+    instr_title: 'Before You Begin',
+    instr_1: '<strong>Who should answer:</strong> The owner, manager, maintenance head, or any staff member who knows about your water use and wastewater system.',
+    instr_2: '<strong>What to keep ready:</strong> Your latest water bill (if available), and basic info about any septic tank or treatment plant on the property.',
+    instr_3: 'The survey takes about <strong>10–15 minutes</strong>. Many sections are skipped automatically based on your business type and system.',
+    instr_4: 'All responses are <strong>confidential</strong> and used only for sanitation planning. Individual business data will not be shared.',
+    btn_continue: 'I Understand, Continue →',
+    section_titles: ['Business Information','Size of your Establishment','Water Use','Wastewater Management System','Septic Tank Details','Sewage Treatment Plant (STP) Details','Regulatory Compliance & Sanitation Fee','Final Comments & Closure'],
+    btn_back: '← Back', btn_next: 'Next →', btn_submit: '✓ Submit Survey', btn_submitted: '✓ Submitted',
+    footer: 'Tagbilaran City — Citywide Inclusive Sanitation',
+    select_default: '— Select —', select_barangay: '— Select Barangay —',
+    submit_title: 'Submitting...', submit_wait: 'Please wait, sending your response.',
+    submit_success: 'Thank You!', submit_success_msg: 'Your survey has been submitted successfully. Your responses will help improve sanitation services for businesses across Tagbilaran City.',
+    submit_error: 'Submission Failed', submit_error_default: 'Could not submit. Please check your internet connection and try again.',
+    btn_done: 'Done', btn_close: 'Close',
+    val_select: 'Please make a selection', val_required: 'This field is required',
+    val_phone: 'Please enter a valid 10-digit mobile number',
+    val_email: 'Please enter a valid email',
+    val_at_least_one: 'Please select at least one option',
+    val_consent: 'Consent must be "Yes" to submit the survey.',
+    val_tank_dim: 'Please enter Length, Width and Depth.'
+  },
+  ceb: {
+    topbar_title: 'CWIS Survey sa Sanitasyon sa Negosyo',
+    topbar_sub: 'Tagbilaran City — Bohol',
+    progress_section: 'Seksyon', progress_of: 'sa',
+    instr_title: 'Sa Dili Pa Magsugod',
+    instr_1: '<strong>Kinsa ang angay motubag:</strong> Ang tag-iya, manedyer, maintenance head, o bisan kinsa nga staff nga kabalo sa paggamit sa tubig ug sa wastewater system.',
+    instr_2: '<strong>Andama:</strong> Ang imong pinakabag-o nga water bill (kung aduna), ug batakang impormasyon bahin sa septic tank o treatment plant sa inyong lugar.',
+    instr_3: 'Ang survey mga <strong>10–15 minutos</strong> ra. Daghang seksyon ang awtomatikong i-skip base sa inyong negosyo ug sistema.',
+    instr_4: 'Ang tanang tubag <strong>sekreto</strong> ug gamiton lamang para sa pagplano sa sanitasyon. Ang indibidwal nga datos sa negosyo dili ipa-ambit.',
+    btn_continue: 'Nakasabot Ko, Padayon →',
+    section_titles: ['Impormasyon sa Negosyo','Gidak-on sa Establisemento','Paggamit sa Tubig','Sistema sa Pag-dumala sa Wastewater','Detalye sa Septic Tank','Detalye sa Sewage Treatment Plant (STP)','Regulatory Compliance ug Sanitation Fee','Katapusang Komento ug Pagtapos'],
+    btn_back: '← Balik', btn_next: 'Sunod →', btn_submit: '✓ Isumite ang Survey', btn_submitted: '✓ Na-sumite Na',
+    footer: 'Tagbilaran City — Citywide Inclusive Sanitation',
+    select_default: '— Pilia —', select_barangay: '— Pilia ang Barangay —',
+    submit_title: 'Gisumite...', submit_wait: 'Palihog hulata, gipadala ang imong tubag.',
+    submit_success: 'Salamat!', submit_success_msg: 'Malampusong na-sumite ang imong survey. Ang imong mga tubag makatabang sa pagpaayo sa serbisyo sa sanitasyon para sa mga negosyo sa Tagbilaran City.',
+    submit_error: 'Napakyas ang Pag-sumite', submit_error_default: 'Wala ma-sumite. Susiha ang imong internet ug sulayi pag-usab.',
+    btn_done: 'Tapos', btn_close: 'Sirad-i',
+    val_select: 'Palihog pili og opsyon', val_required: 'Kinahanglan kini nga field',
+    val_phone: 'Isulat ang balido nga 10-digit mobile number',
+    val_email: 'Isulat ang balido nga email',
+    val_at_least_one: 'Palihog pili og labing menos usa ka opsyon',
+    val_consent: 'Kinahanglan "Oo" ang pagtugot aron ma-sumite ang survey.',
+    val_tank_dim: 'Palihog isulat ang Gitas-on, Gilapdon ug Gilawmon.'
+  }
+};
+
+function T(key) {
+  return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || UI_TEXT.en[key] || key;
+}
+
+// Field-level translations: every required label/hint that appears on the form
+const FIELD_I18N_CEB = {
+  // Section A
+  business_name: { label: 'A1. Pangalan sa negosyo' },
+  respondent_name: { label: 'A2. Tag-iya / tawong motubag sa survey', hint: 'Kompleto nga pangalan sa respondent.' },
+  respondent_role: { label: 'A2a. Posisyon / Role', hint: 'Pananglitan: Tag-iya, Manedyer, Maintenance Head, Front Desk Officer.' },
+  contact_number: { label: 'A3. Mobile Number', hint: '10-digit mobile number (pananglitan: 9171234567).' },
+  contact_email: { label: 'A3a. Email (opsyonal)' },
+  barangay: { label: 'A4. Barangay' },
+  street_landmark: { label: 'A4a. Kalsada / Landmark', hint: 'Ngalan sa kalsada o landmark aron mahibal-an ang lokasyon sa negosyo.' },
+  business_type: { label: 'A5. Klase sa negosyo', hint: 'Pilia ang labing nahaom sa inyong nag-unang aktibidad. Interesado mi sa mga negosyo nga daghan og gamit nga tubig o nagahimo og hugaw nga tubig.' },
+  business_type_other: { label: 'A5a. Palihog isulat' },
+  years_operating: { label: 'A6. Pila ka tuig na nag-operate ang negosyo dinhi?' },
+
+  // Section B
+  guest_rooms: { label: 'B1. Pila ka guest rooms ang naa kaninyo sa tibuok?' },
+  hotel_cr_count: { label: 'B2. Total nga gidaghanon sa comfort rooms (CRs / kasilyas)', hint: 'Apilon ang guest CRs ug staff / common CRs.' },
+  occupancy_rate: { label: 'B3. Kasagaran nga occupancy rate' },
+  seating_capacity: { label: 'B4. Seating capacity' },
+  meals_per_day: { label: 'B5. Kasagaran nga gidaghanon sa pagkaon nga gisilbi kada adlaw' },
+  resto_cr_count: { label: 'B6. Total nga gidaghanon sa comfort rooms' },
+  stall_count: { label: 'B7. Gidaghanon sa stalls / tindahan / units sa complex' },
+  mall_cr_count: { label: 'B8. Total nga gidaghanon sa comfort rooms sa complex' },
+  other_size_desc: { label: 'B9. Ihulagway ang gidak-on sa inyong establisemento', hint: 'Pananglitan: gidaghanon sa empleyado, floor area sa m², o gidaghanon sa kustomer/pasyente/estudyante kada adlaw.' },
+  other_cr_count: { label: 'B9a. Total nga gidaghanon sa comfort rooms' },
+
+  // Section C
+  water_sources: { label: 'C1. Asa kamo magkuha og tubig para sa negosyo?', hint: 'Mahimo kang mopili og labaw sa usa.' },
+  water_source_other: { label: 'C1a. Palihog isulat ang ubang tinubdan sa tubig' },
+  monthly_water_use: { label: 'C2. Pila ang inyong gigamit nga tubig kada bulan?', hint: 'Base sa inyong water bill. Kung dili sigurado, pilia ang labing duol nga range. <strong>1 cubic meter (m³) = 1,000 ka litro.</strong>' },
+
+  // Section D
+  own_or_shared: { label: 'D1. Aduna ba kamoy kaugalingong wastewater system, o gibahin ninyo?' },
+  system_type: { label: 'D2. Unsa nga klase sa sistema ang inyong gigamit?', hint: 'Ang <strong>septic tank</strong> usa ka yano nga underground tank. Ang <strong>Sewage Treatment Plant (STP)</strong> mas advance nga sistema nga adunay pumps, aeration, o chemicals nga mo-treat sa wastewater.' },
+
+  // Section E
+  tank_count: { label: 'E1. Pila ka septic tank ang naa sa inyong lugar?' },
+  tank_size_known: { label: 'E2. Kabalo ba kamo sa gidak-on sa tangke?', hint: 'Kung daghan kamo og tangke, tubaga para sa nag-unang / pinakadako nga tangke.' },
+  // E3 (tank dimensions) handled separately via SPECIAL_I18N_CEB
+  chamber_count: { label: 'E4. Pila ka chambers ang anaa kada tangke?', hint: 'Ang chamber usa ka seksyon sulod sa tangke nga gibahin sa bungbong. Kasagaran ang tangke aduna 1, 2, o 3 chambers.' },
+  tank_built: { label: 'E5. Kanus-a gitukod ang septic tank?' },
+  tank_bottom: { label: 'E6. Giunsa pagtukod ang ILALOM sa tangke?', hint: 'Ang sementado / selyado nga ilalom mopugong sa hugaw nga tubig sa sulod. Ang bukas / dili selyado mosagol sa yuta.' },
+  tank_walls: { label: 'E7. Giunsa pagtukod ang BUNGBONG sa tangke?' },
+  has_grease_trap: { label: 'E8. Aduna ba kamoy grease trap para sa tubig sa kusina?', hint: 'Ang grease trap usa ka gamay nga kahon / tangke nga modakop sa lana ug grasa una mosulod sa septic tank.' },
+  grease_trap_count: { label: 'E8a. Pila ka grease traps?' },
+  separate_tanks: { label: 'E9. Aduna ba kamoy LAIN nga tangke para sa black water ug grey water?', hint: '<strong>Black water</strong> = tubig gikan sa kasilyas. <strong>Grey water</strong> = tubig gikan sa lababo, kaligo, paghugas sa kamot, ug laba.' },
+  separate_tanks_desc: { label: 'E9a. Palihog ihulagway ang tunga-tungang pagbahin' },
+  outfall: { label: 'E10. Asa mopadulong ang tubig gikan sa septic tank (outfall)?' },
+  last_desludged: { label: 'E11. Kanus-a katapusang gihurutan / gilimpyohan ang septic tank?' },
+  desludge_calls_12m: { label: 'E12. Sa miaging 12 KA BULAN, pila ka beses kamo nagtawag og desludging service?' },
+  desludge_operator: { label: 'E13. Kinsa ang inyong gitawagan para sa paghurot?', hint: 'Ngalan sa operator o kompanya.' },
+  cost_per_trip: { label: 'E14. Pila ang inyong gibayad KADA biyahe sa paghurot?' },
+  tank_problems: { label: 'E15. Aduna bay mga problema kaniadto sa inyong septic tank?', hint: 'Mahimo kang mopili og labaw sa usa.' },
+  tank_problems_other: { label: 'E15a. Palihog isulat ang ubang problema' },
+  flooding_around: { label: 'E16. Mabaha ba ang palibot sa inyong negosyo sa kusog nga ulan?' },
+  flood_level: { label: 'E17. Hangtod asa ang katas-on sa tubig sa baha?' },
+  rain_enters_tank: { label: 'E18. Sa panahon sa baha, mosulod ba ang tubig sa ulan sa inyong septic tank?' },
+
+  // Section F
+  stp_capacity: { label: 'F1. Unsa ang capacity sa inyong STP?', hint: 'Ang capacity kasagaran gisukod sa cubic meters kada adlaw (m³/day).' },
+  stp_technology: { label: 'F2. Unsa nga teknolohiya ang gigamit sa inyong STP?', hint: 'Kung dili sigurado, pangutan-a ang maintenance staff o tan-awa ang nameplate sa equipment.' },
+  stp_technology_other: { label: 'F2a. Palihog isulat' },
+  stp_built: { label: 'F3. Sa unsang tuig gitukod ang STP?' },
+  stp_op_cost: { label: 'F4. Total nga operational cost sa STP KADA TUIG', hint: 'Apilon ang kuryente, chemicals, staff, ug regular nga maintenance.' },
+  lab_testing: { label: 'F5. Nagpadala ba kamo og wastewater samples sa external nga laboratoryo para sa pag-test?' },
+  lab_test_freq: { label: 'F6. Pila ka beses kada tuig kamo magpa-lab test?' },
+  lab_test_cost: { label: 'F7. Pila ang inyong gigasto sa external lab testing KADA TUIG?' },
+  stp_problems: { label: 'F8. Aduna bay mga problema kaniadto sa STP?', hint: 'Mahimo kang mopili og labaw sa usa.' },
+  stp_problems_other: { label: 'F8a. Palihog isulat ang ubang problema' },
+  sludge_disposal: { label: 'F9. Giunsa ninyo paglabay ang sludge (solid waste) gikan sa STP?' },
+  sludge_disposal_other: { label: 'F9a. Palihog isulat' },
+  haul_per_year: { label: 'F10. Pila ka beses KADA TUIG nga ang accredited operators mohakot sa sludge?' },
+  haul_cost_per_trip: { label: 'F11. Pila ang inyong gibayad kada biyahe?' },
+  reuse_water: { label: 'F12. Gigamit ba ninyo PAG-USAB ang treated water gikan sa STP?' },
+  reuse_water_purpose: { label: 'F12a. Para sa unsa? (pilia ang tanan nga angay)' },
+  reuse_water_other: { label: 'F12b. Palihog isulat ang ubang katuyoan' },
+  reuse_sludge: { label: 'F13. Gigamit ba ninyo PAG-USAB ang treated sludge / biosolids?' },
+  reuse_sludge_purpose: { label: 'F13a. Para sa unsa? (pilia ang tanan nga angay)' },
+  reuse_sludge_other: { label: 'F13b. Palihog isulat ang ubang katuyoan' },
+
+  // Section G
+  denr_required: { label: 'G1. Kinahanglan ba ang inyong negosyo mosunod sa DENR Discharge Permit?', hint: 'Ang DENR Discharge Permit usa ka environmental clearance nga gikinahanglan sa mga negosyo nga nag-discharge og wastewater. Kasagaran gikinahanglan sa ospital, hotel, dagkong restaurant, ug industrial facilities.' },
+  denr_held: { label: 'G2. Aduna ba kamoy kasamtangang DENR discharge permit / certificate?' },
+  mandatory_cert: { label: 'G3. Angay ba nga MANDATORY nga ipakita ang desludging certificate kada renew sa business permit?', hint: 'Kini magpasabot nga ang LGU mo-renew lang sa permit kung makapakita kamo og pamatuod sa regular nga paghurot.' },
+  agree_septic_fee: { label: 'G4. Mouyon ba kamo nga idugang ang SANITATION FEE sa tinuig nga business permit, ug puli niini ang LGU (pinaagi sa accredited operators) mohatag og desludging service?' },
+  wtp_septic_per_trip: { label: 'G5. Pila ang inyong KAYA BAYRAN kada biyahe sa paghurot kung apil na sa business permit?' },
+  agree_stp_fee: { label: 'G6. Mouyon ba kamo nga ang LGU mo-handle og ONE-TIME paghurot sa sludge gikan sa inyong STP, nga ang fee idugang sa tinuig nga business permit?' },
+  wtp_stp_per_year: { label: 'G7. Pila ang inyong KAYA BAYRAN para niini nga one-time desludging service kada tuig?' },
+
+  // Section H
+  other_comments: { label: 'H2. Aduna pa bay ubang komento o sugyot?', hint: 'Naa pa bay gusto ninyong ipahibalo sa Siyudad bahin sa sanitasyon o wastewater sa inyong negosyo o sa inyong lugar?' },
+  respondent_consent: { label: 'H3. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' }
+};
+
+// Special labels (not standard fields)
+const SPECIAL_I18N_CEB = {
+  tank_dim: { label: 'E3. Isulat ang gidak-on', hint: 'Banabanaa ang Gitas-on × Gilapdon × Gilawmon. <strong>1 m × 1 m × 1 m = 1 m³.</strong>' }
+};
+
+// Sub-block titles inside Section B
+const SUBBLOCK_I18N_CEB = {
+  'B.1 — Hotel / Resort / Rental': 'B.1 — Hotel / Resort / Pa-arkila',
+  'B.2 — Restaurant / Eatery / Canteen': 'B.2 — Restaurant / Karinderya / Canteen',
+  'B.3 — Mall / Market / Commercial Building': 'B.3 — Mall / Merkado / Commercial Building',
+  'B.4 — Other Establishments': 'B.4 — Uban nga Establisemento',
+  'Desludging History': 'Kasaysayan sa Paghurot',
+  'Past Issues': 'Mga Problema Kaniadto',
+  'Sludge Disposal & Reuse': 'Paglabay ug Paggamit-usab sa Sludge',
+  'G.1 — Regulatory Compliance': 'G.1 — Regulatory Compliance',
+  'G.2 — Sanitation Fee (Septic Tank Users)': 'G.2 — Sanitation Fee (Septic Tank Users)',
+  'G.3 — Sanitation Fee (STP Users)': 'G.3 — Sanitation Fee (STP Users)'
+};
+
+// Info-box translations (keyed by their starting English text)
+const INFOBOX_I18N_CEB = {
+  'Please fill this section for every business. It helps us understand who is taking part in the survey.':
+    'Palihog tubaga kini nga seksyon para sa matag negosyo. Makatabang kini sa pagkahibalo kinsa ang nag-apil sa survey.',
+  'Please answer only the part(s) that match the business type you chose in A5. Other sub-blocks will stay hidden.':
+    'Palihog tubaga lang ang bahin nga nahaom sa imong gipili sa A5. Ang ubang sub-blocks magpabilin nga tinago.',
+  'This helps us estimate how much wastewater your business may produce. Please check your latest water bill if possible.':
+    'Makatabang kini sa pag-estimate sa wastewater nga gihimo sa inyong negosyo. Palihog tan-awa ang inyong pinakabag-o nga water bill kung mahimo.',
+  'These questions are about where your toilet water and kitchen / bath water finally go.':
+    'Kini nga mga pangutana bahin sa asa mopadulong ang tubig sa kasilyas ug kusina / banyo.',
+  'Answer this section if you use a septic tank (with or without an STP).':
+    'Tubaga kini nga seksyon kung gigamit ninyo ang septic tank (uban o walay STP).',
+  'Answer this section if you operate a Sewage Treatment Plant (STP).':
+    'Tubaga kini nga seksyon kung gi-operate ninyo ang Sewage Treatment Plant (STP).',
+  'This section is for ALL businesses, no matter the system you use.':
+    'Kini nga seksyon para sa TANAN nga negosyo, bisan unsa nga sistema ang inyong gigamit.'
+};
+
+
 // ==================== RENDER OPTION GROUPS ====================
 function buildOptionGroups() {
   document.querySelectorAll('.option-group').forEach(group => {
@@ -1294,7 +1698,7 @@ function buildOptionGroups() {
     const type = group.dataset.type;
     const listKey = FIELD_CHOICES[name];
     if (!listKey) return;
-    const choices = CHOICE_LISTS[listKey];
+    const choices = (currentLang === 'ceb' && CHOICE_LISTS_CEB[listKey]) ? CHOICE_LISTS_CEB[listKey] : CHOICE_LISTS[listKey];
     if (!choices) return;
 
     choices.forEach(c => {
@@ -1346,25 +1750,33 @@ function populateBarangays() {
   });
 }
 
-// ==================== TANK LIST (multi-tank) ====================
-function rebuildTankList() {
-  const n = parseInt(document.getElementById('tank_count').value) || 0;
-  const list = document.getElementById('tankList');
-  list.innerHTML = '';
-  if (n <= 0) return;
-  for (let i = 1; i <= Math.min(n, 20); i++) {
-    const row = document.createElement('div');
-    row.className = 'tank-row';
-    row.innerHTML = `
-      <label>Tank ${i}</label>
-      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="L" id="tank_${i}_L" oninput="updateTankDiagram(${i})">
-      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="W" id="tank_${i}_W" oninput="updateTankDiagram(${i})">
-      <input type="number" step="0.1" min="0" inputmode="decimal" placeholder="D" id="tank_${i}_D" oninput="updateTankDiagram(${i})">
-      <div class="vol-display" id="tank_${i}_vol"></div>
-    `;
-    list.appendChild(row);
+// ==================== TANK DIMENSIONS (single-tank, stepper UI) ====================
+let dimTimer = null;
+
+function stepDim(id, dir) {
+  const inp = document.getElementById(id);
+  if (!inp) return;
+  let val = parseFloat(inp.value) || 0;
+  val = Math.round((val + dir * 0.1) * 10) / 10;
+  if (val < 0) val = 0;
+  inp.value = val;
+  updateTankDiagram();
+}
+
+function startDimHold(id, dir) {
+  stepDim(id, dir);
+  let count = 0;
+  function tick() {
+    count++;
+    stepDim(id, dir);
+    const delay = count < 5 ? 250 : count < 15 ? 120 : 50;
+    dimTimer = setTimeout(tick, delay);
   }
-  updateTankDiagram(1);
+  dimTimer = setTimeout(tick, 400);
+}
+
+function stopDimHold() {
+  if (dimTimer) { clearTimeout(dimTimer); dimTimer = null; }
 }
 
 function setUnit(unit) {
@@ -1373,42 +1785,19 @@ function setUnit(unit) {
     el.querySelector('input').checked = el.dataset.unit === unit;
   });
   document.getElementById('tankUnitLabel').textContent = 'Unit: ' + (unit === 'meter' ? 'Meters' : 'Feet');
-  // Re-render volumes
-  const n = parseInt(document.getElementById('tank_count').value) || 0;
-  for (let i = 1; i <= n; i++) updateTankVolumeText(i);
-  updateTankDiagram(1);
+  updateTankDiagram();
 }
 
-function updateTankVolumeText(i) {
-  const L = parseFloat((document.getElementById(`tank_${i}_L`)||{}).value) || 0;
-  const W = parseFloat((document.getElementById(`tank_${i}_W`)||{}).value) || 0;
-  const D = parseFloat((document.getElementById(`tank_${i}_D`)||{}).value) || 0;
-  const unit = document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter';
-  const out = document.getElementById(`tank_${i}_vol`);
-  if (!out) return;
-  if (L>0 && W>0 && D>0) {
-    const vol = L*W*D;
-    const unitLabel = unit==='meter' ? 'm³' : 'ft³';
-    const liters = unit==='meter' ? vol*1000 : vol*28.3168;
-    out.textContent = `Volume: ${vol.toFixed(2)} ${unitLabel} (${liters.toFixed(0)} L)`;
-  } else {
-    out.textContent = '';
-  }
-}
-
-function updateTankDiagram(i) {
-  if (i) updateTankVolumeText(i);
-  // The big diagram always shows tank 1 (or whichever the user is editing)
-  const showI = i || 1;
+function updateTankDiagram() {
   const canvas = document.getElementById('tankCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0, 0, W, H);
 
-  const L = parseFloat((document.getElementById(`tank_${showI}_L`)||{}).value) || 0;
-  const Wid = parseFloat((document.getElementById(`tank_${showI}_W`)||{}).value) || 0;
-  const D = parseFloat((document.getElementById(`tank_${showI}_D`)||{}).value) || 0;
+  const L = parseFloat((document.getElementById('tank_length')||{}).value) || 0;
+  const Wid = parseFloat((document.getElementById('tank_width')||{}).value) || 0;
+  const D = parseFloat((document.getElementById('tank_depth')||{}).value) || 0;
   const unit = document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter';
   const unitLabel = unit === 'meter' ? 'm' : 'ft';
 
@@ -1468,11 +1857,11 @@ function updateTankDiagram(i) {
   const volEl = document.getElementById('tankVolume');
   if (L > 0 && Wid > 0 && D > 0) {
     const vol = L * Wid * D;
-    let volText = `Tank ${showI} volume: ${vol.toFixed(1)} ${unit === 'meter' ? 'm³' : 'ft³'}`;
+    let volText = `Volume: ${vol.toFixed(1)} ${unit === 'meter' ? 'm³' : 'ft³'}`;
     volText += unit === 'meter' ? ` (${(vol * 1000).toFixed(0)} L)` : ` (${(vol * 28.3168).toFixed(0)} L)`;
     volEl.textContent = volText;
   } else {
-    volEl.textContent = `Enter dimensions for Tank ${showI} to see the diagram`;
+    volEl.textContent = 'Enter dimensions to see volume';
   }
 }
 
@@ -1485,175 +1874,6 @@ function drawArrow(ctx, x, y, dir) {
   else if (dir === 'up') { ctx.moveTo(x - s, y); ctx.lineTo(x, y - s * 2); ctx.lineTo(x + s, y); }
   else { ctx.moveTo(x - s, y); ctx.lineTo(x, y + s * 2); ctx.lineTo(x + s, y); }
   ctx.fill();
-}
-
-// ==================== SIGNATURE PAD ====================
-let sigPadCtx = null, sigDrawing = false, sigHasInk = false, sigLastX = 0, sigLastY = 0;
-let sigDataUrl = '';
-
-function initSignaturePad() {
-  const canvas = document.getElementById('signaturePad');
-  if (!canvas) return;
-  // Make canvas resolution match its CSS size for crisp lines
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = Math.max(rect.width, 300) * dpr;
-  canvas.height = 160 * dpr;
-  sigPadCtx = canvas.getContext('2d');
-  sigPadCtx.scale(dpr, dpr);
-  sigPadCtx.lineWidth = 2;
-  sigPadCtx.lineCap = 'round';
-  sigPadCtx.lineJoin = 'round';
-  sigPadCtx.strokeStyle = '#1a1a1a';
-
-  function getPos(evt) {
-    const r = canvas.getBoundingClientRect();
-    const t = evt.touches ? evt.touches[0] : evt;
-    return { x: t.clientX - r.left, y: t.clientY - r.top };
-  }
-  function start(evt) { evt.preventDefault(); sigDrawing = true; const p = getPos(evt); sigLastX = p.x; sigLastY = p.y; }
-  function move(evt) {
-    if (!sigDrawing) return;
-    evt.preventDefault();
-    const p = getPos(evt);
-    sigPadCtx.beginPath();
-    sigPadCtx.moveTo(sigLastX, sigLastY);
-    sigPadCtx.lineTo(p.x, p.y);
-    sigPadCtx.stroke();
-    sigLastX = p.x; sigLastY = p.y;
-    if (!sigHasInk) {
-      sigHasInk = true;
-      const s = document.getElementById('signatureStatus');
-      if (s) { s.textContent = '✓ Signed'; s.style.color = 'var(--accent)'; s.style.fontWeight = '600'; }
-    }
-  }
-  function end() {
-    if (!sigDrawing) return;
-    sigDrawing = false;
-    sigDataUrl = canvas.toDataURL('image/png');
-  }
-
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', move);
-  canvas.addEventListener('mouseup', end);
-  canvas.addEventListener('mouseleave', end);
-  canvas.addEventListener('touchstart', start, { passive: false });
-  canvas.addEventListener('touchmove', move, { passive: false });
-  canvas.addEventListener('touchend', end);
-}
-
-function clearSignature() {
-  const canvas = document.getElementById('signaturePad');
-  if (!canvas || !sigPadCtx) return;
-  const dpr = window.devicePixelRatio || 1;
-  sigPadCtx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-  sigHasInk = false;
-  sigDataUrl = '';
-  const s = document.getElementById('signatureStatus');
-  if (s) { s.textContent = 'Not signed'; s.style.color = 'var(--text-dim)'; s.style.fontWeight = ''; }
-}
-
-// ==================== GPS ====================
-let gpsWatchId = null, bestGpsAccuracy = null, bestGpsData = null;
-
-function captureGPS() {
-  if (!navigator.geolocation) { alert('Geolocation not supported'); return; }
-  document.getElementById('gpsModalOverlay').classList.add('show');
-  document.getElementById('gpsRingValue').textContent = '--';
-  document.getElementById('gpsModalStatus').textContent = 'Searching for GPS signal...';
-  document.getElementById('gpsModalHint').textContent = 'Please wait while we lock onto your location.';
-  document.getElementById('gpsRing').className = 'gps-ring';
-  document.getElementById('btnGpsAccept').classList.remove('active');
-  document.getElementById('gpsModalTips').style.display = '';
-
-  const ACCURACY_THRESHOLD = 10;
-  const maxWaitTime = 120000;
-  const startTime = Date.now();
-  bestGpsAccuracy = null; bestGpsData = null;
-
-  gpsWatchId = navigator.geolocation.watchPosition(
-    pos => {
-      const accuracy = pos.coords.accuracy;
-      const lat = pos.coords.latitude.toFixed(6);
-      const lng = pos.coords.longitude.toFixed(6);
-      const accStr = accuracy.toFixed(1);
-      const remaining = Math.max(0, Math.ceil((maxWaitTime - (Date.now() - startTime)) / 1000));
-
-      if (bestGpsAccuracy === null || accuracy < bestGpsAccuracy) {
-        bestGpsAccuracy = accuracy;
-        bestGpsData = { lat, lng, accStr };
-      }
-      document.getElementById('gpsRingValue').textContent = `±${accStr}`;
-      const ring = document.getElementById('gpsRing');
-      const status = document.getElementById('gpsModalStatus');
-      const hint = document.getElementById('gpsModalHint');
-      const acceptBtn = document.getElementById('btnGpsAccept');
-      const tips = document.getElementById('gpsModalTips');
-      const timedOut = Date.now() - startTime >= maxWaitTime;
-
-      if (accuracy <= ACCURACY_THRESHOLD) {
-        ring.className = 'gps-ring good';
-        status.textContent = '✓ Excellent Signal!';
-        status.style.color = 'var(--accent)';
-        hint.textContent = 'Accuracy is great. You can capture now.';
-        acceptBtn.classList.add('active');
-        acceptBtn.textContent = `✓ Use This Location (±${accStr}m)`;
-        tips.style.display = 'none';
-      } else if (timedOut) {
-        ring.className = 'gps-ring fair';
-        status.textContent = 'Time-out reached';
-        status.style.color = 'var(--warning)';
-        hint.textContent = `Best accuracy: ±${bestGpsData.accStr}m.`;
-        acceptBtn.classList.add('active');
-        acceptBtn.textContent = `✓ Use This Location (±${bestGpsData.accStr}m)`;
-        tips.style.display = 'none';
-      } else if (accuracy <= 20) {
-        ring.className = 'gps-ring fair';
-        status.textContent = '⚠️ Improving...';
-        status.style.color = 'var(--warning)';
-        hint.textContent = `Signal getting better. Auto-unlocks in ${remaining}s.`;
-        acceptBtn.classList.remove('active');
-        tips.style.display = '';
-      } else {
-        ring.className = 'gps-ring';
-        status.textContent = 'Weak signal';
-        status.style.color = 'var(--danger)';
-        hint.textContent = `Move to open area. Auto-unlocks in ${remaining}s.`;
-        acceptBtn.classList.remove('active');
-        tips.style.display = '';
-      }
-    },
-    err => {
-      if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-      gpsWatchId = null;
-      document.getElementById('gpsModalOverlay').classList.remove('show');
-      alert('GPS error: ' + err.message + '\n\nPlease enable location permissions and try again.');
-    },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-  );
-}
-
-function acceptGPS() {
-  if (!bestGpsData) return;
-  if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-  gpsWatchId = null;
-  gpsData.lat = bestGpsData.lat;
-  gpsData.lng = bestGpsData.lng;
-  gpsData.accuracy = bestGpsData.accStr;
-
-  const box = document.getElementById('gpsBox');
-  box.classList.add('captured');
-  box.innerHTML = `<div style="color:var(--accent);font-weight:600;margin-bottom:0.3rem">✓ GPS Captured</div>
-    <div class="gps-coords">${gpsData.lat}, ${gpsData.lng}</div>
-    <div class="gps-accuracy">Accuracy: ±${gpsData.accuracy} m</div>
-    <button class="btn-gps" onclick="captureGPS()" style="margin-top:0.5rem;font-size:0.75rem;padding:0.35rem 0.8rem">↻ Re-capture</button>`;
-  document.getElementById('gpsModalOverlay').classList.remove('show');
-}
-
-function cancelGPS() {
-  if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-  gpsWatchId = null;
-  document.getElementById('gpsModalOverlay').classList.remove('show');
 }
 
 // ==================== CONDITIONAL LOGIC ====================
@@ -1696,6 +1916,18 @@ function nextSectionIndex(from, dir) {
 }
 
 // ==================== VALIDATION ====================
+// A field is hidden if it OR any ancestor is a .conditional that's not .show
+function isFieldHidden(field) {
+  let el = field;
+  while (el && el !== document.body) {
+    if (el.classList && el.classList.contains('conditional') && !el.classList.contains('show')) {
+      return true;
+    }
+    el = el.parentElement;
+  }
+  return false;
+}
+
 function validateCurrentSection() {
   const section = document.querySelector(`[data-section="${currentSection}"]`);
   let firstInvalid = null;
@@ -1706,55 +1938,57 @@ function validateCurrentSection() {
   // Selects
   section.querySelectorAll('select').forEach(sel => {
     const field = sel.closest('.field'); if (!field) return;
-    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    if (isFieldHidden(field)) return;
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
-    if (!sel.value) { markInvalid(field, 'Please make a selection'); if (!firstInvalid) firstInvalid = field; valid = false; }
+    if (!sel.value) { markInvalid(field, T('val_select')); if (!firstInvalid) firstInvalid = field; valid = false; }
   });
 
   // Text/number/email inputs
   section.querySelectorAll('input[type="text"],input[type="number"],input[type="email"]').forEach(inp => {
+    // Skip tank dimension inputs — they have their own dedicated validator below
+    if (inp.closest('.dim-stepper')) return;
     const field = inp.closest('.field'); if (!field) return;
-    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    if (isFieldHidden(field)) return;
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
-    if (!inp.value.trim()) { markInvalid(field, 'This field is required'); if (!firstInvalid) firstInvalid = field; valid = false; return; }
+    if (!inp.value.trim()) { markInvalid(field, T('val_required')); if (!firstInvalid) firstInvalid = field; valid = false; return; }
     if (inp.id === 'contact_number' && !/^\d{10}$/.test(inp.value.trim())) {
-      markInvalid(field, 'Please enter a valid 10-digit mobile number'); if (!firstInvalid) firstInvalid = field; valid = false;
+      markInvalid(field, T('val_phone')); if (!firstInvalid) firstInvalid = field; valid = false;
     }
     if (inp.type === 'email' && inp.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inp.value.trim())) {
-      markInvalid(field, 'Please enter a valid email'); if (!firstInvalid) firstInvalid = field; valid = false;
+      markInvalid(field, T('val_email')); if (!firstInvalid) firstInvalid = field; valid = false;
     }
   });
 
   // Textareas
   section.querySelectorAll('textarea').forEach(ta => {
     const field = ta.closest('.field'); if (!field) return;
-    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    if (isFieldHidden(field)) return;
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
-    if (!ta.value.trim()) { markInvalid(field, 'This field is required'); if (!firstInvalid) firstInvalid = field; valid = false; }
+    if (!ta.value.trim()) { markInvalid(field, T('val_required')); if (!firstInvalid) firstInvalid = field; valid = false; }
   });
 
   // Radios
   section.querySelectorAll('.option-group[data-type="radio"]').forEach(group => {
     const field = group.closest('.field'); if (!field) return;
-    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    if (isFieldHidden(field)) return;
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
     if (!group.querySelector('.option-item.selected')) {
-      markInvalid(field, 'Please make a selection'); if (!firstInvalid) firstInvalid = field; valid = false;
+      markInvalid(field, T('val_select')); if (!firstInvalid) firstInvalid = field; valid = false;
     }
   });
 
   // Checkboxes
   section.querySelectorAll('.option-group[data-type="checkbox"]').forEach(group => {
     const field = group.closest('.field'); if (!field) return;
-    if (field.classList.contains('conditional') && !field.classList.contains('show')) return;
+    if (isFieldHidden(field)) return;
     const label = field.querySelector('.field-label');
     if (!label || !label.querySelector('.req')) return;
     if (!group.querySelector('.option-item.selected')) {
-      markInvalid(field, 'Please select at least one option'); if (!firstInvalid) firstInvalid = field; valid = false;
+      markInvalid(field, T('val_at_least_one')); if (!firstInvalid) firstInvalid = field; valid = false;
     }
   });
 
@@ -1763,29 +1997,20 @@ function validateCurrentSection() {
     const consentSel = document.querySelector('[data-name="respondent_consent"] .option-item.selected');
     if (consentSel && consentSel.dataset.value === 'no') {
       const field = document.querySelector('[data-name="respondent_consent"]').closest('.field');
-      markInvalid(field, 'Consent must be "Yes" to submit the survey.');
+      markInvalid(field, T('val_consent'));
       if (!firstInvalid) firstInvalid = field; valid = false;
     }
   }
 
-  // Tank dimensions on Section E (4) — make sure all tank rows are filled
-  if (currentSection === 4) {
-    const n = parseInt(v('tank_count')) || 0;
-    if (n > 0) {
-      const dimField = document.getElementById('tankList').closest('.field');
-      let dimMissing = false;
-      for (let i = 1; i <= n; i++) {
-        const L = (document.getElementById(`tank_${i}_L`)||{}).value;
-        const W = (document.getElementById(`tank_${i}_W`)||{}).value;
-        const D = (document.getElementById(`tank_${i}_D`)||{}).value;
-        if (!L || !W || !D || parseFloat(L)<=0 || parseFloat(W)<=0 || parseFloat(D)<=0) {
-          dimMissing = true; break;
-        }
-      }
-      if (dimMissing) {
-        markInvalid(dimField, 'Please enter Length, Width and Depth for each tank.');
-        if (!firstInvalid) firstInvalid = dimField; valid = false;
-      }
+  // Tank dimensions on Section E (4) — only validated when user said they know the size
+  if (currentSection === 4 && radioValues.tank_size_known === 'yes') {
+    const L = parseFloat(v('tank_length')) || 0;
+    const W = parseFloat(v('tank_width')) || 0;
+    const D = parseFloat(v('tank_depth')) || 0;
+    if (L <= 0 || W <= 0 || D <= 0) {
+      const dimField = document.getElementById('tank_length').closest('.field');
+      markInvalid(dimField, T('val_tank_dim'));
+      if (!firstInvalid) firstInvalid = dimField; valid = false;
     }
   }
 
@@ -1816,13 +2041,11 @@ function navigate(dir) {
   document.getElementById('btnPrev').classList.toggle('hidden', currentSection === 0);
   const btnNext = document.getElementById('btnNext');
   if (currentSection === TOTAL_SECTIONS - 1) {
-    btnNext.textContent = '✓ Submit Survey';
+    btnNext.textContent = T('btn_submit');
     btnNext.className = 'btn btn-submit';
     btnNext.onclick = submitSurvey;
-    // Initialize signature pad now that the canvas is visible (only once)
-    if (!sigPadCtx) initSignaturePad();
   } else {
-    btnNext.textContent = 'Next →';
+    btnNext.textContent = T('btn_next');
     btnNext.className = 'btn btn-next';
     btnNext.onclick = () => navigate(1);
   }
@@ -1843,25 +2066,13 @@ function updateProgress() {
   const pct = total ? (current / total * 100).toFixed(0) : 0;
   document.getElementById('progressFill').style.width = pct + '%';
   const labels = ['A','B','C','D','E','F','G','H'];
-  document.getElementById('progressText').textContent = `Section ${labels[currentSection]} — ${current} of ${total}`;
+  document.getElementById('progressText').textContent = `${T('progress_section')} ${labels[currentSection]} — ${current} ${T('progress_of')} ${total}`;
 }
 
 // ==================== SUBMIT ====================
 async function submitSurvey() {
   if (!validateCurrentSection()) return;
   const btnNext = document.getElementById('btnNext');
-
-  // Gather tank dimensions
-  const nTanks = parseInt(v('tank_count')) || 0;
-  const tanks = [];
-  for (let i = 1; i <= nTanks; i++) {
-    tanks.push({
-      tank: i,
-      length: v(`tank_${i}_L`),
-      width: v(`tank_${i}_W`),
-      depth: v(`tank_${i}_D`)
-    });
-  }
 
   const data = {
     timestamp: new Date().toISOString(),
@@ -1876,7 +2087,7 @@ async function submitSurvey() {
     street_landmark: v('street_landmark'),
     business_type_other: v('business_type_other'),
 
-    // All radio + checkbox values
+    // All radio + checkbox values (includes tank_size_known)
     ...radioValues,
 
     // Section B numeric / text
@@ -1890,9 +2101,11 @@ async function submitSurvey() {
     water_source_other: v('water_source_other'),
 
     // Section E
-    tank_count: nTanks,
+    tank_count: v('tank_count'),
+    tank_length: v('tank_length'),
+    tank_width: v('tank_width'),
+    tank_depth: v('tank_depth'),
     tank_unit: document.querySelector('input[name="tank_unit"]:checked')?.value || 'meter',
-    tank_dimensions: JSON.stringify(tanks),
     grease_trap_count: v('grease_trap_count'),
     separate_tanks_desc: v('separate_tanks_desc'),
     desludge_operator: v('desludge_operator'),
@@ -1907,11 +2120,7 @@ async function submitSurvey() {
     reuse_sludge_other: v('reuse_sludge_other'),
 
     // Section H
-    other_comments: v('other_comments'),
-    latitude: gpsData.lat || '',
-    longitude: gpsData.lng || '',
-    gps_accuracy: gpsData.accuracy || '',
-    respondent_signature: sigDataUrl || ''
+    other_comments: v('other_comments')
   };
 
   // Quick required-field check
@@ -1956,17 +2165,17 @@ function showSubmitModal(state, errorMsg) {
   overlay.classList.add('show');
   if (state === 'loading') {
     modal.innerHTML = `<div class="submit-spinner"></div>
-      <h3>Submitting...</h3><p>Please wait, sending your response.</p>`;
+      <h3>${T('submit_title')}</h3><p>${T('submit_wait')}</p>`;
   } else if (state === 'success') {
     modal.innerHTML = `<div class="submit-success-icon">✓</div>
-      <h3>Thank You!</h3>
-      <p>Your survey has been submitted successfully. Your responses will help improve sanitation services for businesses across Tagbilaran City.</p>
-      <button class="btn-modal-close" onclick="closeSubmitModal()">Done</button>`;
+      <h3>${T('submit_success')}</h3>
+      <p>${T('submit_success_msg')}</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">${T('btn_done')}</button>`;
   } else if (state === 'error') {
     modal.innerHTML = `<div class="submit-error-icon">✕</div>
-      <h3>Submission Failed</h3>
-      <p>${errorMsg || 'Could not submit. Please check your internet connection and try again.'}</p>
-      <button class="btn-modal-close" onclick="closeSubmitModal()">Close</button>`;
+      <h3>${T('submit_error')}</h3>
+      <p>${errorMsg || T('submit_error_default')}</p>
+      <button class="btn-modal-close" onclick="closeSubmitModal()">${T('btn_close')}</button>`;
   }
 }
 
@@ -1987,6 +2196,109 @@ function showStatus(msg, type) {
 }
 
 // ==================== WELCOME → INSTRUCTIONS → SURVEY ====================
+function selectLanguage(lang) {
+  currentLang = lang;
+  buildOptionGroups();
+  applyTranslations();
+  showInstructions();
+}
+
+function updateFieldText(field, ft) {
+  if (!field) return;
+  if (ft.label) {
+    const label = field.querySelector('.field-label');
+    if (label) {
+      const hadReq = !!label.querySelector('.req');
+      label.textContent = ft.label + ' ';
+      if (hadReq) {
+        const r = document.createElement('span');
+        r.className = 'req';
+        r.textContent = '*';
+        label.appendChild(r);
+      }
+    }
+  }
+  if (ft.hint !== undefined) {
+    const hint = field.querySelector('.field-hint');
+    if (hint) hint.innerHTML = ft.hint;
+  }
+}
+
+function applyTranslations() {
+  const t = UI_TEXT[currentLang];
+  if (!t) return;
+
+  // Topbar
+  const tbTitle = document.querySelector('.topbar h1');
+  const tbSub = document.querySelector('.topbar .sub');
+  if (tbTitle) tbTitle.textContent = t.topbar_title;
+  if (tbSub) tbSub.textContent = t.topbar_sub;
+
+  // Section titles
+  document.querySelectorAll('.section-title').forEach((el, i) => {
+    if (t.section_titles[i]) el.textContent = t.section_titles[i];
+  });
+
+  // Instructions page
+  const instrH2 = document.querySelector('.instructions-inner h2');
+  if (instrH2) instrH2.textContent = t.instr_title;
+  const instrTexts = document.querySelectorAll('.instructions-text');
+  if (instrTexts[0]) instrTexts[0].innerHTML = t.instr_1;
+  if (instrTexts[1]) instrTexts[1].innerHTML = t.instr_2;
+  if (instrTexts[2]) instrTexts[2].innerHTML = t.instr_3;
+  if (instrTexts[3]) instrTexts[3].innerHTML = t.instr_4;
+  const btnContinue = document.querySelector('.btn-continue');
+  if (btnContinue) btnContinue.textContent = t.btn_continue;
+
+  // Navigation
+  document.getElementById('btnPrev').textContent = t.btn_back;
+  document.getElementById('btnNext').textContent = t.btn_next;
+
+  // Footer
+  const footer = document.querySelector('.footer');
+  if (footer) footer.textContent = t.footer;
+
+  // Barangay select default
+  const bsel = document.getElementById('barangay');
+  if (bsel && bsel.options[0]) bsel.options[0].textContent = t.select_barangay;
+
+  // Cebuano-only: translate field labels & hints
+  if (currentLang === 'ceb') {
+    // Option-group fields (radio + checkbox)
+    document.querySelectorAll('.option-group').forEach(group => {
+      const ft = FIELD_I18N_CEB[group.dataset.name];
+      if (ft) updateFieldText(group.closest('.field'), ft);
+    });
+
+    // Input / textarea fields by ID
+    Object.keys(FIELD_I18N_CEB).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      // Skip option groups (already handled above)
+      if (el.classList.contains('option-group')) return;
+      const ft = FIELD_I18N_CEB[id];
+      if (ft) updateFieldText(el.closest('.field'), ft);
+    });
+
+    // Tank dimensions field (E2) — special case (no input ID we can target directly)
+    // Tank dimensions field (E3) — target by tank_length input which is inside it
+    const tankDimField = document.getElementById('tank_length').closest('.field');
+    if (tankDimField) updateFieldText(tankDimField, SPECIAL_I18N_CEB.tank_dim);
+
+    // Sub-block titles
+    document.querySelectorAll('.sub-block-title').forEach(el => {
+      const tx = el.textContent.trim();
+      if (SUBBLOCK_I18N_CEB[tx]) el.textContent = SUBBLOCK_I18N_CEB[tx];
+    });
+
+    // Info-boxes (the translucent green callout boxes)
+    document.querySelectorAll('.info-box').forEach(el => {
+      const tx = el.textContent.trim();
+      if (INFOBOX_I18N_CEB[tx]) el.textContent = INFOBOX_I18N_CEB[tx];
+    });
+  }
+}
+
 function showInstructions() {
   document.getElementById('welcomePage').classList.remove('show');
   document.getElementById('instructionsPage').classList.add('show');
@@ -2004,7 +2316,7 @@ function startSurvey() {
   document.querySelector(`[data-section="0"]`).classList.remove('hidden');
   document.getElementById('btnPrev').classList.add('hidden');
   const btnNext = document.getElementById('btnNext');
-  btnNext.textContent = 'Next →';
+  btnNext.textContent = T('btn_next');
   btnNext.className = 'btn btn-next';
   btnNext.onclick = () => navigate(1);
 
@@ -2023,7 +2335,7 @@ function init() {
   buildOptionGroups();
   updateConditionals();
   updateProgress();
-  updateTankDiagram(1);
+  updateTankDiagram();
 }
 
 init();
