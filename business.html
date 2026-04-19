@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CWIS Business Sanitation Survey — Tagbilaran City</title>
-<meta name="description" content="Citywide Inclusive Sanitation (CWIS) business establishment survey for Tagbilaran City, Bohol. Help improve sanitation services for businesses across the city.">
+<title>CWIS Business Sanitation Survey — Bohol</title>
+<meta name="description" content="Citywide Inclusive Sanitation (CWIS) business establishment survey for Bohol. Help improve sanitation services for businesses across the city.">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://innpact-solutions.github.io/cwis-survey/business.html">
-<meta property="og:title" content="CWIS Business Sanitation Survey — Tagbilaran City">
-<meta property="og:description" content="Help improve sanitation services for businesses in Tagbilaran City under the Citywide Inclusive Sanitation Plan.">
+<meta property="og:title" content="CWIS Business Sanitation Survey — Bohol">
+<meta property="og:description" content="Help improve sanitation services for businesses in Bohol under the Citywide Inclusive Sanitation Plan.">
 <meta property="og:image" content="https://innpact-solutions.github.io/cwis-survey/og-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -237,7 +237,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
 <div class="topbar" id="topbar" style="display:none">
   <h1>CWIS Business Sanitation Survey</h1>
-  <div class="sub">Tagbilaran City — Bohol</div>
+  <div class="sub">Bohol</div>
 </div>
 
 <div class="progress-wrap" id="progressWrap" style="display:none">
@@ -254,8 +254,8 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
 
     <div class="welcome-content">
       <h1>CWIS Business Sanitation Survey</h1>
-      <p class="subtitle">Citywide Inclusive Sanitation Plan — Tagbilaran City, Bohol</p>
-      <p>This survey is for <strong>commercial establishments</strong> (hotels, restaurants, malls, schools, hospitals, offices, and other businesses) operating in Tagbilaran City.</p>
+      <p class="subtitle">Citywide Inclusive Sanitation Plan — Bohol</p>
+      <p>This survey is for <strong>commercial establishments</strong> (hotels, restaurants, malls, schools, hospitals, offices, and other businesses) operating in Bohol.</p>
       <p>Your responses will be kept confidential and used only for project assessment and sanitation planning.</p>
       <p><strong>Supported by the World Bank.</strong></p>
 
@@ -349,29 +349,39 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
     </div>
 
     <div class="field">
-      <div class="field-label">A4. Barangay <span class="req">*</span></div>
-      <select id="barangay">
-        <option value="">— Select Barangay —</option>
+      <div class="field-label">A4. City / Municipality <span class="req">*</span></div>
+      <div class="field-hint">Select the city or municipality where your business is located.</div>
+      <select id="city_municipality" onchange="updateBarangays()">
+        <option value="">— Select —</option>
+        <option value="dauis">Dauis</option>
+        <option value="panglao">Panglao</option>
+        <option value="tagbilaran_city">Tagbilaran City</option>
       </select>
     </div>
     <div class="field">
-      <div class="field-label">A4a. Street / Landmark <span class="req">*</span></div>
+      <div class="field-label">A5. Barangay <span class="req">*</span></div>
+      <select id="barangay">
+        <option value="">— Select City first —</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="field-label">A5a. Street / Landmark <span class="req">*</span></div>
       <div class="field-hint">Street name or a nearby landmark to locate the business.</div>
       <input type="text" id="street_landmark" placeholder="e.g. CPG Avenue, near City Hall">
     </div>
 
     <div class="field">
-      <div class="field-label">A5. Type of business <span class="req">*</span></div>
+      <div class="field-label">A6. Type of business <span class="req">*</span></div>
       <div class="field-hint">Select the option that best matches your main activity. We are especially interested in businesses that use a lot of water or produce wastewater.</div>
       <div class="option-group" data-name="business_type" data-type="radio"></div>
     </div>
     <div class="field conditional" data-show-when="business_type=other">
-      <div class="field-label">A5a. Please specify <span class="req">*</span></div>
+      <div class="field-label">A6a. Please specify <span class="req">*</span></div>
       <input type="text" id="business_type_other">
     </div>
 
     <div class="field">
-      <div class="field-label">A6. How long has your business been operating at this location? <span class="req">*</span></div>
+      <div class="field-label">A7. How long has your business been operating at this location? <span class="req">*</span></div>
       <div class="option-group" data-name="years_operating" data-type="radio"></div>
     </div>
   </div>
@@ -910,7 +920,7 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <button class="btn btn-next" id="btnNext" onclick="navigate(1)">Next →</button>
 </div>
 <div class="status" id="statusMsg"></div>
-<div class="footer">Tagbilaran City — Citywide Inclusive Sanitation</div>
+<div class="footer">Bohol — Citywide Inclusive Sanitation</div>
 </div>
 
 
@@ -927,11 +937,26 @@ let visitedHistory = [0];
 let radioValues = {};
 let currentLang = 'en';
 
-// ==================== BARANGAYS (Tagbilaran City) ====================
-const TAGBILARAN_BARANGAYS = [
-  'Bool','Booy','Cabawan','Cogon','Dampas','Dao','Manga','Mansasa',
-  'Poblacion I','Poblacion II','Poblacion III','San Isidro','Taloto','Tiptip','Ubujan'
-];
+// ==================== BARANGAYS (All LGUs) ====================
+const BARANGAYS = {
+  dauis: [
+    {v:'biking',l:'Biking'},{v:'bingag',l:'Bingag'},{v:'catarman',l:'Catarman'},{v:'dao_dauis',l:'Dao'},
+    {v:'mariveles',l:'Mariveles'},{v:'mayacabac',l:'Mayacabac'},{v:'poblacion_dauis',l:'Poblacion'},
+    {v:'san_isidro_dauis',l:'San Isidro'},{v:'songculan',l:'Songculan'},{v:'tabalong',l:'Tabalong'},
+    {v:'tinago',l:'Tinago'},{v:'totolan',l:'Totolan'}
+  ],
+  panglao: [
+    {v:'bil_isan',l:'Bil-isan'},{v:'bolod',l:'Bolod'},{v:'danao',l:'Danao'},{v:'doljo',l:'Doljo'},
+    {v:'libaong',l:'Libaong'},{v:'looc_panglao',l:'Looc'},{v:'lourdes',l:'Lourdes'},
+    {v:'poblacion_panglao',l:'Poblacion'},{v:'tangnan',l:'Tangnan'},{v:'tawala',l:'Tawala'}
+  ],
+  tagbilaran_city: [
+    {v:'bool',l:'Bool'},{v:'booy',l:'Booy'},{v:'cabawan',l:'Cabawan'},{v:'cogon',l:'Cogon'},
+    {v:'dampas',l:'Dampas'},{v:'dao_tagbilaran',l:'Dao'},{v:'manga',l:'Manga'},{v:'mansasa',l:'Mansasa'},
+    {v:'poblacion_i',l:'Poblacion I'},{v:'poblacion_ii',l:'Poblacion II'},{v:'poblacion_iii',l:'Poblacion III'},
+    {v:'san_isidro_tagbilaran',l:'San Isidro'},{v:'taloto',l:'Taloto'},{v:'tiptip',l:'Tiptip'},{v:'ubujan',l:'Ubujan'}
+  ]
+};
 
 // ==================== CHOICE LISTS ====================
 const CHOICE_LISTS = {
@@ -1504,7 +1529,7 @@ const CHOICE_LISTS_CEB = {
 const UI_TEXT = {
   en: {
     topbar_title: 'CWIS Business Sanitation Survey',
-    topbar_sub: 'Tagbilaran City — Bohol',
+    topbar_sub: 'Bohol',
     progress_section: 'Section', progress_of: 'of',
     instr_title: 'Before You Begin',
     instr_1: '<strong>Who should answer:</strong> The owner, manager, maintenance head, or any staff member who knows about your water use and wastewater system.',
@@ -1514,10 +1539,11 @@ const UI_TEXT = {
     btn_continue: 'I Understand, Continue →',
     section_titles: ['Business Information','Size of your Establishment','Water Use','Wastewater Management System','Septic Tank Details','Sewage Treatment Plant (STP) Details','Regulatory Compliance & Sanitation Fee','Final Comments & Closure'],
     btn_back: '← Back', btn_next: 'Next →', btn_submit: '✓ Submit Survey', btn_submitted: '✓ Submitted',
-    footer: 'Tagbilaran City — Citywide Inclusive Sanitation',
+    footer: 'Bohol — Citywide Inclusive Sanitation',
     select_default: '— Select —', select_barangay: '— Select Barangay —',
+    select_city_default: '— Select —', select_barangay_default: '— Select City first —',
     submit_title: 'Submitting...', submit_wait: 'Please wait, sending your response.',
-    submit_success: 'Thank You!', submit_success_msg: 'Your survey has been submitted successfully. Your responses will help improve sanitation services for businesses across Tagbilaran City.',
+    submit_success: 'Thank You!', submit_success_msg: 'Your survey has been submitted successfully. Your responses will help improve sanitation services for businesses in Bohol.',
     submit_error: 'Submission Failed', submit_error_default: 'Could not submit. Please check your internet connection and try again.',
     btn_done: 'Done', btn_close: 'Close',
     val_select: 'Please make a selection', val_required: 'This field is required',
@@ -1529,7 +1555,7 @@ const UI_TEXT = {
   },
   ceb: {
     topbar_title: 'CWIS Survey sa Sanitasyon sa Negosyo',
-    topbar_sub: 'Tagbilaran City — Bohol',
+    topbar_sub: 'Bohol',
     progress_section: 'Seksyon', progress_of: 'sa',
     instr_title: 'Sa Dili Pa Magsugod',
     instr_1: '<strong>Kinsa ang angay motubag:</strong> Ang tag-iya, manedyer, maintenance head, o bisan kinsa nga staff nga kabalo sa paggamit sa tubig ug sa wastewater system.',
@@ -1539,10 +1565,11 @@ const UI_TEXT = {
     btn_continue: 'Nakasabot Ko, Padayon →',
     section_titles: ['Impormasyon sa Negosyo','Gidak-on sa Establisemento','Paggamit sa Tubig','Sistema sa Pag-dumala sa Wastewater','Detalye sa Septic Tank','Detalye sa Sewage Treatment Plant (STP)','Regulatory Compliance ug Sanitation Fee','Katapusang Komento ug Pagtapos'],
     btn_back: '← Balik', btn_next: 'Sunod →', btn_submit: '✓ Isumite ang Survey', btn_submitted: '✓ Na-sumite Na',
-    footer: 'Tagbilaran City — Citywide Inclusive Sanitation',
+    footer: 'Bohol — Citywide Inclusive Sanitation',
     select_default: '— Pilia —', select_barangay: '— Pilia ang Barangay —',
+    select_city_default: '— Pilia —', select_barangay_default: '— Pilia una ang Siyudad —',
     submit_title: 'Gisumite...', submit_wait: 'Palihog hulata, gipadala ang imong tubag.',
-    submit_success: 'Salamat!', submit_success_msg: 'Malampusong na-sumite ang imong survey. Ang imong mga tubag makatabang sa pagpaayo sa serbisyo sa sanitasyon para sa mga negosyo sa Tagbilaran City.',
+    submit_success: 'Salamat!', submit_success_msg: 'Malampusong na-sumite ang imong survey. Ang imong mga tubag makatabang sa pagpaayo sa serbisyo sa sanitasyon para sa mga negosyo sa Bohol.',
     submit_error: 'Napakyas ang Pag-sumite', submit_error_default: 'Wala ma-sumite. Susiha ang imong internet ug sulayi pag-usab.',
     btn_done: 'Tapos', btn_close: 'Sirad-i',
     val_select: 'Palihog pili og opsyon', val_required: 'Kinahanglan kini nga field',
@@ -1566,11 +1593,12 @@ const FIELD_I18N_CEB = {
   respondent_role: { label: 'A2a. Posisyon / Role', hint: 'Pananglitan: Tag-iya, Manedyer, Maintenance Head, Front Desk Officer.' },
   contact_number: { label: 'A3. Mobile Number', hint: '10-digit mobile number (pananglitan: 9171234567).' },
   contact_email: { label: 'A3a. Email (opsyonal)' },
-  barangay: { label: 'A4. Barangay' },
-  street_landmark: { label: 'A4a. Kalsada / Landmark', hint: 'Ngalan sa kalsada o landmark aron mahibal-an ang lokasyon sa negosyo.' },
-  business_type: { label: 'A5. Klase sa negosyo', hint: 'Pilia ang labing nahaom sa inyong nag-unang aktibidad. Interesado mi sa mga negosyo nga daghan og gamit nga tubig o nagahimo og hugaw nga tubig.' },
-  business_type_other: { label: 'A5a. Palihog isulat' },
-  years_operating: { label: 'A6. Pila ka tuig na nag-operate ang negosyo dinhi?' },
+  city_municipality: { label: 'A4. Siyudad / Munisipyo', hint: 'Pilia ang siyudad o munisipyo diin nahimutang ang imong negosyo.' },
+  barangay: { label: 'A5. Barangay' },
+  street_landmark: { label: 'A5a. Kalsada / Landmark', hint: 'Ngalan sa kalsada o landmark aron mahibal-an ang lokasyon sa negosyo.' },
+  business_type: { label: 'A6. Klase sa negosyo', hint: 'Pilia ang labing nahaom sa inyong nag-unang aktibidad. Interesado mi sa mga negosyo nga daghan og gamit nga tubig o nagahimo og hugaw nga tubig.' },
+  business_type_other: { label: 'A6a. Palihog isulat' },
+  years_operating: { label: 'A7. Pila ka tuig na nag-operate ang negosyo dinhi?' },
 
   // Section B
   guest_rooms: { label: 'B1. Pila ka guest rooms ang naa kaninyo sa tibuok?' },
@@ -1739,15 +1767,18 @@ function buildOptionGroups() {
 }
 
 // ==================== BARANGAY DROPDOWN ====================
-function populateBarangays() {
+function updateBarangays() {
+  const lgu = document.getElementById('city_municipality').value;
   const sel = document.getElementById('barangay');
-  if (!sel) return;
-  TAGBILARAN_BARANGAYS.forEach(b => {
-    const opt = document.createElement('option');
-    opt.value = b.toLowerCase().replace(/\s+/g,'_');
-    opt.textContent = b;
-    sel.appendChild(opt);
-  });
+  const defaultText = lgu ? T('select_barangay') : T('select_barangay_default');
+  sel.innerHTML = '<option value="">' + defaultText + '</option>';
+  if (BARANGAYS[lgu]) {
+    BARANGAYS[lgu].forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.v; opt.textContent = b.l;
+      sel.appendChild(opt);
+    });
+  }
 }
 
 // ==================== TANK DIMENSIONS (single-tank, stepper UI) ====================
@@ -2083,6 +2114,7 @@ async function submitSurvey() {
     respondent_role: v('respondent_role'),
     contact_number: v('contact_number') ? '+63' + v('contact_number') : '',
     contact_email: v('contact_email'),
+    city_municipality: v('city_municipality'),
     barangay: v('barangay'),
     street_landmark: v('street_landmark'),
     business_type_other: v('business_type_other'),
@@ -2258,9 +2290,13 @@ function applyTranslations() {
   const footer = document.querySelector('.footer');
   if (footer) footer.textContent = t.footer;
 
+  // City select default
+  const csel = document.getElementById('city_municipality');
+  if (csel && csel.options[0]) csel.options[0].textContent = t.select_city_default;
+
   // Barangay select default
   const bsel = document.getElementById('barangay');
-  if (bsel && bsel.options[0]) bsel.options[0].textContent = t.select_barangay;
+  if (bsel && bsel.options[0]) bsel.options[0].textContent = csel && csel.value ? t.select_barangay : t.select_barangay_default;
 
   // Cebuano-only: translate field labels & hints
   if (currentLang === 'ceb') {
@@ -2331,7 +2367,6 @@ function init() {
   document.getElementById('progressWrap').style.display = 'none';
   document.getElementById('formContainer').style.display = 'none';
 
-  populateBarangays();
   buildOptionGroups();
   updateConditionals();
   updateProgress();

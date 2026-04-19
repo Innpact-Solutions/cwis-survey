@@ -488,17 +488,18 @@ function renderBusiness() {
     return;
   }
 
-  const barangays = countBy(allData, 'A4. Barangay');
-  const businessTypes = countBy(allData, 'A5. Business Type');
-  const yearsOperating = countBy(allData, 'A6. Years Operating');
+  const cities = countBy(allData, 'A4. City / Municipality');
+  const barangays = countBy(allData, 'A5. Barangay');
+  const businessTypes = countBy(allData, 'A6. Business Type');
+  const yearsOperating = countBy(allData, 'A7. Years Operating');
   const monthlyWater = countBy(allData, 'C2. Monthly Water Use');
   const ownOrShared = countBy(allData, 'D1. Own or Shared System');
   const systemType = countBy(allData, 'D2. System Type');
-  const lastDesludged = countBy(allData, 'E10. Last Desludged');
+  const lastDesludged = countBy(allData, 'E11. Last Desludged');
   const denrHeld = countBy(allData, 'G2. DENR Held');
   const agreeSepticFee = countBy(allData, 'G4. Agree Septic Sanitation Fee');
   const agreeStpFee = countBy(allData, 'G6. Agree STP Sanitation Fee');
-  const consentCount = allData.filter(r => r['H2. Respondent Consent'] === 'Yes' || r['H2. Respondent Consent'] === 'Oo').length;
+  const consentCount = allData.filter(r => r['H2. Respondent Consent'] === 'yes' || r['H2. Respondent Consent'] === 'Yes' || r['H2. Respondent Consent'] === 'Oo').length;
   const stpUsers = allData.filter(r => {
     const t = String(r['D2. System Type'] || '').toLowerCase();
     return t.includes('stp') || t.includes('both');
@@ -511,6 +512,7 @@ function renderBusiness() {
   mc.innerHTML = `
     <div class="kpi-grid">
       <div class="kpi-card"><div class="kpi-value">${allData.length}</div><div class="kpi-label">Total Responses</div></div>
+      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities Covered</div></div>
       <div class="kpi-card"><div class="kpi-value">${Object.keys(barangays).length}</div><div class="kpi-label">Barangays Covered</div></div>
       <div class="kpi-card"><div class="kpi-value">${septicUsers}</div><div class="kpi-label">Septic Tank Users</div></div>
       <div class="kpi-card"><div class="kpi-value">${stpUsers}</div><div class="kpi-label">STP Users</div></div>
@@ -518,19 +520,22 @@ function renderBusiness() {
     </div>
 
     <div class="chart-grid">
-      <div class="chart-card"><h3>Business Type (A5)</h3><div class="chart-wrap"><canvas id="b_chartType"></canvas></div></div>
-      <div class="chart-card"><h3>Responses by Barangay (A4)</h3><div class="chart-wrap"><canvas id="b_chartBarangay"></canvas></div></div>
+      <div class="chart-card"><h3>Responses by City / Municipality (A4)</h3><div class="chart-wrap"><canvas id="b_chartCity"></canvas></div></div>
+      <div class="chart-card"><h3>Responses by Barangay (A5)</h3><div class="chart-wrap"><canvas id="b_chartBarangay"></canvas></div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><h3>Years Operating (A6)</h3><div class="chart-wrap"><canvas id="b_chartYears"></canvas></div></div>
+      <div class="chart-card"><h3>Business Type (A6)</h3><div class="chart-wrap"><canvas id="b_chartType"></canvas></div></div>
+      <div class="chart-card"><h3>Years Operating (A7)</h3><div class="chart-wrap"><canvas id="b_chartYears"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
       <div class="chart-card"><h3>Monthly Water Use (C2)</h3><div class="chart-wrap"><canvas id="b_chartWater"></canvas></div></div>
+      <div class="chart-card"><h3>Own or Shared System (D1)</h3><div class="chart-wrap"><canvas id="b_chartOwnShared"></canvas></div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><h3>Own or Shared System (D1)</h3><div class="chart-wrap"><canvas id="b_chartOwnShared"></canvas></div></div>
       <div class="chart-card"><h3>System Type (D2)</h3><div class="chart-wrap"><canvas id="b_chartSystem"></canvas></div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><h3>Last Desludged (E10)</h3><div class="chart-wrap"><canvas id="b_chartDesludged"></canvas></div></div>
+      <div class="chart-card"><h3>Last Desludged (E11)</h3><div class="chart-wrap"><canvas id="b_chartDesludged"></canvas></div></div>
       <div class="chart-card"><h3>DENR Permit Held (G2)</h3><div class="chart-wrap"><canvas id="b_chartDenr"></canvas></div></div>
     </div>
     <div class="chart-grid">
@@ -544,8 +549,12 @@ function renderBusiness() {
     <div class="table-card">
       <h3>All Business Responses</h3>
       <div class="table-controls">
-        <input type="text" class="search-input" id="b_searchInput" placeholder="Search by business, barangay, type…" oninput="applyFilters('business')">
+        <input type="text" class="search-input" id="b_searchInput" placeholder="Search by business, barangay, city, type…" oninput="applyFilters('business')">
         <select class="filter-select" id="b_filterCity" onchange="applyFilters('business')">
+          <option value="">All Cities</option>
+          ${Object.keys(cities).sort().map(c => '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>').join('')}
+        </select>
+        <select class="filter-select" id="b_filterBarangay" onchange="applyFilters('business')">
           <option value="">All Barangays</option>
           ${Object.keys(barangays).sort().map(c => '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>').join('')}
         </select>
@@ -566,8 +575,9 @@ function renderBusiness() {
   `;
 
   // Charts
-  renderBarChart('business', 'b_chartType', businessTypes);
+  renderBarChart('business', 'b_chartCity', cities);
   renderBarChart('business', 'b_chartBarangay', barangays);
+  renderBarChart('business', 'b_chartType', businessTypes);
   renderBarChart('business', 'b_chartYears', yearsOperating);
   renderBarChart('business', 'b_chartWater', monthlyWater);
   renderDoughnutChart('business', 'b_chartOwnShared', ownOrShared);
@@ -714,13 +724,16 @@ function applyFilters(tab) {
   const prefix = tab === 'residential' ? 'r_' : 'b_';
   const search = document.getElementById(prefix + 'searchInput').value.toLowerCase().trim();
   const cityFilter = document.getElementById(prefix + 'filterCity').value;
+  const barangayFilterEl = document.getElementById('b_filterBarangay');
+  const barangayFilter = (tab === 'business' && barangayFilterEl) ? barangayFilterEl.value : '';
   const typeFilterEl = document.getElementById('b_filterType');
   const typeFilter = (tab === 'business' && typeFilterEl) ? typeFilterEl.value : '';
   const cityCol = TABS[tab].cityColumn;
 
   state.filteredData = state.allData.filter(r => {
     if (cityFilter && r[cityCol] !== cityFilter) return false;
-    if (typeFilter && r['A5. Business Type'] !== typeFilter) return false;
+    if (barangayFilter && r['A5. Barangay'] !== barangayFilter) return false;
+    if (typeFilter && r['A6. Business Type'] !== typeFilter) return false;
     if (search) {
       const hay = Object.values(r).join(' ').toLowerCase();
       if (!hay.includes(search)) return false;
