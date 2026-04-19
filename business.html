@@ -1676,8 +1676,8 @@ const FIELD_I18N_CEB = {
   wtp_stp_per_year: { label: 'G7. Pila ang inyong KAYA BAYRAN para niini nga one-time desludging service kada tuig?' },
 
   // Section H
-  other_comments: { label: 'H2. Aduna pa bay ubang komento o sugyot?', hint: 'Naa pa bay gusto ninyong ipahibalo sa Siyudad bahin sa sanitasyon o wastewater sa inyong negosyo o sa inyong lugar?' },
-  respondent_consent: { label: 'H3. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' }
+  other_comments: { label: 'H1. Aduna pa bay ubang komento o sugyot?', hint: 'Naa pa bay gusto ninyong ipahibalo sa Siyudad bahin sa sanitasyon o wastewater sa inyong negosyo o sa inyong lugar?' },
+  respondent_consent: { label: 'H2. Gikompirma ba sa respondent ang pagtugot sa paggamit sa datos?', hint: 'Pinaagi sa pagpili og "Oo", miuyon ka nga ang imong mga tubag mahimong gamiton para sa CWIS sanitation planning project.' }
 };
 
 // Special labels (not standard fields)
@@ -2161,7 +2161,7 @@ async function submitSurvey() {
   if (!data.barangay) { showStatus('Please select Barangay (Section A)', 'error'); return; }
   if (!data.contact_number) { showStatus('Please enter Contact Number (Section A)', 'error'); return; }
   if (radioValues.respondent_consent !== 'yes') {
-    showStatus('Respondent consent (H3) must be "Yes" to submit', 'error'); return;
+    showStatus('Respondent consent (H2) must be "Yes" to submit', 'error'); return;
   }
 
   btnNext.disabled = true;

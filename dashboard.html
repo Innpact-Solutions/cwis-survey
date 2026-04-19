@@ -411,32 +411,58 @@ function renderResidential() {
   const sanitationTypes = countBy(allData, 'E1. Sanitation Type');
   const desludged = countBy(allData, 'G1. Ever Desludged');
   const floodEntered = countBy(allData, 'B1. Flood Entered Containment');
-  const consentCount = allData.filter(r => r['J5. Respondent Consent'] === 'Yes' || r['J5. Respondent Consent'] === 'Oo').length;
-  const withGPS = allData.filter(r => r['J2. Latitude'] && r['J2. Longitude']).length;
+
+  // Informative KPIs
+  const neverDesludged = allData.filter(r => String(r['G1. Ever Desludged'] || '').toLowerCase() === 'no').length;
+  const neverDesludgedPct = allData.length ? Math.round(neverDesludged / allData.length * 100) : 0;
+  const sealedBottoms = allData.filter(r => String(r['E3. Bottom Type'] || '').toLowerCase().includes('sealed')).length;
+  const sealedBottomPct = allData.length ? Math.round(sealedBottoms / allData.length * 100) : 0;
+  const familySizes = allData.map(r => parseFloat(r['D1. Family Members']) || 0).filter(n => n > 0);
+  const avgFamily = familySizes.length ? (familySizes.reduce((a, b) => a + b, 0) / familySizes.length).toFixed(1) : '—';
+  const floodAffected = allData.filter(r => { const v = String(r['B1. Flood Entered Containment'] || '').toLowerCase(); return v === 'yes' || v === 'oo'; }).length;
+  const floodAffectedPct = allData.length ? Math.round(floodAffected / allData.length * 100) : 0;
+  const toiletIssues = allData.filter(r => { const v = String(r['I1. Past Toilet Issues'] || '').toLowerCase(); return v === 'yes' || v === 'oo'; }).length;
 
   mc.innerHTML = `
     <div class="kpi-grid">
       <div class="kpi-card"><div class="kpi-value">${allData.length}</div><div class="kpi-label">Total Responses</div></div>
-      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities Covered</div></div>
-      <div class="kpi-card"><div class="kpi-value">${withGPS}</div><div class="kpi-label">GPS Tagged</div></div>
-      <div class="kpi-card"><div class="kpi-value">${consentCount}</div><div class="kpi-label">Consented</div></div>
+      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities / Municipalities</div></div>
+      <div class="kpi-card"><div class="kpi-value">${avgFamily}</div><div class="kpi-label">Avg Family Size</div></div>
+      <div class="kpi-card"><div class="kpi-value">${neverDesludgedPct}%</div><div class="kpi-label">Never Desludged</div></div>
+      <div class="kpi-card"><div class="kpi-value">${sealedBottomPct}%</div><div class="kpi-label">Sealed Tank Bottom</div></div>
+      <div class="kpi-card"><div class="kpi-value">${floodAffectedPct}%</div><div class="kpi-label">Flood-Affected Tanks</div></div>
     </div>
 
     <div class="chart-grid">
       <div class="chart-card"><h3>Responses by City / Municipality</h3><div class="chart-wrap"><canvas id="r_chartCity"></canvas></div></div>
-      <div class="chart-card"><h3>Sanitation Type (E1)</h3><div class="chart-wrap"><canvas id="r_chartSanitation"></canvas></div></div>
+      <div class="chart-card"><h3>Sanitation / Containment Type (E1)</h3><div class="chart-wrap"><canvas id="r_chartSanitation"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Tank Wall Construction (E2)</h3><div class="chart-wrap"><canvas id="r_chartWall"></canvas></div></div>
+      <div class="chart-card"><h3>Tank Bottom Construction (E3)</h3><div class="chart-wrap"><canvas id="r_chartBottom"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Tank / Pit Age (E8)</h3><div class="chart-wrap"><canvas id="r_chartAge"></canvas></div></div>
+      <div class="chart-card"><h3>Dwelling Type (D2)</h3><div class="chart-wrap"><canvas id="r_chartDwelling"></canvas></div></div>
     </div>
     <div class="chart-grid">
       <div class="chart-card"><h3>Flood Entered Containment (B1)</h3><div class="chart-wrap"><canvas id="r_chartFlood"></canvas></div></div>
-      <div class="chart-card"><h3>Ever Desludged (G1)</h3><div class="chart-wrap"><canvas id="r_chartDesludge"></canvas></div></div>
+      <div class="chart-card"><h3>Ever Desludged? (G1)</h3><div class="chart-wrap"><canvas id="r_chartDesludge"></canvas></div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><h3>Dwelling Type (D2)</h3><div class="chart-wrap"><canvas id="r_chartDwelling"></canvas></div></div>
+      <div class="chart-card"><h3>Desludging Cost (G5)</h3><div class="chart-wrap"><canvas id="r_chartDesludgeCost"></canvas></div></div>
+      <div class="chart-card"><h3>Reason Never Desludged (G6)</h3><div class="chart-wrap"><canvas id="r_chartNoDesludge"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
       <div class="chart-card"><h3>Greywater Destination (F3)</h3><div class="chart-wrap"><canvas id="r_chartGreywater"></canvas></div></div>
+      <div class="chart-card"><h3>Water Supply Sources (H1)</h3><div class="chart-wrap"><canvas id="r_chartWater"></canvas></div></div>
     </div>
     <div class="chart-grid">
-      <div class="chart-card"><h3>Water Supply Sources (H1)</h3><div class="chart-wrap"><canvas id="r_chartWater"></canvas></div></div>
-      <div class="chart-card"><h3>Responses Over Time</h3><div class="chart-wrap"><canvas id="r_chartTimeline"></canvas></div></div>
+      <div class="chart-card"><h3>Outlet Destination (E7)</h3><div class="chart-wrap"><canvas id="r_chartOutlet"></canvas></div></div>
+      <div class="chart-card"><h3>Past Toilet Issues (I1)</h3><div class="chart-wrap"><canvas id="r_chartToiletIssues"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full-width"><h3>Responses Over Time</h3><div class="chart-wrap"><canvas id="r_chartTimeline"></canvas></div></div>
     </div>
 
     <div class="table-card">
@@ -462,11 +488,18 @@ function renderResidential() {
   // Charts
   renderBarChart('residential', 'r_chartCity', cities);
   renderDoughnutChart('residential', 'r_chartSanitation', sanitationTypes);
+  renderDoughnutChart('residential', 'r_chartWall', countBy(allData, 'E2. Wall Type'));
+  renderDoughnutChart('residential', 'r_chartBottom', countBy(allData, 'E3. Bottom Type'));
+  renderBarChart('residential', 'r_chartAge', countBy(allData, 'E8. Year Constructed'));
+  renderBarChart('residential', 'r_chartDwelling', countBy(allData, 'D2. Dwelling Type'));
   renderDoughnutChart('residential', 'r_chartFlood', floodEntered);
   renderDoughnutChart('residential', 'r_chartDesludge', desludged);
-  renderBarChart('residential', 'r_chartDwelling', countBy(allData, 'D2. Dwelling Type'));
+  renderBarChart('residential', 'r_chartDesludgeCost', countBy(allData.filter(r => r['G5. Desludging Cost']), 'G5. Desludging Cost'));
+  renderBarChart('residential', 'r_chartNoDesludge', countByMulti(allData.filter(r => String(r['G1. Ever Desludged'] || '').toLowerCase() === 'no'), 'G6. No Desludge Reason'));
   renderBarChart('residential', 'r_chartGreywater', countBy(allData, 'F3. Greywater Destination'));
   renderBarChart('residential', 'r_chartWater', countByMulti(allData, 'H1. Water Supply Sources'));
+  renderBarChart('residential', 'r_chartOutlet', countBy(allData.filter(r => r['E7. Outlet Destination']), 'E7. Outlet Destination'));
+  renderDoughnutChart('residential', 'r_chartToiletIssues', countBy(allData, 'I1. Past Toilet Issues'));
   renderTimelineChart('residential', 'r_chartTimeline');
 
   renderTable('residential');
@@ -499,7 +532,8 @@ function renderBusiness() {
   const denrHeld = countBy(allData, 'G2. DENR Held');
   const agreeSepticFee = countBy(allData, 'G4. Agree Septic Sanitation Fee');
   const agreeStpFee = countBy(allData, 'G6. Agree STP Sanitation Fee');
-  const consentCount = allData.filter(r => r['H2. Respondent Consent'] === 'yes' || r['H2. Respondent Consent'] === 'Yes' || r['H2. Respondent Consent'] === 'Oo').length;
+
+  // Informative KPIs
   const stpUsers = allData.filter(r => {
     const t = String(r['D2. System Type'] || '').toLowerCase();
     return t.includes('stp') || t.includes('both');
@@ -508,15 +542,24 @@ function renderBusiness() {
     const t = String(r['D2. System Type'] || '').toLowerCase();
     return t.includes('septic') || t.includes('both');
   }).length;
+  const neverDesludged = allData.filter(r => String(r['E11. Last Desludged'] || '').toLowerCase() === 'never').length;
+  const neverDesludgedPct = allData.length ? Math.round(neverDesludged / allData.length * 100) : 0;
+  const hasGreaseTrap = allData.filter(r => { const v = String(r['E8. Has Grease Trap'] || '').toLowerCase(); return v === 'yes' || v === 'oo'; }).length;
+  const hasGreaseTrapPct = allData.length ? Math.round(hasGreaseTrap / allData.length * 100) : 0;
+  const floodAffected = allData.filter(r => { const v = String(r['E16. Flooding Around'] || '').toLowerCase(); return v === 'yes' || v === 'oo' || v === 'sometimes' || v === 'usahay'; }).length;
+  const agreeMandatoryCert = allData.filter(r => { const v = String(r['G3. Mandatory Cert'] || '').toLowerCase(); return v === 'yes' || v.includes('good'); }).length;
+  const agreeMandatoryCertPct = allData.length ? Math.round(agreeMandatoryCert / allData.length * 100) : 0;
 
   mc.innerHTML = `
     <div class="kpi-grid">
       <div class="kpi-card"><div class="kpi-value">${allData.length}</div><div class="kpi-label">Total Responses</div></div>
-      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities Covered</div></div>
+      <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities / Municipalities</div></div>
       <div class="kpi-card"><div class="kpi-value">${Object.keys(barangays).length}</div><div class="kpi-label">Barangays Covered</div></div>
       <div class="kpi-card"><div class="kpi-value">${septicUsers}</div><div class="kpi-label">Septic Tank Users</div></div>
       <div class="kpi-card"><div class="kpi-value">${stpUsers}</div><div class="kpi-label">STP Users</div></div>
-      <div class="kpi-card"><div class="kpi-value">${consentCount}</div><div class="kpi-label">Consented</div></div>
+      <div class="kpi-card"><div class="kpi-value">${neverDesludgedPct}%</div><div class="kpi-label">Never Desludged</div></div>
+      <div class="kpi-card"><div class="kpi-value">${hasGreaseTrapPct}%</div><div class="kpi-label">Have Grease Trap</div></div>
+      <div class="kpi-card"><div class="kpi-value">${agreeMandatoryCertPct}%</div><div class="kpi-label">Support Mandatory Cert</div></div>
     </div>
 
     <div class="chart-grid">
@@ -533,14 +576,27 @@ function renderBusiness() {
     </div>
     <div class="chart-grid">
       <div class="chart-card"><h3>System Type (D2)</h3><div class="chart-wrap"><canvas id="b_chartSystem"></canvas></div></div>
+      <div class="chart-card"><h3>Tank Bottom Condition (E6)</h3><div class="chart-wrap"><canvas id="b_chartTankBottom"></canvas></div></div>
     </div>
     <div class="chart-grid">
+      <div class="chart-card"><h3>Outfall / Discharge Destination (E10)</h3><div class="chart-wrap"><canvas id="b_chartOutfall"></canvas></div></div>
       <div class="chart-card"><h3>Last Desludged (E11)</h3><div class="chart-wrap"><canvas id="b_chartDesludged"></canvas></div></div>
-      <div class="chart-card"><h3>DENR Permit Held (G2)</h3><div class="chart-wrap"><canvas id="b_chartDenr"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>Septic Tank Problems (E15)</h3><div class="chart-wrap"><canvas id="b_chartTankProblems"></canvas></div></div>
+      <div class="chart-card"><h3>Desludging Cost per Trip (E14)</h3><div class="chart-wrap"><canvas id="b_chartDesludgeCost"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>DENR Permit Status (G2)</h3><div class="chart-wrap"><canvas id="b_chartDenr"></canvas></div></div>
+      <div class="chart-card"><h3>Mandatory Desludging Certificate? (G3)</h3><div class="chart-wrap"><canvas id="b_chartMandatoryCert"></canvas></div></div>
     </div>
     <div class="chart-grid">
       <div class="chart-card"><h3>Willing: Septic Sanitation Fee (G4)</h3><div class="chart-wrap"><canvas id="b_chartFeeSeptic"></canvas></div></div>
       <div class="chart-card"><h3>Willing: STP Sanitation Fee (G6)</h3><div class="chart-wrap"><canvas id="b_chartFeeStp"></canvas></div></div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>WTP per Septic Trip (G5)</h3><div class="chart-wrap"><canvas id="b_chartWtpSeptic"></canvas></div></div>
+      <div class="chart-card"><h3>WTP per STP Year (G7)</h3><div class="chart-wrap"><canvas id="b_chartWtpStp"></canvas></div></div>
     </div>
     <div class="chart-grid">
       <div class="chart-card full-width"><h3>Responses Over Time</h3><div class="chart-wrap"><canvas id="b_chartTimeline"></canvas></div></div>
@@ -582,10 +638,17 @@ function renderBusiness() {
   renderBarChart('business', 'b_chartWater', monthlyWater);
   renderDoughnutChart('business', 'b_chartOwnShared', ownOrShared);
   renderDoughnutChart('business', 'b_chartSystem', systemType);
+  renderDoughnutChart('business', 'b_chartTankBottom', countBy(allData, 'E6. Tank Bottom'));
+  renderBarChart('business', 'b_chartOutfall', countBy(allData, 'E10. Outfall'));
   renderBarChart('business', 'b_chartDesludged', lastDesludged);
+  renderBarChart('business', 'b_chartTankProblems', countByMulti(allData, 'E15. Tank Problems'));
+  renderBarChart('business', 'b_chartDesludgeCost', countBy(allData.filter(r => r['E14. Cost Per Trip']), 'E14. Cost Per Trip'));
   renderDoughnutChart('business', 'b_chartDenr', denrHeld);
+  renderDoughnutChart('business', 'b_chartMandatoryCert', countBy(allData, 'G3. Mandatory Cert'));
   renderDoughnutChart('business', 'b_chartFeeSeptic', agreeSepticFee);
   renderDoughnutChart('business', 'b_chartFeeStp', agreeStpFee);
+  renderBarChart('business', 'b_chartWtpSeptic', countBy(allData.filter(r => r['G5. WTP Septic Per Trip']), 'G5. WTP Septic Per Trip'));
+  renderBarChart('business', 'b_chartWtpStp', countBy(allData.filter(r => r['G7. WTP STP Per Year']), 'G7. WTP STP Per Year'));
   renderTimelineChart('business', 'b_chartTimeline');
 
   renderTable('business');
