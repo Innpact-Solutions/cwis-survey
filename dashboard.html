@@ -415,8 +415,6 @@ function renderResidential() {
   // Informative KPIs
   const neverDesludged = allData.filter(r => String(r['G1. Ever Desludged'] || '').toLowerCase() === 'no').length;
   const neverDesludgedPct = allData.length ? Math.round(neverDesludged / allData.length * 100) : 0;
-  const sealedBottoms = allData.filter(r => String(r['E3. Bottom Type'] || '').toLowerCase().includes('sealed')).length;
-  const sealedBottomPct = allData.length ? Math.round(sealedBottoms / allData.length * 100) : 0;
   const familySizes = allData.map(r => parseFloat(r['D1. Family Members']) || 0).filter(n => n > 0);
   const avgFamily = familySizes.length ? (familySizes.reduce((a, b) => a + b, 0) / familySizes.length).toFixed(1) : '—';
   const floodAffected = allData.filter(r => { const v = String(r['B1. Flood Entered Containment'] || '').toLowerCase(); return v === 'yes' || v === 'oo'; }).length;
@@ -429,7 +427,6 @@ function renderResidential() {
       <div class="kpi-card"><div class="kpi-value">${Object.keys(cities).length}</div><div class="kpi-label">Cities / Municipalities</div></div>
       <div class="kpi-card"><div class="kpi-value">${avgFamily}</div><div class="kpi-label">Avg Family Size</div></div>
       <div class="kpi-card"><div class="kpi-value">${neverDesludgedPct}%</div><div class="kpi-label">Never Desludged</div></div>
-      <div class="kpi-card"><div class="kpi-value">${sealedBottomPct}%</div><div class="kpi-label">Sealed Tank Bottom</div></div>
       <div class="kpi-card"><div class="kpi-value">${floodAffectedPct}%</div><div class="kpi-label">Flood-Affected Tanks</div></div>
     </div>
 
